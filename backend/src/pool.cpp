@@ -1,0 +1,112 @@
+/**
+ * author: Brando
+ * date: 1/5/22
+ */
+
+#include "pool.hpp"
+#include "database.hpp"
+#include "delete.hpp"
+#include "logger.hpp"
+#include "user.hpp"
+#include <string.h>
+
+Pool * gPool = 0;
+
+Pool::Pool() {}
+
+Pool::~Pool() {}
+
+int Pool::initialize() {
+	int result = 0;
+	if ((gPool = new Pool) == NULL) {
+		result = 1;
+	}
+
+	if (result == 0) {
+		PDLog("Pool initialized");
+	}
+
+	return result;
+}
+
+void Pool::deinitialize() {
+	Delete(gPool);
+}
+
+Pool * Pool::shared() {
+	return gPool;
+}
+
+int Pool::activateUser(const char * username, const char * password, char * sessionID) {
+	User * user = 0;
+	int result = Database::shared()->getUserForCredentials(username, password, &user);
+	if (user) {
+		if (result == 0) {
+			DLog("%x", user);
+			DLog("error %d", result);
+			DLog("Username: %s", user->username());
+			DLog("uuid: %s", user->uuid());
+			DLog("first: %s", user->firstname());
+			DLog("last: %s", user->lastname());
+			DLog("session id: %s", user->sessionID());
+
+			if (!this->containsUserWithUUID(user->uuid())) {
+				result = this->_users.add(user);
+			} else {
+				DLog("user already is activited");
+				User * tmp = user;
+				user = this->getUserForUUID(tmp->uuid());
+				Delete(tmp);
+			}
+		}
+
+		if (result == 0) {
+			strcpy(sessionID, user->sessionID());
+		}
+	}
+
+	return 0;
+}
+
+bool Pool::containsUserWithUUID(const char * uuid) {
+	List<User *>::Node * n = 0;
+	for (n = this->_users.first(); n != NULL; n = n->next()) {
+		if (!strcmp(n->object()->uuid(), uuid)) return true;
+	}
+	return false;
+}
+
+User * Pool::getUserForUUID(const char * uuid) {
+	List<User *>::Node * n = 0;
+	for (n = this->_users.first(); n != NULL; n = n->next()) {
+		if (!strcmp(n->object()->uuid(), uuid)) return n->object();
+	}
+	return NULL;
+}
+
+User * Pool::getUserForSessionID(const char * sessionID) {
+	List<User *>::Node * n = 0;
+	for (n = this->_users.first(); n != NULL; n = n->next()) {
+		if (!strcmp(n->object()->sessionID(), sessionID)) return n->object();
+	}
+	return NULL;
+}
+
+int Pool::deactivateUserWithSessionID(const char * sessionID) {
+	List<User *>::Node * n = 0;
+	int i = 0;
+	for (n = this->_users.first(); n != NULL; n = n->next()) {
+		if (!strcmp(n->object()->sessionID(), sessionID)) {
+			return this->_users.deleteObjectAtIndex(i);
+		}
+
+		i++;
+	}
+
+	return 0;
+}
+
+int Pool::activeUserCount() {
+	return this->_users.count();
+}
+

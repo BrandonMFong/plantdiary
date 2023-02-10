@@ -1,0 +1,54 @@
+#!/usr/bin/bash
+
+exitcode=0;
+
+# packages
+
+# Install boost onto machine
+if [ $exitcode -eq 0 ]; then 
+	sudo apt install libboost-all-dev;
+	exitcode=$?;
+fi
+
+# Install mysqlclient package
+if [ $exitcode -eq 0 ]; then 
+	sudo apt install libmysqlclient-dev;
+	exitcode=$?;
+fi
+
+pushd common;
+
+if [ ! -d external ]; then
+	mkdir external;
+fi
+
+cd external;
+
+# sources
+
+# Install mysql cpp connector
+if [ ! -d mysql-connector-cpp ]; then
+	git clone https://github.com/mysql/mysql-connector-cpp.git;
+	exitcode=$?;
+
+	if [ $exitcode -eq 0 ]; then
+		cd mysql-connector-cpp;
+		git checkout 1.1;
+		exitcode=$?;
+		cd ..;
+	fi
+fi
+
+if [ ! -d json-parser ]; then
+	git clone https://github.com/json-parser/json-parser.git;
+	exitcode=$?;
+fi
+
+if [ $exitcode -eq 0 ]; then 
+	echo "asdf";
+fi
+
+# TODO: clone libs
+
+popd;
+

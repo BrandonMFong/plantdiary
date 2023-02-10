@@ -3,4 +3,4 @@ a.out
 *.swp
 build
 bin
-
+common/external/*

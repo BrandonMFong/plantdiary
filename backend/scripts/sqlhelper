@@ -1,0 +1,58 @@
+#!/usr/bin/bash	
+# author: Brando
+# 12/22/22
+#
+
+# Constants
+kScriptName=$(basename "$0");
+kScriptPath="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )";
+kArgumentProd="prod";
+kArgumentTest="test";
+kArgumentCreate="create";
+kArgumentDestroy="destroy";
+kSQLScriptCreateBasename="databasecreate";
+kSQLScriptDestroyBasename="databasedestroy";
+
+function help() {
+	printf "usage: $(basename "$0") [ $kArgumentProd | $kArgumentTest ] [ $kArgumentCreate | $kArgumentDestroy ]\n";
+}
+
+function create() {
+	if [[ $1 == $kArgumentProd ]]; then 
+		sudo mysql < "$kScriptPath/${kSQLScriptCreateBasename}_prod.sql"
+	elif [[ $1 == $kArgumentTest ]]; then
+		sudo mysql < "$kScriptPath/${kSQLScriptCreateBasename}_test.sql"
+	fi
+}
+
+function destroy() {
+	printf "Would you like to continue [y/n]? ";
+	read input;
+
+	if [[ $input == "y" ]]; then
+		if [[ $1 == $kArgumentProd ]]; then 
+			sudo mysql < "$kScriptPath/${kSQLScriptDestroyBasename}_prod.sql"
+		elif [[ $1 == $kArgumentTest ]]; then
+			sudo mysql < "$kScriptPath/${kSQLScriptDestroyBasename}_test.sql"
+		fi
+	fi
+}
+
+function main() {
+	pushd $kScriptPath >/dev/null 2>&1;
+
+	if [[ $1 == "--help" ]]; then 
+		help;
+	elif [[ $2 == $kArgumentCreate ]]; then 
+		create $@;
+	elif [[ $2 == $kArgumentDestroy ]]; then 
+		destroy $@;
+	else 
+		help;
+	fi
+
+	popd >/dev/null 2>&1;
+}
+
+main $@;
+

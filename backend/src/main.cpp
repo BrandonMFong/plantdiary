@@ -2,15 +2,14 @@
  * author: Brando
  * date: 11/29/22
  *
- * This is for Camille.  I love you bub
+ * This is for Camille.
  */
 
-#include <stdio.h>
+#include "driver.hpp"
 
-int main(int argc, char ** argv) {
+int main(void) {
+	Driver::initialize();
 
-	printf("Hello world!\n");
-
-	return 0;
+	return Driver::run();
 }
 
