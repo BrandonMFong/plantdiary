@@ -10,6 +10,8 @@
 #include "logger.hpp"
 #include "instructor.hpp"
 #include <cpplib.hpp>
+#include <common.h>
+#include <sys/stat.h>
 
 Driver * gDriver = 0;
 
@@ -39,8 +41,11 @@ int Driver::initialize() {
 		return error;
 	} else if ((gDriver = new Driver) == NULL) {
 		return 4;
-	} else 
+	} else if ((error = gDriver->setupEnvironment()) != 0) {
+		return error;
+	} else {
 		return 0;
+	}
 }
 
 void Driver::deinitialize() {
@@ -59,6 +64,14 @@ int Driver::run() {
 
 	while (1) {
 
+	}
+
+	return 0;
+}
+
+int Driver::setupEnvironment() {
+	if (!IsDirectory(kPDCommonAppDataPath)) {
+		return mkdir(kPDCommonAppDataPath, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
 	}
 
 	return 0;
@@ -90,29 +103,33 @@ void Driver::executeInstruction(PDInstruction * instructions) {
 	int error = 0;
 	Instructor * instructor = Instructor::create(instructions);
 
-	// Sweep through the table to see if we have any available threads
-	// to launch
-	int maxTries = 100;
-	int i = 0;
-	do {
-		bool launched = false;
-		for (int j = 0; j < kDriverThreadQueueSize; j++) {
-			if (!this->_pTable.active[j]) {
-				InstructionThreadPackage * p = (InstructionThreadPackage *) malloc(sizeof(InstructionThreadPackage));
-				p->instructor = instructor;
-				pthread_create(&this->_pTable.thread[j], 0, LaunchInstruction, p);
-				launched = true;
-				break;
+	if (instructor == NULL) {
+		DLog("instructor is null");
+	} else {
+		// Sweep through the table to see if we have any available threads
+		// to launch
+		int maxTries = 100;
+		int i = 0;
+		do {
+			bool launched = false;
+			for (int j = 0; j < kDriverThreadQueueSize; j++) {
+				if (!this->_pTable.active[j]) {
+					InstructionThreadPackage * p = (InstructionThreadPackage *) malloc(sizeof(InstructionThreadPackage));
+					p->instructor = instructor;
+					pthread_create(&this->_pTable.thread[j], 0, LaunchInstruction, p);
+					launched = true;
+					break;
+				}
 			}
-		}
 
-		if (launched)
-			break;
-		else
-			sleep(1);
+			if (launched)
+				break;
+			else
+				sleep(1);
 
-		i++;
-	} while (i < maxTries);
+			i++;
+		} while (i < maxTries);
+	}
 
 	Free(instructions);
 }

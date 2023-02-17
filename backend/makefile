@@ -19,7 +19,7 @@ R_OBJECTS = $(patsubst %, $(R_BUILD_PATH)/%.o, $(FILES))
 ### Debug settings
 D_CXXFLAGS = $(R_CXXFLAGS) -DDEBUG -g
 D_CFLAGS = $(R_CFLAGS) -DDEBUG -g
-D_BIN_NAME = debug-$(R_BIN_NAME)
+D_BIN_NAME = $(R_BIN_NAME)-debug
 D_BUILD_PATH = $(BUILD_PATH)/debug
 D_MAIN_FILE = $(R_MAIN_FILE)
 D_LIBRARIES = ../common/bin/cpp/debug-cpplib.a ../common/bin/json.a
@@ -28,7 +28,7 @@ D_OBJECTS = $(patsubst %, $(D_BUILD_PATH)/%.o, $(FILES))
 ### Test settings
 T_CXXFLAGS = $(R_CXXFLAGS) -g -DDEBUG -DTESTING -Isrc/ -I../common/external/libs/cpplib/testbench/
 T_CFLAGS = $(R_CFLAGS) -g -DDEBUG -DTESTING -Isrc/ -I../common/external/libs/clib/testbench
-T_BIN_NAME = test-$(R_BIN_NAME)
+T_BIN_NAME = $(R_BIN_NAME)-test
 T_BUILD_PATH = $(BUILD_PATH)/test
 T_MAIN_FILE = src/testbench/tests.cpp
 T_LIBRARIES = ../common/bin/cpp/debug-cpplib.a ../common/bin/json.a

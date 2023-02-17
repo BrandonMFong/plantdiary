@@ -11,8 +11,11 @@
 #include "internal/json.h"
 #include "internal/keys.h"
 
-#define kPDCommonFifoFilePathInbound "/tmp/plantdiaryfifoinbound"
-#define kPDCommonFifoFilePathOutbound "/tmp/plantdiaryfifooutbound"
+// App data path
+#define kPDCommonAppDataPath "/tmp/plantdiary"
+
+#define kPDCommonFifoFilePathInbound kPDCommonAppDataPath"/plantdiaryfifoinbound"
+#define kPDCommonFifoFilePathOutbound kPDCommonAppDataPath"/plantdiaryfifooutbound"
 
 #define kPDCommonUsernameMaxLength 2 << 7
 #define kPDCommonPasswordMaxLength 2 << 7

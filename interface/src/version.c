@@ -18,9 +18,11 @@ int VersionExec(int argc, char ** argv) {
 	PDResponse resp = {0};
 	PDInstructionSetCommand(&instr, kPDCommandVersion);
 	int error = FifoWrite(&instr);
+	DLog("%d", error);
 
 	if (error == 0) {
 		error = FifoRead(&resp);
+		DLog("%d", error);
 	}
 
 	if (error == 0) {

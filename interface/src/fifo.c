@@ -17,27 +17,26 @@ int FifoWrite(PDInstruction * instr) {
 	int result = 0;
     int fd = 0;
     const char * myfifo = kPDCommonFifoFilePathInbound;
+	DLog("writing to %s", kPDCommonFifoFilePathInbound);
 
 #ifndef TESTING
 
     // Creating the named file(FIFO)
     // mkfifo(<pathname>, <permission>)
-    if (mkfifo(myfifo, 0666) == -1) {
-		result = 30;
-	}
+    mkfifo(myfifo, 0666);
 
 	// Open FIFO for write only
-	if (result == 0) {
-		fd = open(myfifo, O_WRONLY);
-		if (fd == -1) {
-			result = 31;
-		}
+	fd = open(myfifo, O_WRONLY);
+	if (fd == -1) {
+		DLog("Error opening");
+		result = 31;
 	}
 
 	// Write the input arr2ing on FIFO
 	// and close it
 	if (result == 0) {	
 		if (write(fd, instr, sizeof(PDInstruction)) == -1) {
+			DLog("Error writing");
 			result = 32;
 		}
 	}
@@ -55,26 +54,26 @@ int FifoRead(PDResponse * response) {
 		int result = 0;
 		int d = 0;
 #ifndef TESTING
-		if (mkfifo(kPDCommonFifoFilePathOutbound, 0666) == -1) {
-			result = 34;
-		}
+		mkfifo(kPDCommonFifoFilePathOutbound, 0666);
 
 		if (result == 0) {
 			d = open(kPDCommonFifoFilePathOutbound, O_RDONLY);
 			if (d == -1) {
+				DLog("Error opening");
 				result = 35;
 			}
 		}
 
 		if (result == 0) {
 			if (read(d, response, sizeof(PDResponse)) == -1) {
+				DLog("Error reading");
 				result = 36;
 			}
 		}
 
 		close(d);
 #endif
-		return 0;
+		return result;
 	}
 }
 

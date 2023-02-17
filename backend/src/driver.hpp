@@ -29,6 +29,11 @@ PRIVATE:
 	Driver();
 	~Driver();
 
+	/**
+	 * Sets up the directory where our app data will leave
+	 */
+	int setupEnvironment();
+
 	struct {
 		pthread_t thread[kDriverThreadQueueSize];
 		bool active[kDriverThreadQueueSize];

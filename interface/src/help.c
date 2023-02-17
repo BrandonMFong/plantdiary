@@ -7,6 +7,7 @@
 #include "arguments.h"
 #include "get.h"
 #include "session.h"
+#include "init.h"
 #include <stdio.h>
 #include <string.h>
 
@@ -18,6 +19,8 @@ int HelpExec(int argc, char ** argv) {
 			GetHelp();
 		} else if (!strcmp(argv[2], kArgumentSession)) {
 			SessionHelp();
+		} else if (!strcmp(argv[2], kArgumentInit)) {
+			InitHelp();
 		} else {
 			printf("Unknown command: %s\n", argv[2]);
 		}

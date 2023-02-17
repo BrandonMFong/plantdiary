@@ -6,7 +6,7 @@
 #ifndef PRINT_H
 #define PRINT_H
 
-#ifdef DEBUG
+#ifdef TESTING
 #define print(...)
 #else
 #define print(...) printf(__VA_ARGS__)

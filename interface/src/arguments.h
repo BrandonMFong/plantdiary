@@ -11,6 +11,7 @@
 #define kArgumentVersion "version"
 #define kArgumentGet "get"
 #define kArgumentSession "session"
+#define kArgumentInit "init"
 
 /// subcommands
 #define kArgumentGetPlantCount "plantcount"
@@ -20,7 +21,8 @@
 #define kArgumentSessionStop "stop"
 
 /// other arguments
-#define kArgumentSessionID "-s"
+#define kArgumentOtherSessionID "-s"
+#define kArgumentOtherPrint "-p"
 
 #endif // ARGUMENTS_H
 

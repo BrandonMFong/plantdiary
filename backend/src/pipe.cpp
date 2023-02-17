@@ -27,6 +27,7 @@ void * PipeReader(void *) {
 
     // FIFO file path
     const char * myfifo = kPDCommonFifoFilePathInbound;
+	DLog("Reading %s", myfifo);
 
     // Creating the named file(FIFO)
     // mkfifo(<pathname>,<permission>)
@@ -92,10 +93,11 @@ int Pipe::writeResponse(PDResponse * response) {
 		if (write(f, response, sizeof(PDResponse)) == -1) {
 			result = 4;
 		}
+
+		DLog("Finished writing response");
 	}
 
-	if (f)
-		close(f);
+	if (f) close(f);
 
 	return result;
 }
