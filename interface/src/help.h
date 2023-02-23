@@ -6,7 +6,9 @@
 #ifndef HELP_H
 #define HELP_H
 
-int HelpExec(int argc, char ** argv);
+#include "typearguments.h"
+
+int HelpExec(Arguments * args);
 
 #endif // HELP_H
 

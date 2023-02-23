@@ -67,7 +67,7 @@ PDCommand Instructor::command() {
 	return this->_command;
 }
 
-unsigned char Instructor::subCommand() {
+const char Instructor::subCommand() {
 	return this->_subCommand;
 }
 

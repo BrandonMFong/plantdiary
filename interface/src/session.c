@@ -23,9 +23,9 @@
 
 #define kSessionSessionIDFilename "sessionid"
 
-int SessionStart(int argc, char * argv[]);
-int SessionStatus(int argc, char ** argv);
-int SessionStop(int argc, char ** argv);
+int SessionStart(Arguments * args);
+int SessionStatus(Arguments * args);
+int SessionStop(Arguments * args);
 
 void SessionHelp() {
 	printf("Argument %s :\n", kArgumentSession);
@@ -36,23 +36,17 @@ void SessionHelp() {
 	printf("    - %s : stops session for current active user\n", kArgumentSessionStop);
 }
 
-int SessionExec(int argc, char ** argv) {
+int SessionExec(Arguments * args) {
 	int result = 0;
 
-	if (argc < 3) {
-		printf("Please provide a subcommand for arg '%s'\n", argv[1]);
-		result = 40;
+	if (args->subCommand == kPDSubCommandSessionStart) {
+		result = SessionStart(args);
+	} else if (args->subCommand == kPDSubCommandSessionStatus) {
+		result = SessionStatus(args);
+	} else if (args->subCommand == kPDSubCommandSessionStop) {
+		result = SessionStop(args);
 	} else {
-		if (!strcmp(argv[2], kArgumentSessionStart)) {
-			result = SessionStart(argc, argv);
-		} else if (!strcmp(argv[2], kArgumentSessionStatus)) {
-			result = SessionStatus(argc, argv);
-		} else if (!strcmp(argv[2], kArgumentSessionStop)) {
-			result = SessionStop(argc, argv);
-		} else {
-			print("Unknown argument: %s\n", argv[2]);
-			result = 41;
-		}
+		result = 41;
 	}
 
 	return result;
@@ -155,7 +149,7 @@ int SessionSaveSessionID(const char * sessionID) {
 	}
 
 	if (result == 0) {
-		if (write(fd, sessionID, strlen(sessionID)) == -1) {
+		if (write(fd, sessionID, strlen(sessionID) + 1) == -1) {
 			Error("Could not save session id");
 			result = 41;
 		}
@@ -166,7 +160,7 @@ int SessionSaveSessionID(const char * sessionID) {
 	return 0;
 }
 
-int SessionStart(int argc, char * argv[]) {
+int SessionStart(Arguments * args) {
 	int result = 0;
 	char userName[kPDCommonUsernameMaxLength];
 	char password[kPDCommonPasswordMaxLength];
@@ -232,7 +226,7 @@ int SessionStart(int argc, char * argv[]) {
             strcpy(sessionID, val->u.object.values[0].value->u.string.ptr);
 			DLog("Session id: %s", sessionID);
 
-			if (DoesStringArrayContain(argv, argc, kArgumentOtherPrint)) {
+			if (args->print) {
 				printf("%s\n", sessionID);
 			} else {
 				result = SessionSaveSessionID(sessionID);
@@ -245,7 +239,7 @@ int SessionStart(int argc, char * argv[]) {
 	return result;
 }
 
-int SessionStatus(int argc, char ** argv) {
+int SessionStatus(Arguments * args) {
 	int result = 0;
 	char sessionID[UUID_STR_LEN];
 	PDInstruction instr = {0};
@@ -253,20 +247,15 @@ int SessionStatus(int argc, char ** argv) {
 	json_value * val = NULL;
 	char username[kPDCommonUsernameMaxLength];
 
-	int i = IndexOfStringInArray(argv, argc, kArgumentOtherSessionID);
-	if (i == -1) {
+	if (strlen(args->sessionID) == 0) {
 		// If we couldn't find the session id in the arguments then we
 		// will look at the cache
 		result = SessionGetSessionID(sessionID);
 		if (result) {
 			Error("Please provide session ID");
 		}
-	} else if (i >= argc) {
-		Error("a problem occurred");
-		DLog("index is out of range");
-		result = 24;
 	} else {
-		strcpy(sessionID, argv[i + 1]);
+		strcpy(sessionID, args->sessionID);
 	}
 
 	if (result == 0) {
@@ -300,7 +289,7 @@ int SessionStatus(int argc, char ** argv) {
 		} else {
 			username[0] = '\0';
 			sessionID[0] = '\0';
-			for (i = 0; i < val->u.object.length; i++) {
+			for (int i = 0; i < val->u.object.length; i++) {
 				if (!strcmp(val->u.object.values[i].name, kPDKeyUsername)) {
 					strcpy(username, val->u.object.values[i].value->u.string.ptr);
 				} else if (!strcmp(val->u.object.values[i].name, kPDKeySessionID)) {
@@ -322,15 +311,14 @@ int SessionStatus(int argc, char ** argv) {
 	return 0;
 }
 
-int SessionStop(int argc, char ** argv) {
+int SessionStop(Arguments * args) {
 	int result = 0;
 	char sessionID[UUID_STR_LEN];
 	PDInstruction instr = {0};
 	PDResponse resp = {0};
 	json_value * val = NULL;
 
-	int i = IndexOfStringInArray(argv, argc, kArgumentOtherSessionID);
-	if (i == -1) {
+	if (strlen(args->sessionID) == 0) {
 		// If we couldn't find the session id in the arguments then we
 		// will look at the cache
 		result = SessionGetSessionID(sessionID);
@@ -338,12 +326,8 @@ int SessionStop(int argc, char ** argv) {
 			Error("Please provide session ID");
 		}
 
-	} else if (i >= argc) {
-		Error("a problem occurred");
-		DLog("index is out of range");
-		result = 23;
 	} else {
-		strcpy(sessionID, argv[i + 1]);
+		strcpy(sessionID, args->sessionID);
 	}
 
 	if (result == 0) {

@@ -6,8 +6,10 @@
 #ifndef GET_H
 #define GET_H
 
+#include "typearguments.h"
+
 /// assists in getting data from background process
-int GetExec(int argc, char ** argv);
+int GetExec(Arguments * args);
 
 void GetHelp();
 

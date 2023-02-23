@@ -13,21 +13,38 @@
 #include "meta.h"
 #include "print.h"
 
-int VersionExec(int argc, char ** argv) {
+int VersionExec(Arguments * args) {
 	PDInstruction instr = {0};
 	PDResponse resp = {0};
-	PDInstructionSetCommand(&instr, kPDCommandVersion);
-	int error = FifoWrite(&instr);
-	DLog("%d", error);
+	int error = 0;
+	char daemonVersion[32];
 
-	if (error == 0) {
-		error = FifoRead(&resp);
+	daemonVersion[0] = '\0';
+
+	if ((args->subCommand == kPDSubCommandVersionGetDaemon) || (args->subCommand == kPDSubCommandVersionGetAll)) {
+		PDInstructionSetCommand(&instr, kPDCommandVersion);
+		error = FifoWrite(&instr);
 		DLog("%d", error);
+
+		if (error == 0) {
+			error = FifoRead(&resp);
+			DLog("%d", error);
+		}
+
+		if (error == 0) {
+			strcpy(daemonVersion, resp.data);
+		}
 	}
 
 	if (error == 0) {
-		print("plantdiary version: %s\n", resp.data);
-		print("plantdiary-cli version: %s\n", kVersionString);
+		if (args->subCommand != kPDSubCommandVersionGetDaemon) {
+			print("plantdiary version: %s\n", kVersionString);
+		}
+
+		if (strlen(daemonVersion) > 0) {
+			print("plantdiaryd version: %s\n", resp.data);
+		}
+
 	}
 
 	return error;

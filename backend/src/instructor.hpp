@@ -40,7 +40,7 @@ PUBLIC:
 	/**
 	 * The purpose of each value differs per instruction
 	 */
-	virtual unsigned char subCommand();
+	virtual const char subCommand();
 
 	/**
 	 * returns the instruction data
@@ -52,7 +52,7 @@ PROTECTED:
 
 PRIVATE:
 	PDCommand _command;
-	unsigned char _subCommand;
+	char _subCommand;
 	short _length;
 	unsigned char _data[kPDInstructionDataMaxLength];
 };

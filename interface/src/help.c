@@ -11,18 +11,39 @@
 #include <stdio.h>
 #include <string.h>
 
-int HelpExec(int argc, char ** argv) {
-	if (argc == 2) {
-		printf("Please provide an argument to the %s command\n", kArgumentHelp);
+void help(Arguments * args) {
+	printf("usage: %s <commands> [ %s <session id> ]\n", args->appName, kArgumentOtherSessionID);
+	printf("\n");
+
+	printf("Commands:\n");
+	printf("  %s : Initializes the user's environment for use\n", kArgumentInit);
+	printf("  %s : Returns version for cli and gackground tool\n", kArgumentVersion);
+	printf("  %s : Provides more details on commands\n", kArgumentHelp);
+	printf("  %s : Returns data based on subcommand\n", kArgumentGet);
+	printf("  %s : Assists session status\n", kArgumentSession);
+
+	printf("\n");
+
+	printf("Other:\n");
+	printf("  %s <session id> : Session id is used to uniquely identify you as the user when using this cli\n", kArgumentOtherSessionID);
+
+	printf("\n");
+
+	printf("Plant Diary copyright %s. All rights reserved.\n", &__DATE__[7]);
+}
+
+int HelpExec(Arguments * args) {
+	if (strlen(args->helpPDCommandArg) == 0) {
+		help(args);
 	} else {
-		if (!strcmp(argv[2], kArgumentGet)) {
+		if (!strcmp(args->helpPDCommandArg, kArgumentGet)) {
 			GetHelp();
-		} else if (!strcmp(argv[2], kArgumentSession)) {
+		} else if (!strcmp(args->helpPDCommandArg, kArgumentSession)) {
 			SessionHelp();
-		} else if (!strcmp(argv[2], kArgumentInit)) {
+		} else if (!strcmp(args->helpPDCommandArg, kArgumentInit)) {
 			InitHelp();
 		} else {
-			printf("Unknown command: %s\n", argv[2]);
+			printf("Unknown command: %s\n", args->helpPDCommandArg);
 		}
 	}
 

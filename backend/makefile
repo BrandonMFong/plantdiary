@@ -39,11 +39,6 @@ T_OBJECTS = $(patsubst %, $(T_BUILD_PATH)/%.o, $(FILES))
 # Default
 all: release
 
-libraries:
-	cd ../common/external/libs && make clean
-	cd ../common/external/libs && make release
-	cd ../common/external/libs && make debug 
-
 clean:
 	rm -rfv build
 	rm -rfv bin

@@ -1,0 +1,17 @@
+[Unit]
+Description=Example Service
+After=mysql.service
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+ExecStartPre=
+ExecStart=/usr/sbin/plantdiaryd
+ExecStartPost=
+ExecStop=
+ExecReload=
+
+[Install]
+WantedBy=multi-user.target

@@ -6,8 +6,10 @@
 #ifndef INIT_H
 #define INIT_H
 
+#include "typearguments.h"
+
 void InitHelp();
-int InitExec(int argc, char * argv[]);
+int InitExec(Arguments * args);
 
 #endif // INIT_H
 

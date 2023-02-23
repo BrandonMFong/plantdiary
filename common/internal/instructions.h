@@ -9,6 +9,9 @@
 #include <linux/limits.h>
 
 typedef enum {
+	///
+	kPDCommandUnknown = -1,
+
 	/// Returns version number
 	kPDCommandVersion = 0,
 
@@ -18,19 +21,25 @@ typedef enum {
 	/// Session management
 	kPDCommandSession = 2,
 
+	kPDCommandInit = 3,
+
+	kPDCommandHelp = 4,
+
 	// max is 0xF
 } PDCommand;
 
-typedef enum {
-	kPDSubCommandGetPlantCount = 1
-} PDSubCommandGet;
+/// Sub Commands for Get
+#define kPDSubCommandGetPlantCount 0
 
-typedef enum {
-	/// If user already exists, the current session id will be returned
-	kPDSubCommandSessionStart = 0,
-	kPDSubCommandSessionStatus = 1,
-	kPDSubCommandSessionStop = 2
-} PDSubCommandSession;
+/// Sub Commands for Session
+/// If user already exists, the current session id will be returned
+#define kPDSubCommandSessionStart 0
+#define kPDSubCommandSessionStatus 1
+#define kPDSubCommandSessionStop 2
+
+/// Sub commands for version
+#define kPDSubCommandVersionGetDaemon 0
+#define kPDSubCommandVersionGetAll 1
 
 // 4096
 #define kPDInstructionDataMaxLength PIPE_BUF - sizeof(char) - sizeof(short)
@@ -60,7 +69,7 @@ static void PDInstructionSetCommand(PDInstruction * instr, PDCommand command) {
 	}
 }
 
-static void PDInstructionSetSubCommand(PDInstruction * instr, unsigned char scmd) {
+static void PDInstructionSetSubCommand(PDInstruction * instr, const char scmd) {
 	if (instr) {
 		instr->command |= (scmd & 0x0F);
 	}
@@ -74,7 +83,7 @@ static int PDInstructionGetCommand(PDInstruction * instr, PDCommand * cmd) {
 	return -1;
 }
 
-static int PDInstructionGetSubCommand(PDInstruction * instr, unsigned char * scmd) {
+static int PDInstructionGetSubCommand(PDInstruction * instr, char * scmd) {
 	if (instr && scmd) {
 		*scmd = 0x0F & instr->command;
 		return 0;

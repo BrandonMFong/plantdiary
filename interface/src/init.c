@@ -17,7 +17,7 @@ void InitHelp() {
 	printf("  Defines a '%s' directory in user's home directory\n");
 }
 
-int InitExec(int argc, char * argv[]) {
+int InitExec(Arguments * args) {
 	char path[PATH_MAX];
 	int result = InterfaceGetUserDataPath(path);
 

@@ -91,6 +91,7 @@ int InstructorSession::executeStatus() {
 
 	this->getData(data, &length);
 
+	DLog("Parsing: %s", data);
 	json_value * val = json_parse(data, length);
 	if (val->u.object.length != 1) {
 		result = 17;
@@ -100,6 +101,7 @@ int InstructorSession::executeStatus() {
 		result = 19; 
 	} else {
 		strcpy(sessionID, val->u.object.values[0].value->u.string.ptr);
+		DLog("Session id: %s", sessionID);
 
 		user = Pool::shared()->getUserForSessionID(sessionID);
 

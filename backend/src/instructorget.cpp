@@ -16,7 +16,7 @@ InstructorGet::~InstructorGet() {
 }
 
 int InstructorGet::execute() {
-	PDSubCommandGet scmd = (PDSubCommandGet) this->subCommand();
+	char scmd = (char) this->subCommand();
 	DLog("Command: get");
 	DLog("Subcommand: %d", scmd);
 	

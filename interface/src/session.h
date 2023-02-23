@@ -6,10 +6,12 @@
 #ifndef SESSION_H
 #define SESSION_H
 
+#include "typearguments.h"
+
 /**
  * Executes session command
  */
-int SessionExec(int argc, char ** argv);
+int SessionExec(Arguments * args);
 
 /// Help menu for session
 void SessionHelp();

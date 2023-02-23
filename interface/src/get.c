@@ -19,15 +19,15 @@ void GetHelp() {
 	printf("    - %s : returns the number of plants for user\n", kArgumentGetPlantCount);
 }
 
-int GetExec(int argc, char ** argv) {
+int GetExec(Arguments * args) {
 	PDInstruction i = {0};
 	PDResponse resp = {0};
 	PDInstructionSetCommand(&i, kPDCommandGet);
 
-	if (argc < 3) {
+	if (args->subCommand == -1) {
 		printf("Please provide a subcommand for %s\n", kArgumentGet);
 	} else {
-		if (!strcmp(argv[2], kArgumentGetPlantCount)) {
+		if (args->subCommand == kPDSubCommandGetPlantCount) {
 			PDInstructionSetSubCommand(&i, kPDSubCommandGetPlantCount);
 		} else {
 			printf("unknown command\n");

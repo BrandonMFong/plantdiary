@@ -4,7 +4,7 @@
 
 ### Global
 BUILD_PATH = build
-FILES = fifo version help get session init interface
+FILES = fifo version help get session init interface arguments
 CLINKS = -lm
 
 ### Release settings

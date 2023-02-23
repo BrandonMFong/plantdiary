@@ -6,9 +6,9 @@
 #ifndef VERSION_H
 #define VERSION_H
 
-#include <internal/instructions.h>
+#include "typearguments.h"
 
-int VersionExec(int argc, char ** argv);
+int VersionExec(Arguments * args);
 
 #endif // VERSION_H
 
