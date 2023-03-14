@@ -2,33 +2,35 @@
 # date: 7/29/22
 #
 
+include ../common/external/libs/makefiles/libpaths.mk
+
 ### Global
 BUILD_PATH = build
-FILES = fifo version help get session init interface arguments
+FILES = fifo version help get session init interface arguments set
 CLINKS = -lm
 
 ### Release settings
-R_CFLAGS += -I. -I../common/bin/c/ -I../common
+R_CFLAGS += -I. -I../common/bin/bflib/release/ -I../common
 R_BIN_NAME = plantdiary
 R_BUILD_PATH = $(BUILD_PATH)/release
 R_MAIN_FILE = src/main.c
-R_LIBRARIES = ../common/bin/c/clib.a ../common/bin/json.a
+R_LIBRARIES = ../common/bin/bflib/release/bflibc/libbfc.a ../common/bin/json.a
 R_OBJECTS = $(patsubst %, $(R_BUILD_PATH)/%.o, $(FILES))
 
 ### Debug settings
-D_CFLAGS = $(R_CFLAGS) -DDEBUG -g
+D_CFLAGS = -DDEBUG -g -I. -I../common/bin/bflib/debug/ -I../common
 D_BIN_NAME = $(R_BIN_NAME)-debug
 D_BUILD_PATH = $(BUILD_PATH)/debug
 D_MAIN_FILE = $(R_MAIN_FILE)
-D_LIBRARIES = ../common/bin/c/debug-clib.a ../common/bin/json.a
+D_LIBRARIES = ../common/bin/bflib/release/bflibc/libbfc.a ../common/bin/json.a
 D_OBJECTS = $(patsubst %, $(D_BUILD_PATH)/%.o, $(FILES))
 
 ### Test settings
-T_CFLAGS = $(R_CFLAGS) -g -DDEBUG -DTESTING -Isrc/ -I../common/external/libs/clib/testbench
+T_CFLAGS = $(D_CFLAGS) -DTESTING -Isrc/ -I../common/external/libs/bflibc/testbench
 T_BIN_NAME = $(R_BIN_NAME)-test
 T_BUILD_PATH = $(BUILD_PATH)/test
 T_MAIN_FILE = src/testbench/tests.c
-T_LIBRARIES = ../common/bin/c/debug-clib.a ../common/bin/json.a
+T_LIBRARIES = $(D_LIBRARIES)
 T_OBJECTS = $(patsubst %, $(T_BUILD_PATH)/%.o, $(FILES))
 
 ### Instructions

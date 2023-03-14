@@ -6,7 +6,7 @@
 #ifndef INSTRUCTORSESSION_HPP
 #define INSTRUCTORSESSION_HPP
 
-#include "accessorspecifiers.hpp"
+#include <bflibcpp/accessorspecifiers.hpp>
 #include "instructor.hpp"
 
 class InstructorSession : public Instructor {

@@ -6,7 +6,7 @@
 #ifndef PIPE_HPP
 #define PIPE_HPP
 
-#include "accessorspecifiers.hpp"
+#include <bflibcpp/accessorspecifiers.hpp>
 #include <internal/responses.h>
 
 class Pipe {

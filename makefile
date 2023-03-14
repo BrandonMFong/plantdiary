@@ -4,6 +4,8 @@
 
 .PHONY: clean release debug
 
+all: clean setup release install
+
 release: bin
 	cd common && make
 	cd backend && make release
@@ -33,4 +35,7 @@ debug: bin
 
 bin:
 	mkdir -p bin
+
+setup:
+	cd common && make setup
 

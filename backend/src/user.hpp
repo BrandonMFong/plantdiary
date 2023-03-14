@@ -7,14 +7,15 @@
 #ifndef USERS_HPP
 #define USERS_HPP
 
-#include "accessorspecifiers.hpp"
+#include <bflibcpp/accessorspecifiers.hpp>
 #include <uuid/uuid.h>
-#include "list.hpp"
+#include <bflibcpp/list.hpp>
 #include <common.h>
+#include "entity.hpp"
 
 class Plant;
 
-class User {
+class User : public Entity {
 PUBLIC:
 
 	~User();
@@ -34,7 +35,6 @@ PUBLIC:
 
 	int plantCount();
 
-	const char * uuid();
 	const char * username();
 	const char * firstname();
 	const char * lastname();
@@ -42,14 +42,13 @@ PUBLIC:
 
 PRIVATE:
 
-	User();	
+	User(const char * uuid);	
 
 	/**
 	 * Plants we own
 	 */
-	List<Plant *> _plants;
+	BF::List<Plant *> _plants;
 
-	char _uuid[UUID_STR_LEN];
 	char _firstName[kPDCommonUsernameMaxLength];
 	char _lastName[kPDCommonUsernameMaxLength];
 	char _userName[kPDCommonUsernameMaxLength];

@@ -4,5 +4,5 @@
  */
 
 #include "common.h"
-#include <clib.h>
+#include <bflibc/bflibc.h>
 

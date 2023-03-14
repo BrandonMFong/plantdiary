@@ -9,11 +9,10 @@
  */
 
 #include "database.hpp"
-#include <cpplib.hpp>
+#include <bflibcpp/bflibcpp.hpp>
 #include <stdio.h>
 #include <stdlib.h>
 #include <iostream>
-#include <cpplib.hpp>
 #include <cppconn/exception.h>
 #include <cppconn/resultset.h>
 #include <cppconn/statement.h>
@@ -21,6 +20,7 @@
 #include "logger.hpp"
 
 using namespace std;
+using namespace BF;
 
 Database * gSqlHandler = 0;
 
@@ -78,7 +78,7 @@ int Database::getUserForCredentials(const char * username, const char * hash, Us
 			res = stmt->executeQuery(q); 
 			if (!res->next()) {
 				result = 3;
-				DLog("null result");
+				BFDLog("null result");
 			} else {
 				int error = 0;
 				User * u = User::createUser(
@@ -90,7 +90,7 @@ int Database::getUserForCredentials(const char * username, const char * hash, Us
 				);
 
 				if (error) {
-					DLog("Error with creating user, %d", error);
+					BFDLog("Error with creating user, %d", error);
 				} else {
 					*user = u;
 				}
@@ -104,9 +104,11 @@ int Database::getUserForCredentials(const char * username, const char * hash, Us
 		}
 	}
 
-
-
 	return result;
+}
+
+int Database::saveEvent(const char * type, const BF::Time * eventTime, const List<Entity *> * participants) {
+	return 0;
 }
 
 /*
@@ -133,12 +135,12 @@ int Database::createUsers(List<User *> * users) {
 				);
 
 				if (error) {
-					DLog("Error with creating user, %d", error);
+					BFDLog("Error with creating user, %d", error);
 				} else {
 					error = users->add(u);
 
 					if (error) {
-						DLog("Errorrrr with adding user to list %d", error);
+						BFDLog("Errorrrr with adding user to list %d", error);
 					}
 				}
 			}
@@ -155,10 +157,10 @@ int Database::createUsers(List<User *> * users) {
 }
 */
 void Database::logException(sql::SQLException &e, const char * func) {
-	Error("Experienced an expection in sql handler");
-	Error("Function: %s", func);
-	Error("Error: %s", e.what());
-	Error("Code: %d", e.getErrorCode());
-	Error("State: %s", e.getSQLStateCStr());
+	BFErrorPrint("Experienced an expection in sql handler");
+	BFErrorPrint("Function: %s", func);
+	BFErrorPrint("Error: %s", e.what());
+	BFErrorPrint("Code: %d", e.getErrorCode());
+	BFErrorPrint("State: %s", e.getSQLStateCStr());
 }
 

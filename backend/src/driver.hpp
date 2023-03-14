@@ -6,7 +6,7 @@
 #ifndef DRIVER_HPP
 #define DRIVER_HPP
 
-#include "accessorspecifiers.hpp"
+#include <bflibcpp/accessorspecifiers.hpp>
 #include <internal/instructions.h>
 #include <pthread.h>
 
@@ -34,9 +34,18 @@ PRIVATE:
 	 */
 	int setupEnvironment();
 
+	/**
+	 * Holds a list of threads and another list of active flags that 
+	 * correspond to the thread at the index
+	 *
+	 * The mutex array should only be used on the threads and active flags
+	 * at the same index
+	 *
+	 */
 	struct {
 		pthread_t thread[kDriverThreadQueueSize];
 		bool active[kDriverThreadQueueSize];
+		pthread_mutex_t mutex[kDriverThreadQueueSize];
 	} _pTable;
 };
 

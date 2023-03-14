@@ -6,7 +6,7 @@
 #ifndef INSTRUCTORGET_HPP
 #define INSTRUCTORGET_HPP
 
-#include "accessorspecifiers.hpp"
+#include <bflibcpp/accessorspecifiers.hpp>
 #include "instructor.hpp"
 
 class InstructorGet : public Instructor {

@@ -5,7 +5,7 @@
 
 #include "instructorget.hpp"
 #include "pipe.hpp"
-#include <cpplib.hpp>
+#include <bflibcpp/bflibcpp.hpp>
 
 InstructorGet::InstructorGet(PDInstruction * instr) : Instructor(instr) {
 
@@ -17,8 +17,8 @@ InstructorGet::~InstructorGet() {
 
 int InstructorGet::execute() {
 	char scmd = (char) this->subCommand();
-	DLog("Command: get");
-	DLog("Subcommand: %d", scmd);
+	BFDLog("Command: get");
+	BFDLog("Subcommand: %d", scmd);
 	
 	PDResponse response;
 	strcpy(response.data, "8");

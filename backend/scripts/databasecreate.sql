@@ -51,26 +51,10 @@ CREATE TABLE IF NOT EXISTS users_plants_bridge(
 	end_date DATETIME
 );
 
--- plant activity
-CREATE TABLE IF NOT EXISTS plant_activity(
-	id INT AUTO_INCREMENT PRIMARY KEY,
-	plant_activity_type_id INT,
-	event_id INT
-);
-
--- plant activity types
-CREATE TABLE IF NOT EXISTS plant_activity_types(
-	id INT AUTO_INCREMENT PRIMARY KEY,
-	name VARCHAR(255),
-	start_date DATETIME,
-	end_date DATETIME
-);
-
 -- events
 CREATE TABLE IF NOT EXISTS events(
 	id INT AUTO_INCREMENT PRIMARY KEY,
 	event_type_id INT,
-	user_uuid VARCHAR(255),
 	name VARCHAR(255),
 	description VARCHAR(255),
 	event_date DATETIME
@@ -80,15 +64,23 @@ CREATE TABLE IF NOT EXISTS events(
 CREATE TABLE IF NOT EXISTS event_types(
 	id INT AUTO_INCREMENT PRIMARY KEY,
 	name VARCHAR(255),
-	description VARCHAR(255),
 	start_date DATETIME,
 	end_date DATETIME
 );
 
--- event_types
+-- event participants
 CREATE TABLE IF NOT EXISTS event_participants(
 	id INT AUTO_INCREMENT PRIMARY KEY,
 	event_id INT,
-	user_uuid VARCHAR(255)
+	event_participant_type INT,
+	entity_uuid VARCHAR(255) /* Can be both user and plant */
+);
+
+-- event particpant types
+CREATE TABLE IF NOT EXISTS event_participant_types(
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	name VARCHAR(255),
+	start_date DATETIME,
+	end_date DATETIME
 );
 

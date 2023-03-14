@@ -7,7 +7,7 @@
 #include "pipe.hpp"
 #include <stdio.h>
 #include <string.h>
-#include <cpplib.hpp>
+#include <bflibcpp/bflibcpp.hpp>
 #include <common.h>
 #include "meta.h"
 
@@ -24,6 +24,7 @@ int InstructorVersion::execute() {
 	strcpy(response.data, kVersionString);
 	response.length = strlen(response.data);
 	Pipe::shared()->writeResponse(&response);
+	BFDLog("Wrote response successfully");
 	return 0;
 }
 

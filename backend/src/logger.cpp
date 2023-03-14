@@ -4,7 +4,7 @@
  */
 
 #include "logger.hpp"
-#include "delete.hpp"
+#include <bflibcpp/delete.hpp>
 #include <unistd.h>
 #include <fcntl.h>
 #include <stdarg.h>
@@ -12,7 +12,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <math.h>
-#include <clib.h>
+#include <bflibc/bflibc.h>
 
 #define kLoggerFilePath "/tmp/plantdiary.log"
 
@@ -31,7 +31,7 @@ Logger::Logger() {
 
 #ifdef DEBUG
 	if (this->_descriptor == -1) {
-		DLog("The descriptor is %d", this->_descriptor);
+		BFDLog("The descriptor is %d", this->_descriptor);
 	}
 #endif
 }
@@ -49,7 +49,7 @@ int Logger::initialize() {
 	if ((gLogger = new Logger) == NULL) {
 		return 1;
 	} else if (pthread_create(&gLogger->_pThreadLogWriter, NULL, Logger::logWriter, gLogger) != 0) {
-		DLog("Could not laugh writer thread");
+		BFDLog("Could not laugh writer thread");
 		return 2;
 	}
 
@@ -139,7 +139,7 @@ void * Logger::logWriter(void * obj) {
 			pthread_mutex_lock(&logger->_mutexQueue);
 
 			if (write(logger->_descriptor, logger->_queue[0], strlen(logger->_queue[0]) + 1) == -1) {
-				DLog("Could not write '%s' into log file", logger->_queue[0]);
+				BFDLog("Could not write '%s' into log file", logger->_queue[0]);
 				error = 4;
 			} else {
 				char * tmp = logger->_queue[0];

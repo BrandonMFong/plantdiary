@@ -18,8 +18,7 @@ User * User::createUser(
 		if (err) *err = 1;
 		return NULL;
 	} else {
-		User * res = new User;
-		strcpy(res->_uuid, uuid);
+		User * res = new User(uuid);
 		strcpy(res->_userName, username);
 		strcpy(res->_firstName, firstName);
 
@@ -34,8 +33,7 @@ User * User::createUser(
 	}
 }
 
-User::User() {
-	this->_uuid[0] = '\0';
+User::User(const char * uuid) : Entity(uuid) {
 	this->_firstName[0] = '\0';
 	this->_lastName[0] = '\0';
 	this->_userName[0] = '\0';
@@ -52,9 +50,6 @@ int User::loadPlants() {
 
 int User::plantCount() {
 	return this->_plants.count();
-}
-const char * User::uuid() {
-	return this->_uuid;
 }
 
 const char * User::username() {

@@ -7,6 +7,7 @@
 #define ARGUMENTS_H
 
 #include "typearguments.h"
+#include <internal/setevents.h>
 
 /// commands
 #define kArgumentHelp "help"
@@ -14,20 +15,31 @@
 #define kArgumentGet "get"
 #define kArgumentSession "session"
 #define kArgumentInit "init"
+#define kArgumentSet "set"
 
 /// subcommands
+
+// Get
 #define kArgumentGetPlantCount "plantcount"
 
+// Set
+#define kArgumentSetEvent "event"
+#define kArgumentSetEventType "-type"
+#define kArgumentSetEventTypeWater kPDSetEventTypeWater
+#define kArgumentSetEventTypeRepot kPDSetEventTypeRepot
+
+// Session
 #define kArgumentSessionStart "start"
 #define kArgumentSessionStatus "status"
 #define kArgumentSessionStop "stop"
+#define kArgumentSessionIDPrint "-p"
 
+// Version
 #define kArgumentVersionDaemon "--daemon"
 #define kArgumentVersionAll "--all"
 
 /// other arguments
 #define kArgumentOtherSessionID "-s"
-#define kArgumentOtherPrint "-p"
 
 /**
  * Parses command line arguments

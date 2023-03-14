@@ -6,7 +6,7 @@
 #ifndef INSTRUCTOR_HPP
 #define INSTRUCTOR_HPP
 
-#include "accessorspecifiers.hpp"
+#include <bflibcpp/accessorspecifiers.hpp>
 #include <internal/instructions.h>
 #include <linux/limits.h>
 

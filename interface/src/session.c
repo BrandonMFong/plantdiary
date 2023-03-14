@@ -11,10 +11,9 @@
 #include <common.h>
 #include <unistd.h>
 #include <termios.h>
-#include <internal/responses.h>
 #include <internal/json.h>
 #include <internal/keys.h>
-#include <clib.h>
+#include <bflibc/bflibc.h>
 #include <external/json-parser/json.h>
 #include <uuid/uuid.h>
 #include "print.h"
@@ -116,14 +115,14 @@ int SessionGetSessionID(char * sessionID) {
 		fd = open(sessionIDPath, O_RDONLY);
 
 		if (fd == -1) {
-			Error("Could not open '%s'", sessionIDPath);
+			BFErrorPrint("Could not open '%s'", sessionIDPath);
 			result = 40;
 		}
 	}
 
 	if (result == 0) {
 		if (read(fd, sessionID, UUID_STR_LEN + 1) == -1) {
-			Error("Could not save session id");
+			BFErrorPrint("Could not save session id");
 			result = 41;
 		}
 	}
@@ -143,14 +142,14 @@ int SessionSaveSessionID(const char * sessionID) {
 		fd = open(sessionIDPath, O_CREAT|O_WRONLY|O_TRUNC, S_IRUSR | S_IWUSR);
 
 		if (fd == -1) {
-			Error("Could not open '%s'", sessionIDPath);
+			BFErrorPrint("Could not open '%s'", sessionIDPath);
 			result = 40;
 		}
 	}
 
 	if (result == 0) {
 		if (write(fd, sessionID, strlen(sessionID) + 1) == -1) {
-			Error("Could not save session id");
+			BFErrorPrint("Could not save session id");
 			result = 41;
 		}
 	}
@@ -181,7 +180,7 @@ int SessionStart(Arguments * args) {
 		printf("Enter password: ");
 		GetPassword(password);
 		unsigned long h = hash(password);
-		DLog("hash: 0x%x", h);
+		BFDLog("hash: 0x%x", h);
 
 		PDInstruction instr = {0};
 		PDInstructionSetCommand(&instr, kPDCommandSession);
@@ -196,37 +195,37 @@ int SessionStart(Arguments * args) {
 			h
 		);
 
-		DLog("json: %s", instr.data);
-		DLog("json length: %d", instr.length);
+		BFDLog("json: %s", instr.data);
+		BFDLog("json length: %d", instr.length);
 
 		result = FifoWrite(&instr);
 	}
 
 	if (result == 0) {
 		result = FifoRead(&resp);
-		DLog("%s", resp.data);
+		BFDLog("%s", resp.data);
 	}
 
 	if (result == 0) {
 		val = json_parse(resp.data, resp.length);
 		if (val == NULL) {
 			result = 8;
-			DLog("Could not parse json data");
+			BFDLog("Could not parse json data");
 		}
 	}
 
 	if (result == 0) {
 		if (val->u.object.length != 1) {
 			result = 9;
-			DLog("error with json data, length is %d", val->u.object.length);
+			BFDLog("error with json data, length is %d", val->u.object.length);
 		} else if (strcmp(val->u.object.values[0].name, kPDKeySessionID)) {
-			DLog("Incorrect key for session start: %s", val->u.object.values[0].name);
+			BFDLog("Incorrect key for session start: %s", val->u.object.values[0].name);
 			result = 10;
 		} else {
             strcpy(sessionID, val->u.object.values[0].value->u.string.ptr);
-			DLog("Session id: %s", sessionID);
+			BFDLog("Session id: %s", sessionID);
 
-			if (args->print) {
+			if (args->type.session.print) {
 				printf("%s\n", sessionID);
 			} else {
 				result = SessionSaveSessionID(sessionID);
@@ -252,7 +251,7 @@ int SessionStatus(Arguments * args) {
 		// will look at the cache
 		result = SessionGetSessionID(sessionID);
 		if (result) {
-			Error("Please provide session ID");
+			BFErrorPrint("Please provide session ID");
 		}
 	} else {
 		strcpy(sessionID, args->sessionID);
@@ -269,7 +268,7 @@ int SessionStatus(Arguments * args) {
 			sessionID
 		);
 
-		DLog("%s\n", instr.data);
+		BFDLog("%s\n", instr.data);
 		result = FifoWrite(&instr);
 	}
 
@@ -278,13 +277,13 @@ int SessionStatus(Arguments * args) {
 	}
 
 	if (result == 0) {
-		DLog("%s", resp.data);
+		BFDLog("%s", resp.data);
 		val = json_parse(resp.data, resp.length);
 		if (val == NULL) {
-			DLog("json data null");
+			BFDLog("json data null");
 			result = 26;
 		} else if (val->u.object.length != 2) {
-			DLog("length is %d", val->u.object.length);
+			BFDLog("length is %d", val->u.object.length);
 			result = 27;
 		} else {
 			username[0] = '\0';
@@ -323,7 +322,7 @@ int SessionStop(Arguments * args) {
 		// will look at the cache
 		result = SessionGetSessionID(sessionID);
 		if (result) {
-			Error("Please provide session ID");
+			BFErrorPrint("Please provide session ID");
 		}
 
 	} else {
@@ -341,7 +340,7 @@ int SessionStop(Arguments * args) {
 			sessionID
 		);
 
-		DLog("%s\n", instr.data);
+		BFDLog("%s\n", instr.data);
 		result = FifoWrite(&instr);
 	}
 
@@ -350,24 +349,24 @@ int SessionStop(Arguments * args) {
 	}
 
 	if (result == 0) {
-		DLog("response: %s", resp.data);
+		BFDLog("response: %s", resp.data);
 		val = json_parse(resp.data, resp.length);
 		if (val == NULL) {
 			result = 36;
 		} else if (val->u.object.length != 1) {
 			result = 34;
-			DLog("error with json data, length is %d", val->u.object.length);
+			BFDLog("error with json data, length is %d", val->u.object.length);
 		} else if (strcmp(val->u.object.values[0].name, kPDKeySessionStop)) {
-			DLog("Incorrect key for session start: %s", val->u.object.values[0].name);
+			BFDLog("Incorrect key for session start: %s", val->u.object.values[0].name);
 			result = 35;
 		} else {
-            DLog("Error code: %d", val->u.object.values[0].value->u.integer);
+            BFDLog("Error code: %d", val->u.object.values[0].value->u.integer);
             result = val->u.object.values[0].value->u.integer;
 
 			if (result == 0) {
 				printf("Session stopped\n");
 			} else {
-				Error("Could not stop session");
+				BFErrorPrint("Could not stop session");
 			}
 		}
 	}

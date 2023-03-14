@@ -6,6 +6,10 @@
 #include "arguments.h"
 #include <string.h>
 #include <libgen.h>
+#include <common.h>
+
+int ArgumentsParseArgumentsForSession(int, int, char **, Arguments *);
+int ArgumentsParseArgumentsForSet(int, int, char **, Arguments *);
 
 int ArgumentsParseArguments(
 	int argc,
@@ -19,10 +23,10 @@ int ArgumentsParseArguments(
 	} else {
 		// Initialize the struct
 		args->command = kPDCommandUnknown;
-		args->subCommand = -1;
+		args->subCommand = kPDSubCommandUnkown;
 		args->sessionID[0] = '\0';
-		args->print = false;
-		args->helpPDCommandArg[0] = '\0';
+		args->type.session.print = false;
+		args->type.help.helpPDCommandArg[0] = '\0';
 		args->appName[0] = '\0';
 	
 		// Default command to help
@@ -31,13 +35,18 @@ int ArgumentsParseArguments(
 		for (int i = 0; (i < argc) && (result == 0); i++) {
 			if (i == 0) {	
 				strcpy(args->appName, basename(argv[i]));
+
+			// Main commands
 			} else if (i == 1) {
+				// Help
 				if (!strcmp(argv[i], kArgumentHelp)) {
 					args->command = kPDCommandHelp;
 					if ((i + 1) < argc) {
 						i++;
-						strcpy(args->helpPDCommandArg, argv[i]);
+						strcpy(args->type.help.helpPDCommandArg, argv[i]);
 					}
+
+				// Version
 				} else if (!strcmp(argv[i], kArgumentVersion)) {
 					args->command = kPDCommandVersion;
 					if ((i + 1) < argc) {
@@ -48,8 +57,24 @@ int ArgumentsParseArguments(
 							args->subCommand = kPDSubCommandVersionGetAll;
 						}
 					}
+
+				// Get
 				} else if (!strcmp(argv[i], kArgumentGet)) {
 					args->command = kPDCommandGet;
+				
+				// Set
+				} else if (!strcmp(argv[i], kArgumentSet)) {
+					args->command = kPDCommandSet;
+					if ((i + 1) < argc) {
+						i++;
+						if (!strcmp(argv[i], kArgumentSetEvent)) {
+							args->subCommand = kPDSubCommandSetEvent;
+						}
+
+						result = ArgumentsParseArgumentsForSet(i, argc, argv, args);
+					}
+
+				// Session
 				} else if (!strcmp(argv[i], kArgumentSession)) {
 					args->command = kPDCommandSession;
 					if ((i + 1) < argc) {
@@ -61,20 +86,57 @@ int ArgumentsParseArguments(
 						} else if (!strcmp(argv[i], kArgumentSessionStop)) {
 							args->subCommand = kPDSubCommandSessionStop;
 						}
+
+						result = ArgumentsParseArgumentsForSession(i, argc, argv, args);
 					} else {
 						result = 3;
 					}
+
+				// Init
 				} else if (!strcmp(argv[i], kArgumentInit)) {
 					args->command = kPDCommandInit;
 				}
 			} else if (!strcmp(argv[i], kArgumentOtherSessionID)) {
 				strcpy(args->sessionID, argv[i + 1]);
-			} else if (!strcmp(argv[i], kArgumentOtherPrint)) {
-				args->print = true;
 			}
 		}
 	}
 
 	return result;
+}
+
+int ArgumentsParseArgumentsForSession(
+	int startIndex,
+	int argc,
+	char * argv[],
+	Arguments * args
+) {
+	int result = 0;
+	for (int i = startIndex; (i < argc) && (result == 0); i++) {
+		if (!strcmp(argv[i], kArgumentSessionIDPrint)) {
+			args->type.session.print = true;
+		}
+	}
+
+	return result;;
+}
+
+int ArgumentsParseArgumentsForSet(
+	int startIndex,
+	int argc,
+	char * argv[],
+	Arguments * args
+) {
+	int result = 0;
+	for (int i = startIndex; (i < argc) && (result == 0); i++) {
+		if (!strcmp(argv[i], kArgumentSetEventType)) {
+			if ((i + 1) < argc) {
+				i++;
+				strcpy(args->type.set.eventType, argv[i]);
+			}
+		}
+	}
+
+	return result;;
 }
 

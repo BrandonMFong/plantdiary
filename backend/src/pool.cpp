@@ -5,10 +5,12 @@
 
 #include "pool.hpp"
 #include "database.hpp"
-#include "delete.hpp"
+#include <bflibcpp/delete.hpp>
 #include "logger.hpp"
 #include "user.hpp"
 #include <string.h>
+
+using namespace BF;
 
 Pool * gPool = 0;
 
@@ -42,18 +44,18 @@ int Pool::activateUser(const char * username, const char * password, char * sess
 	int result = Database::shared()->getUserForCredentials(username, password, &user);
 	if (user) {
 		if (result == 0) {
-			DLog("%x", user);
-			DLog("error %d", result);
-			DLog("Username: %s", user->username());
-			DLog("uuid: %s", user->uuid());
-			DLog("first: %s", user->firstname());
-			DLog("last: %s", user->lastname());
-			DLog("session id: %s", user->sessionID());
+			BFDLog("%x", user);
+			BFDLog("error %d", result);
+			BFDLog("Username: %s", user->username());
+			BFDLog("uuid: %s", user->uuid());
+			BFDLog("first: %s", user->firstname());
+			BFDLog("last: %s", user->lastname());
+			BFDLog("session id: %s", user->sessionID());
 
 			if (!this->containsUserWithUUID(user->uuid())) {
 				result = this->_users.add(user);
 			} else {
-				DLog("user already is activited");
+				BFDLog("user already is activited");
 				User * tmp = user;
 				user = this->getUserForUUID(tmp->uuid());
 				Delete(tmp);

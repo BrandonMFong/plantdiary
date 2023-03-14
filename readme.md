@@ -1,6 +1,6 @@
 # Plant Diary
 
-An central space where you can track your planting needs
+An central space where you can track your planting needs.  Still in development.
 
 ## Software Achitecture 
 

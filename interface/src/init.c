@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include "interface.h"
 #include "print.h"
-#include <clib.h>
+#include <bflibc/bflibc.h>
 #include <stdlib.h>
 #include <sys/stat.h>
 
@@ -22,11 +22,11 @@ int InitExec(Arguments * args) {
 	int result = InterfaceGetUserDataPath(path);
 
 	if (result == 0) {
-		if (IsDirectory(path)) {
+		if (BFFileSystemPathIsDirectory(path)) {
 			print("Already initialized\n");
 		} else {
 			if (mkdir(path, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH)) {
-				Error("Could not make path: %s", path);
+				BFErrorPrint("Could not make path: %s", path);
 				result = 30;
 			}
 

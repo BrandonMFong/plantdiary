@@ -6,8 +6,7 @@
 
 #include "plant.hpp"
 
-Plant::Plant() {
-	this->_uuid[0] = '\0';
+Plant::Plant() : Entity(0) {
 	this->_name[0] = '\0';
 }
 

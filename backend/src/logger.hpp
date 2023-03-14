@@ -6,9 +6,9 @@
 #ifndef LOGGER_HPP
 #define LOGGER_HPP
 
-#include "accessorspecifiers.hpp"
+#include <bflibcpp/accessorspecifiers.hpp>
 #include <pthread.h>
-#include <log.h>
+#include <bflibc/log.h>
 
 #ifndef DEBUG
 #define PDLog(...) Logger::shared()->writeString(__VA_ARGS__)

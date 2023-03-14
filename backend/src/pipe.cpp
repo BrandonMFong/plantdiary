@@ -5,7 +5,7 @@
 
 #include "pipe.hpp"
 #include <common.h>
-#include <cpplib.hpp>
+#include <bflibcpp/bflibcpp.hpp>
 #include <stdio.h>
 #include <string.h>
 #include <fcntl.h>
@@ -27,7 +27,7 @@ void * PipeReader(void *) {
 
     // FIFO file path
     const char * myfifo = kPDCommonFifoFilePathInbound;
-	DLog("Reading %s", myfifo);
+	BFDLog("Reading %s", myfifo);
 
     // Creating the named file(FIFO)
     // mkfifo(<pathname>,<permission>)
@@ -89,12 +89,12 @@ int Pipe::writeResponse(PDResponse * response) {
 	}
 
 	if (result == 0) {
-		DLog("Writing response");
+		BFDLog("Writing response");
 		if (write(f, response, sizeof(PDResponse)) == -1) {
 			result = 4;
 		}
 
-		DLog("Finished writing response");
+		BFDLog("Finished writing response");
 	}
 
 	if (f) close(f);

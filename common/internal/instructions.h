@@ -13,23 +13,31 @@ typedef enum {
 	kPDCommandUnknown = -1,
 
 	/// Returns version number
-	kPDCommandVersion = 0,
+	kPDCommandVersion = 0x0,
 
 	/// Fetch command
-	kPDCommandGet = 1,
+	kPDCommandGet = 0x1,
 
 	/// Session management
-	kPDCommandSession = 2,
+	kPDCommandSession = 0x2,
 
-	kPDCommandInit = 3,
+	kPDCommandInit = 0x3,
 
-	kPDCommandHelp = 4,
+	kPDCommandHelp = 0x4,
+
+	kPDCommandSet = 0x5,
 
 	// max is 0xF
 } PDCommand;
 
+/// NOTICE: sub commands must start at 0.  -1 is unknown value
+#define kPDSubCommandUnkown -1
+
 /// Sub Commands for Get
 #define kPDSubCommandGetPlantCount 0
+
+/// Sub Commands for Set
+#define kPDSubCommandSetEvent 0
 
 /// Sub Commands for Session
 /// If user already exists, the current session id will be returned

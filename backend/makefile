@@ -2,36 +2,35 @@
 # date: 7/29/22
 #
 
+include ../common/external/libs/makefiles/libpaths.mk
+
 ### Global
 BUILD_PATH = build
-FILES = plant database user pool pipe driver logger instructor instructorversion instructorget instructorsession
+FILES = plant database user pool pipe driver logger instructor instructorversion instructorget instructorsession instructorset entity
 CXXLINKS = -lmysqlcppconn -lpthread -luuid
 
 ### Release settings
-R_CXXFLAGS += -I. -I../common/bin/c/ -I../common/bin/cpp/ -I/usr/local/include/cppconn -I../common
-R_CFLAGS += -I. -I../common/external/libs/bin/c/
+R_CXXFLAGS += -I. -I../common/bin/bflib/release/ -I/usr/local/include/cppconn -I../common
 R_BIN_NAME = plantdiaryd
 R_BUILD_PATH = $(BUILD_PATH)/release
 R_MAIN_FILE = src/main.cpp
-R_LIBRARIES = ../common/bin/cpp/cpplib.a ../common/bin/json.a
+R_LIBRARIES = ../common/bin/bflib/release/bflibcpp/libbfcpp.a ../common/bin/json.a
 R_OBJECTS = $(patsubst %, $(R_BUILD_PATH)/%.o, $(FILES))
 
 ### Debug settings
-D_CXXFLAGS = $(R_CXXFLAGS) -DDEBUG -g
-D_CFLAGS = $(R_CFLAGS) -DDEBUG -g
+D_CXXFLAGS = -DDEBUG -g -I. -I../common/bin/bflib/debug/ -I/usr/local/include/cppconn -I../common
 D_BIN_NAME = $(R_BIN_NAME)-debug
 D_BUILD_PATH = $(BUILD_PATH)/debug
 D_MAIN_FILE = $(R_MAIN_FILE)
-D_LIBRARIES = ../common/bin/cpp/debug-cpplib.a ../common/bin/json.a
+D_LIBRARIES = ../common/bin/bflib/debug/bflibcpp/libbfcpp-debug.a ../common/bin/json.a
 D_OBJECTS = $(patsubst %, $(D_BUILD_PATH)/%.o, $(FILES))
 
 ### Test settings
-T_CXXFLAGS = $(R_CXXFLAGS) -g -DDEBUG -DTESTING -Isrc/ -I../common/external/libs/cpplib/testbench/
-T_CFLAGS = $(R_CFLAGS) -g -DDEBUG -DTESTING -Isrc/ -I../common/external/libs/clib/testbench
+T_CXXFLAGS = $(D_CXXFLAGS) -DTESTING -I../common/external/libs/cpplib/testbench/
 T_BIN_NAME = $(R_BIN_NAME)-test
 T_BUILD_PATH = $(BUILD_PATH)/test
 T_MAIN_FILE = src/testbench/tests.cpp
-T_LIBRARIES = ../common/bin/cpp/debug-cpplib.a ../common/bin/json.a
+T_LIBRARIES = $(D_LIBRARIES)
 T_OBJECTS = $(patsubst %, $(T_BUILD_PATH)/%.o, $(FILES))
 
 ### Instructions

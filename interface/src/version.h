@@ -8,6 +8,7 @@
 
 #include "typearguments.h"
 
+void VersionHelp();
 int VersionExec(Arguments * args);
 
 #endif // VERSION_H

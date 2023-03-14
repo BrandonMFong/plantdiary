@@ -9,6 +9,7 @@
 #include <internal/instructions.h>
 #include <uuid/uuid.h>
 #include <stdbool.h>
+#include <common.h>
 
 /**
  * This will represent the command line arguments
@@ -20,13 +21,21 @@ typedef struct {
 	/// Initialized to -1
 	char subCommand;
 	char sessionID[UUID_STR_LEN + 1];
-	bool print;
 
-	/// If user is asking for help
-	bool help;
+	union Type {
+		struct {
+			bool print;
+		} session;
 
-	/// The command that the user wants to get help with
-	char helpPDCommandArg[2 << 5];
+		struct {
+			/// The command that the user wants to get help with
+			char helpPDCommandArg[2 << 5];
+		} help;
+
+		struct {
+			char eventType[kPDCommonEventTypeStringLength];
+		} set;
+	} type;
 } Arguments;
 
 #endif // TYPEARGUMENTS_H

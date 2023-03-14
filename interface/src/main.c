@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include <common.h>
 #include <libgen.h>
-#include <clib.h>
+#include <bflibc/bflibc.h>
 #include <string.h>
 #include "interface.h"
 
@@ -14,6 +14,7 @@
 #include "arguments.h"
 #include "version.h"
 #include "get.h"
+#include "set.h"
 #include "help.h"
 #include "session.h"
 #include "init.h"
@@ -37,6 +38,9 @@ int main(int argc, char ** argv) {
 			break;
 		case kPDCommandGet:
 			error = GetExec(&args);
+			break;
+		case kPDCommandSet:
+			error = SetExec(&args);
 			break;
 		case kPDCommandSession:
 			error = SessionExec(&args);

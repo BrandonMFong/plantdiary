@@ -9,9 +9,17 @@
 #include <stdio.h>
 #include <common.h>
 #include <string.h>
-#include <clib.h>
+#include <bflibc/bflibc.h>
 #include "meta.h"
 #include "print.h"
+#include "arguments.h"
+
+void VersionHelp() {
+	printf("Argument : %s\n", kArgumentVersion);
+	printf("  sub commands\n");
+	printf("    - %s : returns the version for plantdiaryd\n", kArgumentVersionDaemon);
+	printf("    - %s : returns version for both this app and plantdiaryd\n", kArgumentVersionAll);
+}
 
 int VersionExec(Arguments * args) {
 	PDInstruction instr = {0};
@@ -24,11 +32,11 @@ int VersionExec(Arguments * args) {
 	if ((args->subCommand == kPDSubCommandVersionGetDaemon) || (args->subCommand == kPDSubCommandVersionGetAll)) {
 		PDInstructionSetCommand(&instr, kPDCommandVersion);
 		error = FifoWrite(&instr);
-		DLog("%d", error);
+		BFDLog("%d", error);
 
 		if (error == 0) {
 			error = FifoRead(&resp);
-			DLog("%d", error);
+			BFDLog("%d", error);
 		}
 
 		if (error == 0) {

@@ -6,7 +6,7 @@
 #ifndef INSTRUCTORVERSION_HPP
 #define INSTRUCTORVERSION_HPP
 
-#include "accessorspecifiers.hpp"
+#include <bflibcpp/accessorspecifiers.hpp>
 #include "instructor.hpp"
 
 class InstructorVersion : public Instructor {

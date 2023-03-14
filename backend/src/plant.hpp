@@ -7,12 +7,13 @@
 #ifndef PLANT_HPP
 #define PLANT_HPP
 
-#include "accessorspecifiers.hpp"
+#include <bflibcpp/accessorspecifiers.hpp>
 #include <uuid/uuid.h>
+#include "entity.hpp"
 
 #define kPlantNameLength 2 << 7
 
-class Plant {
+class Plant : public Entity {
 PUBLIC:
 
 PRIVATE:
@@ -20,7 +21,6 @@ PRIVATE:
 	~Plant();
 
 	char _name[kPlantNameLength];
-	char _uuid[UUID_STR_LEN];
 };
 
 #endif // PLANT_HPP

@@ -7,7 +7,7 @@
 #include "pool.hpp"
 #include "pipe.hpp"
 #include "user.hpp"
-#include <log.h>
+#include <bflibc/log.h>
 #include <common.h>
 #include <stdio.h>
 #include <external/json-parser/json.h>
@@ -44,8 +44,8 @@ int InstructorSession::executeStart() {
 	PDResponse resp;
 
 	this->getData(data, &length);
-	DLog("command: session");
-	DLog("json: %s", data);
+	BFDLog("command: session");
+	BFDLog("json: %s", data);
 
 	json_value * val = json_parse(data, length);
 
@@ -63,8 +63,8 @@ int InstructorSession::executeStart() {
 			}
 		}
 
-		DLog("username: %s\n", username);
-		DLog("password: %s\n", passwd);
+		BFDLog("username: %s\n", username);
+		BFDLog("password: %s\n", passwd);
 
 		result = Pool::shared()->activateUser(username, passwd, sessionID);
 	}
@@ -87,21 +87,21 @@ int InstructorSession::executeStatus() {
 	PDResponse resp;
 	User * user = NULL;
 	
-	DLog("command: session status");
+	BFDLog("command: session status");
 
 	this->getData(data, &length);
 
-	DLog("Parsing: %s", data);
+	BFDLog("Parsing: %s", data);
 	json_value * val = json_parse(data, length);
 	if (val->u.object.length != 1) {
 		result = 17;
-		DLog("error with json data, length is %d", val->u.object.length);
+		BFDLog("error with json data, length is %d", val->u.object.length);
 	} else if (strcmp(val->u.object.values[0].name, kPDKeySessionID)) {
-		DLog("Incorrect key for session start: %s", val->u.object.values[0].name);
+		BFDLog("Incorrect key for session start: %s", val->u.object.values[0].name);
 		result = 19; 
 	} else {
 		strcpy(sessionID, val->u.object.values[0].value->u.string.ptr);
-		DLog("Session id: %s", sessionID);
+		BFDLog("Session id: %s", sessionID);
 
 		user = Pool::shared()->getUserForSessionID(sessionID);
 
@@ -132,16 +132,16 @@ int InstructorSession::executeStop() {
 	char sessionID[UUID_STR_LEN];
 	PDResponse resp;
 	
-	DLog("command: session stop");
+	BFDLog("command: session stop");
 
 	this->getData(data, &length);
 
 	json_value * val = json_parse(data, length);
 	if (val->u.object.length != 1) {
 		result = 31;
-		DLog("error with json data, length is %d", val->u.object.length);
+		BFDLog("error with json data, length is %d", val->u.object.length);
 	} else if (strcmp(val->u.object.values[0].name, kPDKeySessionID)) {
-		DLog("Incorrect key for session start: %s", val->u.object.values[0].name);
+		BFDLog("Incorrect key for session start: %s", val->u.object.values[0].name);
 		result = 32; 
 	} else {
 		strcpy(sessionID, val->u.object.values[0].value->u.string.ptr);
@@ -151,12 +151,12 @@ int InstructorSession::executeStop() {
 
 #ifdef DEBUG
 	if (result == 0) {
-		DLog("Deactivated session: %s", sessionID);
-		DLog("Remaining user count: %d", Pool::shared()->activeUserCount());
+		BFDLog("Deactivated session: %s", sessionID);
+		BFDLog("Remaining user count: %d", Pool::shared()->activeUserCount());
 	}
 #endif
 
-	DLog("error code to send out: %d", result);
+	BFDLog("error code to send out: %d", result);
 	// Will always send something
 	resp.length = snprintf(
 		resp.data,
@@ -167,7 +167,7 @@ int InstructorSession::executeStop() {
 	);
 
 	if (Pipe::shared()->writeResponse(&resp) != 0) {
-		DLog("Error sending response");
+		BFDLog("Error sending response");
 	}
 
 	json_value_free(val);

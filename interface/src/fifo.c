@@ -11,13 +11,13 @@
 #include <sys/types.h>
 #include <unistd.h>
 #include <common.h>
-#include <clib.h>
+#include <bflibc/bflibc.h>
 
 int FifoWrite(PDInstruction * instr) {
 	int result = 0;
     int fd = 0;
     const char * myfifo = kPDCommonFifoFilePathInbound;
-	DLog("writing to %s", kPDCommonFifoFilePathInbound);
+	BFDLog("writing to %s", kPDCommonFifoFilePathInbound);
 
 #ifndef TESTING
 
@@ -28,7 +28,7 @@ int FifoWrite(PDInstruction * instr) {
 	// Open FIFO for write only
 	fd = open(myfifo, O_WRONLY);
 	if (fd == -1) {
-		DLog("Error opening");
+		BFDLog("Error opening");
 		result = 31;
 	}
 
@@ -36,7 +36,7 @@ int FifoWrite(PDInstruction * instr) {
 	// and close it
 	if (result == 0) {	
 		if (write(fd, instr, sizeof(PDInstruction)) == -1) {
-			DLog("Error writing");
+			BFDLog("Error writing");
 			result = 32;
 		}
 	}
@@ -59,14 +59,14 @@ int FifoRead(PDResponse * response) {
 		if (result == 0) {
 			d = open(kPDCommonFifoFilePathOutbound, O_RDONLY);
 			if (d == -1) {
-				DLog("Error opening");
+				BFDLog("Error opening");
 				result = 35;
 			}
 		}
 
 		if (result == 0) {
 			if (read(d, response, sizeof(PDResponse)) == -1) {
-				DLog("Error reading");
+				BFDLog("Error reading");
 				result = 36;
 			}
 		}

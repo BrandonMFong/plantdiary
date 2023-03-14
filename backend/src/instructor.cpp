@@ -6,10 +6,11 @@
 #include "instructor.hpp"
 #include "instructorversion.hpp"
 #include "instructorget.hpp"
+#include "instructorset.hpp"
 #include "instructorsession.hpp"
 #include <stdlib.h>
 #include <string.h>
-#include <cpplib.hpp>
+#include <bflibcpp/bflibcpp.hpp>
 
 Instructor * Instructor::create(PDInstruction * instr) {
 	Instructor * result = NULL;
@@ -26,6 +27,9 @@ Instructor * Instructor::create(PDInstruction * instr) {
 				case kPDCommandGet:
 					result = new InstructorGet(instr);
 					break;
+				case kPDCommandSet:
+					result = new InstructorSet(instr);
+					break;
 				case kPDCommandSession:
 					result = new InstructorSession(instr);
 					break;
@@ -38,15 +42,15 @@ Instructor * Instructor::create(PDInstruction * instr) {
 
 Instructor::Instructor(PDInstruction * instr) {
 	if (PDInstructionGetCommand(instr, &this->_command) != 0) {
-		DLog("Error getting command");
+		BFDLog("Error getting command");
 	}
 
 	if (PDInstructionGetSubCommand(instr, &this->_subCommand) != 0) {
-		DLog("Error getting subcommand");
+		BFDLog("Error getting subcommand");
 	}
 
 	if (memcpy(this->_data, instr->data, instr->length) == NULL) {
-		DLog("couldn't copy data from instruction");
+		BFDLog("couldn't copy data from instruction");
 	} else {
 		this->_length = instr->length;
 	}

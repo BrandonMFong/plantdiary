@@ -7,10 +7,12 @@
 #ifndef SQLHANDLER_HPP
 #define SQLHANDLER_HPP
 
-#include "accessorspecifiers.hpp"
+#include <bflibcpp/accessorspecifiers.hpp>
 #include "mysql_connection.h"
 #include <cppconn/driver.h>
-#include "list.hpp"
+#include <bflibcpp/list.hpp>
+#include <bflibcpp/time.hpp>
+#include "entity.hpp"
 
 #define DATABASE_UNDER_TEST 1
 
@@ -36,6 +38,11 @@ PUBLIC:
 	static Database * shared();
 
 	int getUserForCredentials(const char * username, const char * hash, User ** user);
+
+	/**
+	 * Inserts an entry to the events table
+	 */
+	int saveEvent(const char * type, const BF::Time * eventTime, const BF::List<Entity *> * participants);
 
 PRIVATE:
 	Database();

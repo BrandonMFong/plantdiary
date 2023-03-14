@@ -8,8 +8,8 @@
 #ifndef POOL_HPP
 #define POOL_HPP
 
-#include "list.hpp"
-#include "accessorspecifiers.hpp"
+#include <bflibcpp/list.hpp>
+#include <bflibcpp/accessorspecifiers.hpp>
 
 class User;
 
@@ -59,7 +59,7 @@ PRIVATE:
 	 */
 	bool containsUserWithUUID(const char * uuid);
 
-	List<User *> _users;
+	BF::List<User *> _users;
 };
 
 #endif // POOL_HPP
