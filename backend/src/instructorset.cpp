@@ -7,6 +7,8 @@
 #include <bflibcpp/bflibcpp.hpp>
 #include <common.h>
 #include <external/json-parser/json.h>
+#include "database.hpp"
+#include "pool.hpp"
 
 using namespace BF;
 
@@ -34,6 +36,7 @@ int InstructorSet::executeEvent() {
 	char data[kPDInstructionDataMaxLength];
 	short length = 0;
 	Time * tm = NULL;
+	List<Entity *> participants;
 
 	BFDLog("An event will be logged");
 
@@ -59,6 +62,17 @@ int InstructorSet::executeEvent() {
 
 		BFDLog("event type: %s", eventType);
 		BFDLog("epoch value: %ld", tm->epoch());
+	}
+
+	if (result == 0) {
+		User * user = Pool::shared()->getUserForSessionID(NULL);
+		if (user == NULL) {
+			result =  56;
+		}
+	}
+
+	if (result == 0) {
+		result = Database::shared()->saveEvent(eventType, tm, &participants);
 	}
 
 	Delete(tm);
