@@ -8,8 +8,9 @@
 #ifndef SETEVENTS_H
 #define SETEVENTS_H
 
-#define kPDSetEventTypeWater "water"
-#define kPDSetEventTypeRepot "repot"
+#define kPDSetEventTypePlantWater "plantwater"
+#define kPDSetEventTypePlantRepot "plantrepot"
+#define kPDSetEventTypeUserLogin "userlogin"
 
 #endif // SETEVENTS_H
 

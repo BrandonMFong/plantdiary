@@ -91,7 +91,8 @@ INSERT INTO event_participant_types (name, start_date) values
 ;
 
 INSERT INTO event_types (name, start_date) values 
-("water", NOW()),
-("repot", NOW())
+("userlogin", NOW()),
+("plantwater", NOW()),
+("plantrepot", NOW())
 ;
 
