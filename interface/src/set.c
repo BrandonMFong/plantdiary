@@ -10,7 +10,9 @@
 #include "arguments.h"
 #include <common.h>
 #include "fifo.h"
+#include "session.h"
 #include <time.h>
+#include <uuid/uuid.h>
 
 int SetEvent(Arguments * args, PDInstruction * i);
 
@@ -41,8 +43,21 @@ int SetEvent(Arguments * args, PDInstruction * instr) {
 	int result = 0;
 	char * eventTypes[2] = {kArgumentSetEventTypeWater, kArgumentSetEventTypeRepot};
 	PDResponse resp = {0};
+	char sessionID[UUID_STR_LEN];
 	
 	PDInstructionSetSubCommand(instr, kPDSubCommandSetEvent);
+	
+	if (strlen(args->sessionID) == 0) {
+		// If we couldn't find the session id in the arguments then we
+		// will look at the cache
+		result = SessionGetSessionID(sessionID);
+		if (result) {
+			BFErrorPrint("Please provide session ID");
+			result = 52;
+		}
+	} else {
+		strcpy(sessionID, args->sessionID);
+	}
 
 	if (!BFArrayStringContainsString(eventTypes, sizeof(eventTypes) / sizeof(eventTypes[0]), args->type.set.eventType)) {
 		BFDLog("Unknown event: %s", args->type.set.eventType);
@@ -54,6 +69,8 @@ int SetEvent(Arguments * args, PDInstruction * instr) {
 			instr->data,
 			kPDInstructionDataMaxLength,
 			kPDJsonSetEvent,
+			kPDKeySessionID,
+			sessionID,
 			kPDKeySetEventType,
 			args->type.set.eventType,
 			kPDKeySetEventCurrentTime,

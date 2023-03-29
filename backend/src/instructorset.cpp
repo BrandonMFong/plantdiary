@@ -9,6 +9,7 @@
 #include <external/json-parser/json.h>
 #include "database.hpp"
 #include "pool.hpp"
+#include <uuid/uuid.h>
 
 using namespace BF;
 
@@ -33,6 +34,7 @@ int InstructorSet::execute() {
 
 int InstructorSet::executeEvent() {
 	char eventType[kPDCommonEventTypeStringLength];
+	char sessionID[UUID_STR_LEN];
 	char data[kPDInstructionDataMaxLength];
 	short length = 0;
 	Time * tm = NULL;
@@ -49,17 +51,20 @@ int InstructorSet::executeEvent() {
 	int result = 0;
 	if (val == NULL) {
 		result = 54;
-	} else if (l != 2) {
+	} else if (l != 3) {
 		result = 55;
 	} else {
 		for (int i = 0; i < l; i++) {
 			if (!strcmp(val->u.object.values[i].name, kPDKeySetEventType)) {
 				strcpy(eventType, val->u.object.values[i].value->u.string.ptr);
+			} else if (!strcmp(val->u.object.values[i].name, kPDKeySessionID)) {
+				strcpy(sessionID, val->u.object.values[i].value->u.string.ptr);
 			} else if (!strcmp(val->u.object.values[i].name, kPDKeySetEventCurrentTime)) {
 				tm = new Time(val->u.object.values[i].value->u.integer);
 			}
 		}
 
+		BFDLog("Session ID: %s", sessionID);
 		BFDLog("event type: %s", eventType);
 		BFDLog("epoch value: %ld", tm->epoch());
 	}

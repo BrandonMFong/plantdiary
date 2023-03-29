@@ -252,6 +252,7 @@ int SessionStatus(Arguments * args) {
 		result = SessionGetSessionID(sessionID);
 		if (result) {
 			BFErrorPrint("Please provide session ID");
+			result = 39;
 		}
 	} else {
 		strcpy(sessionID, args->sessionID);
