@@ -74,6 +74,7 @@ int InstructorSet::executeEvent() {
 		user = Pool::shared()->getUserForSessionID(sessionID);
 		if (user == NULL) {
 			result =  56;
+			BFDLog("Could not find user for session id: %s", sessionID);
 		}
 	}
 

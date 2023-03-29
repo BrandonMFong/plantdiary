@@ -1,6 +1,6 @@
 USE plantdiary_test
 
-source databasecreate_prod.sql
+source databasecreate.sql
 
 -- Insert test data
 

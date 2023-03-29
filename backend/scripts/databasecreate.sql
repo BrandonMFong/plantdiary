@@ -84,3 +84,14 @@ CREATE TABLE IF NOT EXISTS event_participant_types(
 	end_date DATETIME
 );
 
+INSERT INTO event_participant_types (name, start_date) values 
+("host", NOW()),
+("members", NOW()),
+("plants", NOW())
+;
+
+INSERT INTO event_types (name, start_date) values 
+("water", NOW()),
+("repot", NOW())
+;
+
