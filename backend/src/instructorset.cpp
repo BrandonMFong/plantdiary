@@ -39,6 +39,7 @@ int InstructorSet::executeEvent() {
 	short length = 0;
 	Time * tm = NULL;
 	List<Entity *> participants;
+	User * user = NULL;
 
 	BFDLog("An event will be logged");
 
@@ -70,13 +71,14 @@ int InstructorSet::executeEvent() {
 	}
 
 	if (result == 0) {
-		User * user = Pool::shared()->getUserForSessionID(NULL);
+		user = Pool::shared()->getUserForSessionID(sessionID);
 		if (user == NULL) {
 			result =  56;
 		}
 	}
 
 	if (result == 0) {
+		//participants.add(user); // we need to make sure list does not release memory
 		result = Database::shared()->saveEvent(eventType, tm, &participants);
 	}
 
