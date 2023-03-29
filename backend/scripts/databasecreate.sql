@@ -57,7 +57,9 @@ CREATE TABLE IF NOT EXISTS events(
 	event_type_id INT,
 	name VARCHAR(255),
 	description VARCHAR(255),
-	event_date DATETIME
+	event_date DATETIME,
+	start_date DATETIME,
+	end_date DATETIME
 );
 
 -- event types
