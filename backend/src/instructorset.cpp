@@ -79,7 +79,7 @@ int InstructorSet::executeEvent() {
 	}
 
 	if (result == 0) {
-		//participants.add(user); // we need to make sure list does not release memory
+		participants.add((Entity *) user);
 		result = Database::shared()->saveEvent(eventType, tm, &participants);
 	}
 

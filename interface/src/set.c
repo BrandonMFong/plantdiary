@@ -59,9 +59,11 @@ int SetEvent(Arguments * args, PDInstruction * instr) {
 		strcpy(sessionID, args->sessionID);
 	}
 
-	if (!BFArrayStringContainsString(eventTypes, sizeof(eventTypes) / sizeof(eventTypes[0]), args->type.set.eventType)) {
-		BFDLog("Unknown event: %s", args->type.set.eventType);
-		result = 51;
+	if (result == 0) {
+		if (!BFArrayStringContainsString(eventTypes, sizeof(eventTypes) / sizeof(eventTypes[0]), args->type.set.eventType)) {
+			BFDLog("Unknown event: %s", args->type.set.eventType);
+			result = 51;
+		}
 	}
 
 	if (result == 0) {

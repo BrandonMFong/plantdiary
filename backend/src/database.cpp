@@ -16,6 +16,7 @@
 #include <cppconn/exception.h>
 #include <cppconn/resultset.h>
 #include <cppconn/statement.h>
+#include <cppconn/prepared_statement.h>
 #include "user.hpp"
 #include "logger.hpp"
 
@@ -108,7 +109,32 @@ int Database::getUserForCredentials(const char * username, const char * hash, Us
 }
 
 int Database::saveEvent(const char * type, const BF::Time * eventTime, const List<Entity *> * participants) {
-	return 0;
+	int result = 0;
+	char q[512];
+	snprintf(q, 512, "insert into events (event_type_id, name, description, event_date) values ((select id from event_types where name = '%s'), 'tmp', 'tmp', "
+			"STR_TO_DATE('18/02/2019 11:15:45','%%d/%%m/%%Y %%H:%%i:%%s'))", type);
+
+	BFDLog("Query: %s", q);
+
+	if (!type || !eventTime || !participants) {
+		result = 2;
+	} else {
+		try {
+			sql::ResultSet * res = 0;
+			sql::PreparedStatement * pstmt = NULL;
+
+			pstmt = this->_connection->prepareStatement(q);
+			res = pstmt->executeQuery(); 
+
+			Delete(res);
+			Delete(pstmt);
+		} catch (sql::SQLException &e) {
+			result = 1;
+			this->logException(e, __FUNCTION__);
+		}
+	}
+
+	return result;
 }
 
 /*
