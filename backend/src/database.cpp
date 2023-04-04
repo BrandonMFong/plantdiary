@@ -113,10 +113,12 @@ int Database::saveEvent(const char * type, const BF::Time * eventTime, const Lis
 	size_t size = 2 << 8;
 	char q[size];
 	
-	snprintf(q, size, "insert into events (event_type_id, name, description, event_date) "
-			"values ((select id from event_types where name = '%s'), 'tmp', 'tmp', "
-			"STR_TO_DATE('%02d/%02d/%02d %02d:%02d:%02d','%%d/%%m/%%Y %%H:%%i:%%s'))", 
-			type, eventTime->day(), eventTime->month(), eventTime->year(), eventTime->hour(), 
+	snprintf(q, size, "insert into events (event_type_id, name, description, event_date, start_date) "
+			"values ((select id from event_types where name = '%s'), 'Event: %s', "
+			"'Type: %s, date: %02d/%02d/%02d', "
+			"STR_TO_DATE('%02d/%02d/%02d %02d:%02d:%02d','%%d/%%m/%%Y %%H:%%i:%%s'), NOW())", 
+			type, type, type, eventTime->day(), eventTime->month(), eventTime->year(),
+			eventTime->day(), eventTime->month(), eventTime->year(), eventTime->hour(), 
 			eventTime->minute(), eventTime->second());
 
 	BFDLog("Query: %s", q);
