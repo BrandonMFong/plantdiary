@@ -132,7 +132,9 @@ int ArgumentsParseArgumentsForSet(
 		if (!strcmp(argv[i], kArgumentSetEventType)) {
 			if ((i + 1) < argc) {
 				i++;
-				strcpy(args->type.set.eventType, argv[i]);
+				if (!strcmp(argv[i], kArgumentSetEventTypeWater)) {
+					strcpy(args->type.set.eventType, kPDSetEventTypePlantWater);
+				}
 			}
 		}
 	}

@@ -110,9 +110,14 @@ int Database::getUserForCredentials(const char * username, const char * hash, Us
 
 int Database::saveEvent(const char * type, const BF::Time * eventTime, const List<Entity *> * participants) {
 	int result = 0;
-	char q[512];
-	snprintf(q, 512, "insert into events (event_type_id, name, description, event_date) values ((select id from event_types where name = '%s'), 'tmp', 'tmp', "
-			"STR_TO_DATE('18/02/2019 11:15:45','%%d/%%m/%%Y %%H:%%i:%%s'))", type);
+	size_t size = 2 << 8;
+	char q[size];
+	
+	snprintf(q, size, "insert into events (event_type_id, name, description, event_date) "
+			"values ((select id from event_types where name = '%s'), 'tmp', 'tmp', "
+			"STR_TO_DATE('%02d/%02d/%02d %02d:%02d:%02d','%%d/%%m/%%Y %%H:%%i:%%s'))", 
+			type, eventTime->day(), eventTime->month(), eventTime->year(), eventTime->hour(), 
+			eventTime->minute(), eventTime->second());
 
 	BFDLog("Query: %s", q);
 

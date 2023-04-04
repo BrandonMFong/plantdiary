@@ -41,7 +41,7 @@ int SetExec(Arguments * args) {
 
 int SetEvent(Arguments * args, PDInstruction * instr) {
 	int result = 0;
-	char * eventTypes[2] = {kArgumentSetEventTypeWater, kArgumentSetEventTypeRepot};
+	char * eventTypes[] = {kPDSetEventTypePlantWater, kPDSetEventTypePlantRepot, kPDSetEventTypeUserLogin};
 	PDResponse resp = {0};
 	char sessionID[UUID_STR_LEN];
 	
