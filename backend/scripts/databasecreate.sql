@@ -54,11 +54,12 @@ CREATE TABLE IF NOT EXISTS users_plants_bridge(
 -- events
 CREATE TABLE IF NOT EXISTS events(
 	id INT AUTO_INCREMENT PRIMARY KEY,
-	event_type_id INT,
+	event_type_id INT NOT NULL,
+	event_uuid VARCHAR(255) NOT NULL,
 	name VARCHAR(255),
 	description VARCHAR(255),
-	event_date DATETIME,
-	start_date DATETIME,
+	event_date DATETIME NOT NULL,
+	start_date DATETIME NOT NULL,
 	end_date DATETIME
 );
 

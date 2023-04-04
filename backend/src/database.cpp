@@ -113,7 +113,7 @@ int Database::saveEvent(const char * type, const BF::Time * eventTime, const Lis
 	size_t size = 2 << 8;
 	char q[size];
 	
-	snprintf(q, size, "insert into events (event_type_id, name, description, event_date, start_date) "
+	snprintf(q, size, "insert into events (event_uuid, event_type_id, name, description, event_date, start_date) "
 			"values ((select id from event_types where name = '%s'), 'Event: %s', "
 			"'Type: %s, date: %02d/%02d/%02d', "
 			"STR_TO_DATE('%02d/%02d/%02d %02d:%02d:%02d','%%d/%%m/%%Y %%H:%%i:%%s'), NOW())", 
@@ -139,6 +139,10 @@ int Database::saveEvent(const char * type, const BF::Time * eventTime, const Lis
 			result = 1;
 			this->logException(e, __FUNCTION__);
 		}
+	}
+
+	if (result == 0) {
+		
 	}
 
 	return result;
