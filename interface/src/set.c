@@ -95,23 +95,15 @@ int SetEvent(Arguments * args, PDInstruction * instr) {
 	return result;
 }
 
-int SetPlant(Arguments * args, PDInstruction * instr) {
+int SetNewPlant(Arguments * args, PDInstruction * instr, char * sessionID) {
 	int result = 0;
 	PDResponse resp = {0};
-	char sessionID[UUID_STR_LEN];
 	
 	PDInstructionSetSubCommand(instr, kPDSubCommandSetPlant);
-	
-	if (strlen(args->sessionID) == 0) {
-		// If we couldn't find the session id in the arguments then we
-		// will look at the cache
-		result = SessionGetSessionID(sessionID);
-		if (result) {
-			BFErrorPrint("Please provide session ID");
-			result = 60;
-		}
-	} else {
-		strcpy(sessionID, args->sessionID);
+
+	if (!strlen(args->type.set.plant.name)) {
+		result = 61;
+		BFErrorPrint("Please provide a name for plant");
 	}
 
 	// Send data
@@ -119,11 +111,12 @@ int SetPlant(Arguments * args, PDInstruction * instr) {
 		instr->length = snprintf(
 			instr->data,
 			kPDInstructionDataMaxLength,
-			kPDJsonSetPlant,
+			kPDJsonSetNewPlant,
+			kPDKeySessionID,
+			sessionID,
 			kPDKeySetPlantName,
 			args->type.set.plant.name,
-			kPDKeySetPlantIsNew,
-			args->type.set.plant.newPlant ? 1 : 0
+			kPDKeySetPlantIsNew
 		);
 
 		BFDLog("data: %s", instr->data);
@@ -131,8 +124,42 @@ int SetPlant(Arguments * args, PDInstruction * instr) {
 	}
 
 	if (result == 0) {
-		//result = FifoRead(&resp);
+		result = FifoRead(&resp);
 		BFDLog("%s", resp.data);
+	}
+
+	return result;
+
+}
+
+int SetPlant(Arguments * args, PDInstruction * instr) {
+	int result = 0;
+	char sessionID[UUID_STR_LEN];
+	
+	PDInstructionSetSubCommand(instr, kPDSubCommandSetPlant);
+
+	if (args == 0) {
+		result = 62;
+	}
+
+	if (result == 0) {	
+		if (strlen(args->sessionID) == 0) {
+			// If we couldn't find the session id in the arguments then we
+			// will look at the cache
+			result = SessionGetSessionID(sessionID);
+			if (result) {
+				BFErrorPrint("Please provide session ID");
+				result = 60;
+			}
+		} else {
+			strcpy(sessionID, args->sessionID);
+		}
+	}
+
+	if (result == 0) {
+		if (args->type.set.plant.newPlant) {
+			result = SetNewPlant(args, instr, sessionID);
+		}
 	}
 
 	return result;
