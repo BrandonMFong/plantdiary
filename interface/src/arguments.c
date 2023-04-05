@@ -141,6 +141,11 @@ int ArgumentsParseArgumentsForSet(
 			}
 		} else if (!strcmp(argv[i], kArgumentSetPlantNew)) {
 			args->type.set.plant.newPlant = true;
+		} else if (!strcmp(argv[i], kArgumentSetPlantName)) {
+			if ((i + 1) < argc) {
+				i++;
+				strncpy(args->type.set.plant.name, argv[i], kPDCommonPlantNameStringLength);
+			}
 		}
 	}
 

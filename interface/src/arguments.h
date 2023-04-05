@@ -29,6 +29,7 @@
 #define kArgumentSetEventTypeRepot "repot"
 #define kArgumentSetPlant "plant"
 #define kArgumentSetPlantNew "--new"
+#define kArgumentSetPlantName "-name"
 
 // Session
 #define kArgumentSessionStart "start"

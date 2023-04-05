@@ -39,7 +39,9 @@ CREATE TABLE IF NOT EXISTS plants(
 	name VARCHAR(255) NOT NULL,
 	plant_type_id INT,
 	birth_date DATETIME,
-	death_date DATETIME
+	death_date DATETIME,
+	start_date DATETIME,
+	end_date DATETIME
 );
 
 -- ownership table

@@ -18,5 +18,8 @@
 // Seconds since January 1, 1970
 #define kPDKeySetEventCurrentTime "currtime"
 
+#define kPDKeySetPlantName "name"
+#define kPDKeySetPlantIsNew "new"
+
 #endif // KEYS_H
 

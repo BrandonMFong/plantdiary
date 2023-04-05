@@ -119,7 +119,11 @@ int SetPlant(Arguments * args, PDInstruction * instr) {
 		instr->length = snprintf(
 			instr->data,
 			kPDInstructionDataMaxLength,
-			kPDJsonSetPlant
+			kPDJsonSetPlant,
+			kPDKeySetPlantName,
+			args->type.set.plant.name,
+			kPDKeySetPlantIsNew,
+			args->type.set.plant.newPlant ? 1 : 0
 		);
 
 		BFDLog("data: %s", instr->data);

@@ -22,5 +22,6 @@
 #define kPDCommonPasswordMaxLength 2 << 7
 
 #define kPDCommonEventTypeStringLength 2 << 5
+#define kPDCommonPlantNameStringLength 2 << 5
 
 #endif // PLANTDIARY_COMMON_H
