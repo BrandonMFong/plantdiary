@@ -112,12 +112,15 @@ int Database::saveEvent(const char * type, const BF::Time * eventTime, const Lis
 	int result = 0;
 	size_t size = 2 << 8;
 	char q[size];
+	char eventUUID[kBFStringUUIDStringLength];
+
+	BFStringGetRandomUUIDString(eventUUID);
 	
 	snprintf(q, size, "insert into events (event_uuid, event_type_id, name, description, event_date, start_date) "
-			"values ((select id from event_types where name = '%s'), 'Event: %s', "
+			"values ('%s', (select id from event_types where name = '%s'), 'Event: %s', "
 			"'Type: %s, date: %02d/%02d/%02d', "
 			"STR_TO_DATE('%02d/%02d/%02d %02d:%02d:%02d','%%d/%%m/%%Y %%H:%%i:%%s'), NOW())", 
-			type, type, type, eventTime->day(), eventTime->month(), eventTime->year(),
+			eventUUID, type, type, type, eventTime->day(), eventTime->month(), eventTime->year(),
 			eventTime->day(), eventTime->month(), eventTime->year(), eventTime->hour(), 
 			eventTime->minute(), eventTime->second());
 

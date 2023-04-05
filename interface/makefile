@@ -7,7 +7,7 @@ include ../common/external/libs/makefiles/libpaths.mk
 ### Global
 BUILD_PATH = build
 FILES = fifo version help get session init interface arguments set
-CLINKS = -lm
+CLINKS = -lm -luuid
 
 ### Release settings
 R_CFLAGS += -I. -I../common/bin/bflib/release/ -I../common
