@@ -145,9 +145,53 @@ int Database::saveEvent(const char * type, const BF::Time * eventTime, const Lis
 	}
 
 	if (result == 0) {
+		char participantType[2 << 4];
 		const List<Entity *>::Node * n = participants->first();
 		for (; n != NULL; n = n->next()) {
+			Entity * e = n->object();
 
+			if (!e) {
+				result = 2;
+				break;
+			} else {
+				switch (e->type()) {
+					case Entity::Type::kEntityTypeUser:
+						strcpy(participantType, "host");
+						break;
+					case Entity::Type::kEntityTypePlant:
+						strcpy(participantType, "plants");
+						break;
+					default:
+						result = 3;
+						break;
+				}
+			}
+
+			if (result) {
+				break; // break if error occurred
+			} else {
+				snprintf(q, size, "insert into event_participants "
+						"(event_id, event_participant_type_id, entity_uuid) values "
+						"((select id from events where event_uuid = '%s'), "
+						"(select id from event_participant_types where name = '%s'), '%s')", 
+						eventUUID, participantType, e->uuid());
+
+				BFDLog("Query: %s", q);
+				
+				try {
+					sql::ResultSet * res = 0;
+					sql::PreparedStatement * pstmt = NULL;
+
+					pstmt = this->_connection->prepareStatement(q);
+					res = pstmt->executeQuery(); 
+
+					Delete(res);
+					Delete(pstmt);
+				} catch (sql::SQLException &e) {
+					result = 1;
+					this->logException(e, __FUNCTION__);
+				}
+			}
 		}
 	}
 

@@ -75,7 +75,7 @@ CREATE TABLE IF NOT EXISTS event_types(
 CREATE TABLE IF NOT EXISTS event_participants(
 	id INT AUTO_INCREMENT PRIMARY KEY,
 	event_id INT,
-	event_participant_type INT,
+	event_participant_type_id INT,
 	entity_uuid VARCHAR(255) /* Can be both user and plant */
 );
 
