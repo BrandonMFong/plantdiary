@@ -15,6 +15,7 @@
 #include <uuid/uuid.h>
 
 int SetEvent(Arguments * args, PDInstruction * i);
+int SetPlant(Arguments * args, PDInstruction * instr);
 
 void SetHelp() {
 	printf("Argument : %s <sub commands>\n", kArgumentSet);
@@ -32,6 +33,9 @@ int SetExec(Arguments * args) {
 	if (args->subCommand == kPDSubCommandSetEvent) {
 		BFDLog("Sub Command: event");
 		return SetEvent(args, &i);
+	} else if (args->subCommand == kPDSubCommandSetPlant) {
+		BFDLog("Sub Command: plant");
+		return SetPlant(args, &i);
 	} else {
 		BFDLog("Unknown sub command %d", args->subCommand);
 	}
@@ -60,8 +64,8 @@ int SetEvent(Arguments * args, PDInstruction * instr) {
 	}
 
 	if (result == 0) {
-		if (!BFArrayStringContainsString(eventTypes, sizeof(eventTypes) / sizeof(eventTypes[0]), args->type.set.eventType)) {
-			BFDLog("Unknown event: %s", args->type.set.eventType);
+		if (!BFArrayStringContainsString(eventTypes, sizeof(eventTypes) / sizeof(eventTypes[0]), args->type.set.event.type)) {
+			BFDLog("Unknown event: %s", args->type.set.event.type);
 			result = 51;
 		}
 	}
@@ -74,7 +78,7 @@ int SetEvent(Arguments * args, PDInstruction * instr) {
 			kPDKeySessionID,
 			sessionID,
 			kPDKeySetEventType,
-			args->type.set.eventType,
+			args->type.set.event.type,
 			kPDKeySetEventCurrentTime,
 			time(NULL)
 		);
@@ -89,5 +93,9 @@ int SetEvent(Arguments * args, PDInstruction * instr) {
 	}
 
 	return result;
+}
+
+int SetPlant(Arguments * args, PDInstruction * instr) {
+	return 0;
 }
 

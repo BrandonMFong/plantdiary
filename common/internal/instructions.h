@@ -38,6 +38,7 @@ typedef enum {
 
 /// Sub Commands for Set
 #define kPDSubCommandSetEvent 0
+#define kPDSubCommandSetPlant 1
 
 /// Sub Commands for Session
 /// If user already exists, the current session id will be returned

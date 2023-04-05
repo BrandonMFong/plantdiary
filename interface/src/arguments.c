@@ -69,6 +69,8 @@ int ArgumentsParseArguments(
 						i++;
 						if (!strcmp(argv[i], kArgumentSetEvent)) {
 							args->subCommand = kPDSubCommandSetEvent;
+						} else if (!strcmp(argv[i], kArgumentSetPlant)) {
+							args->subCommand = kPDSubCommandSetPlant;
 						}
 
 						result = ArgumentsParseArgumentsForSet(i, argc, argv, args);
@@ -133,7 +135,7 @@ int ArgumentsParseArgumentsForSet(
 			if ((i + 1) < argc) {
 				i++;
 				if (!strcmp(argv[i], kArgumentSetEventTypeWater)) {
-					strcpy(args->type.set.eventType, kPDSetEventTypePlantWater);
+					strcpy(args->type.set.event.type, kPDSetEventTypePlantWater);
 				}
 			}
 		}

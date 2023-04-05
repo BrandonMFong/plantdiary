@@ -27,6 +27,8 @@
 #define kArgumentSetEventType "-type"
 #define kArgumentSetEventTypeWater "water"
 #define kArgumentSetEventTypeRepot "repot"
+#define kArgumentSetPlant "plant"
+#define kArgumentSetPlantNew "--new"
 
 // Session
 #define kArgumentSessionStart "start"

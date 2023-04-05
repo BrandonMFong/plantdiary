@@ -23,17 +23,26 @@ typedef struct {
 	char sessionID[UUID_STR_LEN + 1];
 
 	union Type {
+		// Session
 		struct {
 			bool print;
 		} session;
 
+		// Help
 		struct {
 			/// The command that the user wants to get help with
 			char helpPDCommandArg[2 << 5];
 		} help;
 
+		// Set
 		struct {
-			char eventType[kPDCommonEventTypeStringLength];
+			struct {
+				char type[kPDCommonEventTypeStringLength];
+			} event;
+
+			struct {
+				bool newPlant;
+			} plant;
 		} set;
 	} type;
 } Arguments;
