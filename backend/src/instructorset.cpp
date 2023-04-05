@@ -144,6 +144,14 @@ int InstructorSet::executeEvent() {
 		result = Database::shared()->saveEvent(eventType, tm, (const Entity *) user, &participants);
 	}
 
+	// Send information about the event
+	if (result == 0) {
+		PDResponse response;
+		strcpy(response.data, "{}");
+		response.length = strlen(strcpy(response.data, "{}"));
+		result = Pipe::shared()->writeResponse(&response);
+	}
+
 	Delete(tm);
 
 	return 0;

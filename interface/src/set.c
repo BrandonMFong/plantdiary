@@ -88,7 +88,7 @@ int SetEvent(Arguments * args, PDInstruction * instr) {
 	}
 
 	if (result == 0) {
-		//result = FifoRead(&resp);
+		result = FifoRead(&resp);
 		BFDLog("%s", resp.data);
 	}
 
