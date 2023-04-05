@@ -28,6 +28,7 @@ int ArgumentsParseArguments(
 		args->type.session.print = false;
 		args->type.help.helpPDCommandArg[0] = '\0';
 		args->appName[0] = '\0';
+		args->type.set.plant.newPlant = false;
 	
 		// Default command to help
 		args->command = kPDCommandHelp;
@@ -138,6 +139,8 @@ int ArgumentsParseArgumentsForSet(
 					strcpy(args->type.set.event.type, kPDSetEventTypePlantWater);
 				}
 			}
+		} else if (!strcmp(argv[i], kArgumentSetPlantNew)) {
+			args->type.set.plant.newPlant = true;
 		}
 	}
 
