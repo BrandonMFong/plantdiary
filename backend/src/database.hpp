@@ -42,7 +42,7 @@ PUBLIC:
 	/**
 	 * Inserts an entry to the events table
 	 */
-	int saveEvent(const char * type, const BF::Time * eventTime, const BF::List<Entity *> * participants);
+	int saveEvent(const char * type, const BF::Time * eventTime, const Entity * host, const BF::List<Entity *> * participants);
 
 PRIVATE:
 	Database();

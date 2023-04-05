@@ -68,7 +68,7 @@ const char * User::sessionID() {
 	return this->_sessionID;
 }
 
-Entity::Type User::type() {
+Entity::Type User::type() const {
 	return Entity::Type::kEntityTypeUser;
 }
 

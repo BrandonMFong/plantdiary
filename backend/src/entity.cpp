@@ -18,7 +18,7 @@ Entity::~Entity() {
 
 }
 
-const char * Entity::uuid() {
+const char * Entity::uuid() const {
 	return this->_uuid;
 }
 

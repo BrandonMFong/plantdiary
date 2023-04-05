@@ -40,7 +40,7 @@ PUBLIC:
 	const char * lastname();
 	const char * sessionID();
 
-	Entity::Type type();
+	Entity::Type type() const;
 
 PRIVATE:
 

@@ -20,9 +20,9 @@ PUBLIC:
 	Entity(const char * uuid);
 	virtual ~Entity();
 
-	const char * uuid();
+	const char * uuid() const;
 
-	virtual Type type() = 0;
+	virtual Type type() const = 0;
 
 PRIVATE:
 

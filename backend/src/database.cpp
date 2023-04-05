@@ -108,7 +108,7 @@ int Database::getUserForCredentials(const char * username, const char * hash, Us
 	return result;
 }
 
-int Database::saveEvent(const char * type, const BF::Time * eventTime, const List<Entity *> * participants) {
+int Database::saveEvent(const char * type, const BF::Time * eventTime, const Entity * host, const List<Entity *> * participants) {
 	int result = 0;
 	size_t size = 2 << 8;
 	char q[size];
@@ -144,6 +144,32 @@ int Database::saveEvent(const char * type, const BF::Time * eventTime, const Lis
 		}
 	}
 
+	// insert the host	
+	if (result == 0) {
+		snprintf(q, size, "insert into event_participants "
+				"(event_id, event_participant_type_id, entity_uuid) values "
+				"((select id from events where event_uuid = '%s'), "
+				"(select id from event_participant_types where name = 'host'), '%s')", 
+				eventUUID, host->uuid());
+
+		BFDLog("Query: %s", q);
+		
+		try {
+			sql::ResultSet * res = 0;
+			sql::PreparedStatement * pstmt = NULL;
+
+			pstmt = this->_connection->prepareStatement(q);
+			res = pstmt->executeQuery(); 
+
+			Delete(res);
+			Delete(pstmt);
+		} catch (sql::SQLException &e) {
+			result = 4;
+			this->logException(e, __FUNCTION__);
+		}
+	}
+
+	// insert the participants
 	if (result == 0) {
 		char participantType[2 << 4];
 		const List<Entity *>::Node * n = participants->first();
@@ -156,7 +182,7 @@ int Database::saveEvent(const char * type, const BF::Time * eventTime, const Lis
 			} else {
 				switch (e->type()) {
 					case Entity::Type::kEntityTypeUser:
-						strcpy(participantType, "host");
+						strcpy(participantType, "members");
 						break;
 					case Entity::Type::kEntityTypePlant:
 						strcpy(participantType, "plants");

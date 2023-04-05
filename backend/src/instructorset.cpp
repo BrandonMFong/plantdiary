@@ -79,8 +79,8 @@ int InstructorSet::executeEvent() {
 	}
 
 	if (result == 0) {
-		participants.add((Entity *) user);
-		result = Database::shared()->saveEvent(eventType, tm, &participants);
+		//participants.add((Entity *) user);
+		result = Database::shared()->saveEvent(eventType, tm, (const Entity *) user, &participants);
 	}
 
 	Delete(tm);
