@@ -16,6 +16,8 @@
 class Plant : public Entity {
 PUBLIC:
 
+	Entity::Type type();
+
 PRIVATE:
 	Plant();
 	~Plant();

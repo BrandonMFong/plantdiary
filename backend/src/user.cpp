@@ -68,3 +68,7 @@ const char * User::sessionID() {
 	return this->_sessionID;
 }
 
+Entity::Type User::type() {
+	return Entity::Type::kEntityTypeUser;
+}
+

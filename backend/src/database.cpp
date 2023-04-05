@@ -114,21 +114,21 @@ int Database::saveEvent(const char * type, const BF::Time * eventTime, const Lis
 	char q[size];
 	char eventUUID[kBFStringUUIDStringLength];
 
-	BFStringGetRandomUUIDString(eventUUID);
-	
-	snprintf(q, size, "insert into events (event_uuid, event_type_id, name, description, event_date, start_date) "
-			"values ('%s', (select id from event_types where name = '%s'), 'Event: %s', "
-			"'Type: %s, date: %02d/%02d/%02d', "
-			"STR_TO_DATE('%02d/%02d/%02d %02d:%02d:%02d','%%d/%%m/%%Y %%H:%%i:%%s'), NOW())", 
-			eventUUID, type, type, type, eventTime->day(), eventTime->month(), eventTime->year(),
-			eventTime->day(), eventTime->month(), eventTime->year(), eventTime->hour(), 
-			eventTime->minute(), eventTime->second());
-
-	BFDLog("Query: %s", q);
-
 	if (!type || !eventTime || !participants) {
 		result = 2;
 	} else {
+		BFStringGetRandomUUIDString(eventUUID);
+		
+		snprintf(q, size, "insert into events (event_uuid, event_type_id, name, description, event_date, start_date) "
+				"values ('%s', (select id from event_types where name = '%s'), 'Event: %s', "
+				"'Type: %s, date: %02d/%02d/%02d', "
+				"STR_TO_DATE('%02d/%02d/%02d %02d:%02d:%02d','%%d/%%m/%%Y %%H:%%i:%%s'), NOW())", 
+				eventUUID, type, type, type, eventTime->day(), eventTime->month(), eventTime->year(),
+				eventTime->day(), eventTime->month(), eventTime->year(), eventTime->hour(), 
+				eventTime->minute(), eventTime->second());
+
+		BFDLog("Query: %s", q);
+
 		try {
 			sql::ResultSet * res = 0;
 			sql::PreparedStatement * pstmt = NULL;
@@ -145,7 +145,10 @@ int Database::saveEvent(const char * type, const BF::Time * eventTime, const Lis
 	}
 
 	if (result == 0) {
-		
+		const List<Entity *>::Node * n = participants->first();
+		for (; n != NULL; n = n->next()) {
+
+		}
 	}
 
 	return result;

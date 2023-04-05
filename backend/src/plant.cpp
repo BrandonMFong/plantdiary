@@ -14,3 +14,7 @@ Plant::~Plant() {
 
 }
 
+Entity::Type Plant::type() {
+	return kEntityTypePlant;
+}
+

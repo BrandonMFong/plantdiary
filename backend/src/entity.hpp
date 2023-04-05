@@ -11,10 +11,18 @@
 
 class Entity {
 PUBLIC:
+
+	typedef enum {
+		kEntityTypeUser = 0,
+		kEntityTypePlant = 1
+	} Type;
+
 	Entity(const char * uuid);
 	virtual ~Entity();
 
 	const char * uuid();
+
+	virtual Type type() = 0;
 
 PRIVATE:
 

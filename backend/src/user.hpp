@@ -40,6 +40,8 @@ PUBLIC:
 	const char * lastname();
 	const char * sessionID();
 
+	Entity::Type type();
+
 PRIVATE:
 
 	User(const char * uuid);	
