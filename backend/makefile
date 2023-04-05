@@ -6,7 +6,9 @@ include ../common/external/libs/makefiles/libpaths.mk
 
 ### Global
 BUILD_PATH = build
-FILES = plant database user pool pipe driver logger instructor instructorversion instructorget instructorsession instructorset entity
+FILES = plant database user pool pipe driver logger \
+instructor instructorversion instructorget instructorsession \
+instructorset entity nursery
 CXXLINKS = -lmysqlcppconn -lpthread -luuid
 
 ### Release settings
