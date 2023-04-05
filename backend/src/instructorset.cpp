@@ -26,15 +26,31 @@ int InstructorSet::execute() {
 	switch (this->subCommand()) {
 	case kPDSubCommandSetEvent:
 		return this->executeEvent();
+	case kPDSubCommandSetPlant:
+		return this->executePlant();
 	default:
 		BFDLog("Unknown sub command: %d", this->subCommand());
 		return 53;
 	}
 }
 
+int InstructorSet::executePlant() {
+	int result = 0;
+	char data[kPDInstructionDataMaxLength];
+	short length = 0;
+
+	BFDLog("Set for plant");
+	
+	this->getData(data, &length);
+
+	BFDLog("Data received: %s", data);
+
+	return result;
+}
+
 int InstructorSet::executeEvent() {
 	char eventType[kPDCommonEventTypeStringLength];
-	char sessionID[UUID_STR_LEN];
+	char sessionID[kBFStringUUIDStringLength];
 	char data[kPDInstructionDataMaxLength];
 	short length = 0;
 	Time * tm = NULL;

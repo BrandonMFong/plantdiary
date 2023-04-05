@@ -96,6 +96,41 @@ int SetEvent(Arguments * args, PDInstruction * instr) {
 }
 
 int SetPlant(Arguments * args, PDInstruction * instr) {
-	return 0;
+	int result = 0;
+	PDResponse resp = {0};
+	char sessionID[UUID_STR_LEN];
+	
+	PDInstructionSetSubCommand(instr, kPDSubCommandSetPlant);
+	
+	if (strlen(args->sessionID) == 0) {
+		// If we couldn't find the session id in the arguments then we
+		// will look at the cache
+		result = SessionGetSessionID(sessionID);
+		if (result) {
+			BFErrorPrint("Please provide session ID");
+			result = 60;
+		}
+	} else {
+		strcpy(sessionID, args->sessionID);
+	}
+
+	// Send data
+	if (result == 0) {
+		instr->length = snprintf(
+			instr->data,
+			kPDInstructionDataMaxLength,
+			kPDJsonSetPlant
+		);
+
+		BFDLog("data: %s", instr->data);
+		result = FifoWrite(instr);
+	}
+
+	if (result == 0) {
+		//result = FifoRead(&resp);
+		BFDLog("%s", resp.data);
+	}
+
+	return result;
 }
 
