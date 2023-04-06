@@ -9,6 +9,13 @@
 #include <uuid/uuid.h>
 #include <bflibcpp/accessorspecifiers.hpp>
 
+/**
+ * Describes objects in pd
+ *
+ * Every entity do not need to be instantiated in the app.  I.e., if we can 
+ * do things to an object with only involving the database then we should
+ * only be doing that
+ */
 class Entity {
 PUBLIC:
 
