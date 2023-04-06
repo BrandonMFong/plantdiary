@@ -72,6 +72,7 @@ int Pipe::initialize() {
 
 void Pipe::deinitialize() {
 	pthread_cancel(pThreadPipeReader);
+	Delete(gPipe);
 }
 
 Pipe * Pipe::shared() {
