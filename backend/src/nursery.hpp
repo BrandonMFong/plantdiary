@@ -19,8 +19,10 @@ PUBLIC:
 
 	/**
 	 * Inserts a new plant into the database
+	 *
+	 * userSessionID: The id for the user that is creating plant
 	 */
-	int createNewPlant(const char * name);
+	int createNewPlant(const char * userSessionID, const char * name);
 
 PRIVATE:
 	Nursery();

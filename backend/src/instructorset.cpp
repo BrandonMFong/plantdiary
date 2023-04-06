@@ -74,7 +74,7 @@ int InstructorSet::executePlant() {
 
 	// Create new plant under the user
 	if (result == 0) {
-		result = Nursery::shared()->createNewPlant(plantName);
+		result = Nursery::shared()->createNewPlant(sessionID, plantName);
 	}
 
 	// Send information about the new plant
