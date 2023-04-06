@@ -138,6 +138,12 @@ int Database::setNewPlant(const char * plantName, const char * plantUUID, const 
 	return result;
 }
 
+void GetStringToDateString(const Time * eventTime, char * buf) {
+	sprintf(buf, "STR_TO_DATE('%02d/%02d/%02d %02d:%02d:%02d','%%d/%%m/%%Y %%H:%%i:%%s')",
+			eventTime->day(), eventTime->month(), eventTime->year(),
+			eventTime->hour(), eventTime->minute(), eventTime->second());
+}
+
 int Database::setEvent(const char * type, const Time * eventTime, const char * eventUUID, const Entity * host, const List<Entity *> * participants) {
 	int result = 0;
 	size_t size = 2 << 8;
@@ -146,13 +152,14 @@ int Database::setEvent(const char * type, const Time * eventTime, const char * e
 	if (!eventUUID || !type || !eventTime || !participants) {
 		result = 2;
 	} else {
+		char buf[2 << 6];
+		GetStringToDateString(eventTime, buf);
 		snprintf(q, size, "insert into events (event_uuid, event_type_id, name, description, event_date, start_date) "
 				"values ('%s', (select id from event_types where name = '%s'), 'Event: %s', "
 				"'Type: %s, date: %02d/%02d/%02d', "
-				"STR_TO_DATE('%02d/%02d/%02d %02d:%02d:%02d','%%d/%%m/%%Y %%H:%%i:%%s'), NOW())", 
-				eventUUID, type, type, type, eventTime->day(), eventTime->month(), eventTime->year(),
-				eventTime->day(), eventTime->month(), eventTime->year(), eventTime->hour(), 
-				eventTime->minute(), eventTime->second());
+				"%s, NOW())", 
+				eventUUID, type, type, type, eventTime->day(),
+				eventTime->month(), eventTime->year(), buf);
 
 		BFDLog("Query: %s", q);
 
