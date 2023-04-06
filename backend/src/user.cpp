@@ -5,6 +5,7 @@
  */
 
 #include "user.hpp"
+#include <bflibcpp/bflibcpp.hpp>
 #include <string.h>
 
 User * User::createUser(
@@ -24,10 +25,8 @@ User * User::createUser(
 
 		if (lastName) strcpy(res->_lastName, lastName);
 
-		// Create uuid for user
-		uuid_t bin;
-		uuid_generate_random(bin);
-		uuid_unparse_lower(bin, res->_sessionID);
+		// Create uuid for user session
+		BFStringGetRandomUUIDString(res->_sessionID);
 
 		return res;
 	}

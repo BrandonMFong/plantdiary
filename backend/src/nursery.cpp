@@ -5,6 +5,7 @@
 
 #include "nursery.hpp"
 #include <stdlib.h>
+#include "plant.hpp"
 
 Nursery * gNursery = NULL;
 
@@ -26,5 +27,11 @@ Nursery::Nursery() {
 
 Nursery::~Nursery() {
 
+}
+
+Plant * Nursery::createNewPlant() {
+	Plant * result = NULL;
+
+	return result;
 }
 
