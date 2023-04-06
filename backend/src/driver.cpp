@@ -9,6 +9,7 @@
 #include "pipe.hpp"
 #include "logger.hpp"
 #include "instructor.hpp"
+#include "nursery.hpp"
 #include <bflibcpp/bflibcpp.hpp>
 #include <common.h>
 #include <sys/stat.h>
@@ -44,6 +45,8 @@ int Driver::initialize() {
 		return error;
 	} else if ((error = Pool::initialize()) != 0) {
 		return error;
+	} else if ((error = Nursery::initialize()) != 0) {
+		return error;
 	} else if ((gDriver = new Driver) == NULL) {
 		return 4;
 	} else if ((error = gDriver->setupEnvironment()) != 0) {
@@ -57,7 +60,7 @@ void Driver::deinitialize() {
 	Pool::deinitialize();
 	Pipe::deinitialize();
 	Database::deinitialize();
-
+	Nursery::deinitialize();
 	Delete(gDriver);
 	
 	return;

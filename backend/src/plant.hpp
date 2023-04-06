@@ -13,14 +13,18 @@
 
 #define kPlantNameLength 2 << 7
 
-class Plant : public Entity {
-PUBLIC:
+class Nursery;
 
+class Plant : public Entity {
+	friend class Nursery;
+PUBLIC:
+	~Plant();
+
+	/// Returns the entity type Plant
 	Entity::Type type();
 
 PRIVATE:
 	Plant();
-	~Plant();
 
 	char _name[kPlantNameLength];
 };
