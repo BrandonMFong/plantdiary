@@ -7,6 +7,7 @@
 #define NURSERY_HPP
 
 #include <bflibcpp/accessorspecifiers.hpp>
+#include <bflibcpp/time.hpp>
 
 class Plant;
 
@@ -22,7 +23,7 @@ PUBLIC:
 	 *
 	 * userSessionID: The id for the user that is creating plant
 	 */
-	int createNewPlant(const char * userSessionID, const char * name);
+	int createNewPlant(const char * userSessionID, const char * name, const BF::Time * birthDate);
 
 PRIVATE:
 	Nursery();

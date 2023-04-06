@@ -11,6 +11,8 @@
 #include "database.hpp"
 #include <bflibcpp/bflibcpp.hpp>
 
+using namespace BF;
+
 Nursery * gNursery = NULL;
 
 int Nursery::initialize() {
@@ -33,7 +35,7 @@ Nursery::~Nursery() {
 
 }
 
-int Nursery::createNewPlant(const char * userSessionID, const char * name) {
+int Nursery::createNewPlant(const char * userSessionID, const char * name, const Time * birthDate) {
 	int result = 0;
 	char uuidStr[kBFStringUUIDStringLength];
 
@@ -45,7 +47,7 @@ int Nursery::createNewPlant(const char * userSessionID, const char * name) {
 
 	if (result == 0) {
 		BFStringGetRandomUUIDString(uuidStr);
-		result = Database::shared()->setNewPlant(name, uuidStr, user->uuid());
+		result = Database::shared()->setNewPlant(name, uuidStr, birthDate, user->uuid());
 	}
 
 	return result;

@@ -80,7 +80,7 @@ int SetEvent(Arguments * args, PDInstruction * instr) {
 			kPDKeySetEventType,
 			args->type.set.event.type,
 			kPDKeySetEventCurrentTime,
-			time(NULL)
+			BFTimeGetCurrentTime()
 		);
 
 		BFDLog("data: %s", instr->data);
@@ -116,7 +116,9 @@ int SetNewPlant(Arguments * args, PDInstruction * instr, char * sessionID) {
 			sessionID,
 			kPDKeySetPlantName,
 			args->type.set.plant.name,
-			kPDKeySetPlantIsNew
+			kPDKeySetPlantIsNew,
+			kPDKeySetPlantBirthdate,
+			BFTimeGetCurrentTime()
 		);
 
 		BFDLog("data: %s", instr->data);

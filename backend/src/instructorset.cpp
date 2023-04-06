@@ -42,11 +42,10 @@ int InstructorSet::executePlant() {
 	char sessionID[kBFStringUUIDStringLength];
 	char plantName[kPDCommonPlantNameStringLength];
 	bool isNew = false;
+	Time * tm = NULL;
 
 	BFDLog("Set for plant");
-	
 	this->getData(data, &length);
-
 	BFDLog("Data received: %s", data);
 
 	// Parse the json data	
@@ -54,7 +53,7 @@ int InstructorSet::executePlant() {
 	int l = val->u.object.length;
 	if (val == NULL) {
 		result = 66;
-	} else if (l != 3) {
+	} else if (l != 4) {
 		result = 65;
 	} else {
 		for (int i = 0; i < l; i++) {
@@ -64,6 +63,8 @@ int InstructorSet::executePlant() {
 				strcpy(sessionID, val->u.object.values[i].value->u.string.ptr);
 			} else if (!strcmp(val->u.object.values[i].name, kPDKeySetPlantIsNew)) {
 				isNew = val->u.object.values[i].value->u.boolean;
+			} else if (!strcmp(val->u.object.values[i].name, kPDKeySetPlantBirthdate)) {
+				tm = new Time(val->u.object.values[i].value->u.integer);
 			}
 		}
 
@@ -74,7 +75,7 @@ int InstructorSet::executePlant() {
 
 	// Create new plant under the user
 	if (result == 0) {
-		result = Nursery::shared()->createNewPlant(sessionID, plantName);
+		result = Nursery::shared()->createNewPlant(sessionID, plantName, tm);
 	}
 
 	// Send information about the new plant

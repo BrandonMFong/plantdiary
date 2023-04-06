@@ -108,17 +108,42 @@ int Database::getUserForCredentials(const char * username, const char * hash, Us
 	return result;
 }
 
-int Database::setNewPlant(const char * plantName, const char * plantUUID, const char * userUUID) {
-	int result = 0;
-	return result;
-}
-
-int Database::setEvent(const char * type, const BF::Time * eventTime, const char * eventUUID, const Entity * host, const List<Entity *> * participants) {
+int Database::setNewPlant(const char * plantName, const char * plantUUID, const Time * birthDate, const char * userUUID) {
 	int result = 0;
 	size_t size = 2 << 8;
 	char q[size];
 
-	if (!type || !eventTime || !participants) {
+	if (!plantName || !plantUUID || !userUUID) {
+		result = 11;
+	} else {
+		snprintf(q, size, "insert into plants (uuid, name, ");
+
+		BFDLog("Query: %s", q);
+		
+		try {
+			sql::ResultSet * res = 0;
+			sql::PreparedStatement * pstmt = NULL;
+
+			pstmt = this->_connection->prepareStatement(q);
+			res = pstmt->executeQuery(); 
+
+			Delete(res);
+			Delete(pstmt);
+		} catch (sql::SQLException &e) {
+			result = 1;
+			this->logException(e, __FUNCTION__);
+		}
+	}
+
+	return result;
+}
+
+int Database::setEvent(const char * type, const Time * eventTime, const char * eventUUID, const Entity * host, const List<Entity *> * participants) {
+	int result = 0;
+	size_t size = 2 << 8;
+	char q[size];
+
+	if (!eventUUID || !type || !eventTime || !participants) {
 		result = 2;
 	} else {
 		snprintf(q, size, "insert into events (event_uuid, event_type_id, name, description, event_date, start_date) "
