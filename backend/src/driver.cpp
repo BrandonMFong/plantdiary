@@ -17,6 +17,7 @@
 Driver * gDriver = 0;
 
 Driver::Driver() {
+	BFDLog("Initialzing queues");
 	for (int i = 0; i < kDriverThreadQueueSize; i++) {
 #ifndef TESTING
 		BFDLog("Initialzing queue %d", i + 1);

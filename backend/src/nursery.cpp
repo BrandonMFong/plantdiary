@@ -16,15 +16,16 @@ using namespace BF;
 Nursery * gNursery = NULL;
 
 int Nursery::initialize() {
-	return 0;
+	if (gNursery = new Nursery) return 0;
+	return 1;
 }
 
 void Nursery::deinitialize() {
-
+	Delete(gNursery);
 }
 
 Nursery * Nursery::shared() {
-	return NULL;
+	return gNursery;
 }
 
 Nursery::Nursery() {
