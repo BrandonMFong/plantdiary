@@ -17,7 +17,10 @@ PUBLIC:
 	static void deinitialize();
 	static Nursery * shared();
 
-	Plant * createNewPlant();
+	/**
+	 * Inserts a new plant into the database
+	 */
+	int createNewPlant(const char * name);
 
 PRIVATE:
 	Nursery();

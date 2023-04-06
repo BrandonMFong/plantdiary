@@ -29,8 +29,8 @@ Nursery::~Nursery() {
 
 }
 
-Plant * Nursery::createNewPlant() {
-	Plant * result = NULL;
+int Nursery::createNewPlant(const char * name) {
+	int result = 0;
 
 	return result;
 }

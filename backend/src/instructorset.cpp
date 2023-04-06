@@ -10,6 +10,7 @@
 #include "database.hpp"
 #include "pipe.hpp"
 #include "pool.hpp"
+#include "nursery.hpp"
 #include <uuid/uuid.h>
 
 using namespace BF;
@@ -73,7 +74,7 @@ int InstructorSet::executePlant() {
 
 	// Create new plant under the user
 	if (result == 0) {
-
+		result = Nursery::shared()->createNewPlant(plantName);
 	}
 
 	// Send information about the new plant
