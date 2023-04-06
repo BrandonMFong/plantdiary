@@ -108,6 +108,11 @@ int Database::getUserForCredentials(const char * username, const char * hash, Us
 	return result;
 }
 
+int Database::setNewPlant(const char * plantName, const char * plantUUID, const char * userUUID) {
+	int result = 0;
+	return result;
+}
+
 int Database::saveEvent(const char * type, const BF::Time * eventTime, const Entity * host, const List<Entity *> * participants) {
 	int result = 0;
 	size_t size = 2 << 8;

@@ -8,6 +8,7 @@
 #include "plant.hpp"
 #include "user.hpp"
 #include "pool.hpp"
+#include "database.hpp"
 #include <bflibcpp/bflibcpp.hpp>
 
 Nursery * gNursery = NULL;
@@ -34,11 +35,17 @@ Nursery::~Nursery() {
 
 int Nursery::createNewPlant(const char * userSessionID, const char * name) {
 	int result = 0;
+	char uuidStr[kBFStringUUIDStringLength];
 
 	User * user = Pool::shared()->getUserForSessionID(userSessionID);
 	if (user == NULL) {
 		result = 56;
 		BFDLog("Could not find user for session id: %s", userSessionID);
+	}
+
+	if (result == 0) {
+		BFStringGetRandomUUIDString(uuidStr);
+		result = Database::shared()->setNewPlant(name, uuidStr, user->uuid());
 	}
 
 	return result;
