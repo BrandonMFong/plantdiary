@@ -5,6 +5,7 @@
 
 #include "session_tests.h"
 #include "version_tests.h"
+#include "arguments_tests.h"
 #include <stdio.h>
 
 int main() {
@@ -19,6 +20,12 @@ int main() {
 	
 	printf("---------------------------\n");
 	version_tests(&pass, &fail);
+	printf("[+ %d, - %d]\n", pass, fail);
+	tp += pass; tf += fail;
+	pass = 0; fail = 0;
+	
+	printf("---------------------------\n");
+	arguments_tests(&pass, &fail);
 	printf("[+ %d, - %d]\n", pass, fail);
 	tp += pass; tf += fail;
 	pass = 0; fail = 0;
