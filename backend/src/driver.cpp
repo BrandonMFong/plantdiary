@@ -18,7 +18,9 @@ Driver * gDriver = 0;
 
 Driver::Driver() {
 	for (int i = 0; i < kDriverThreadQueueSize; i++) {
+#ifndef TESTING
 		BFDLog("Initialzing queue %d", i + 1);
+#endif
 		this->_pTable.active[i] = false;
 		pthread_mutex_init(&this->_pTable.mutex[i], NULL);
 	}

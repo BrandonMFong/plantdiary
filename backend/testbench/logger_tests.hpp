@@ -10,7 +10,7 @@
 
 #include "cpplib_tests.hpp"
 #include <logger.hpp>
-#include <delete.hpp>
+#include <bflibcpp/delete.hpp>
 
 int test_LoggerInit() {
 	int error = 0;

@@ -27,7 +27,10 @@ void * PipeReader(void *) {
 
     // FIFO file path
     const char * myfifo = kPDCommonFifoFilePathInbound;
+
+#ifndef TESTING
 	BFDLog("Reading %s", myfifo);
+#endif
 
     // Creating the named file(FIFO)
     // mkfifo(<pathname>,<permission>)

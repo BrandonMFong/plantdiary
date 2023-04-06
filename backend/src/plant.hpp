@@ -21,7 +21,7 @@ PUBLIC:
 	~Plant();
 
 	/// Returns the entity type Plant
-	Entity::Type type();
+	Entity::Type type() const;
 
 PRIVATE:
 	Plant();

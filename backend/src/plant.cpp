@@ -14,7 +14,7 @@ Plant::~Plant() {
 
 }
 
-Entity::Type Plant::type() {
+Entity::Type Plant::type() const {
 	return kEntityTypePlant;
 }
 

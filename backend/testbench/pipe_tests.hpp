@@ -10,7 +10,7 @@
 
 #include "cpplib_tests.hpp"
 #include <pipe.hpp>
-#include <delete.hpp>
+#include <bflibcpp/delete.hpp>
 
 int test_PipeInit() {
 	int error = 0;
