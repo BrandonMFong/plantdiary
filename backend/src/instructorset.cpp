@@ -140,9 +140,11 @@ int InstructorSet::executeEvent() {
 		}
 	}
 
+	char eventUUID[kBFStringUUIDStringLength];
 	if (result == 0) {
 		//participants.add((Entity *) user);
-		result = Database::shared()->saveEvent(eventType, tm, (const Entity *) user, &participants);
+		BFStringGetRandomUUIDString(eventUUID);
+		result = Database::shared()->setEvent(eventType, tm, eventUUID, (const Entity *) user, &participants);
 	}
 
 	// Send information about the event

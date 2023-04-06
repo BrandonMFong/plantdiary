@@ -113,17 +113,14 @@ int Database::setNewPlant(const char * plantName, const char * plantUUID, const 
 	return result;
 }
 
-int Database::saveEvent(const char * type, const BF::Time * eventTime, const Entity * host, const List<Entity *> * participants) {
+int Database::setEvent(const char * type, const BF::Time * eventTime, const char * eventUUID, const Entity * host, const List<Entity *> * participants) {
 	int result = 0;
 	size_t size = 2 << 8;
 	char q[size];
-	char eventUUID[kBFStringUUIDStringLength];
 
 	if (!type || !eventTime || !participants) {
 		result = 2;
 	} else {
-		BFStringGetRandomUUIDString(eventUUID);
-		
 		snprintf(q, size, "insert into events (event_uuid, event_type_id, name, description, event_date, start_date) "
 				"values ('%s', (select id from event_types where name = '%s'), 'Event: %s', "
 				"'Type: %s, date: %02d/%02d/%02d', "

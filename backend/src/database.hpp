@@ -42,7 +42,7 @@ PUBLIC:
 	/**
 	 * Inserts an entry to the events table
 	 */
-	int saveEvent(const char * type, const BF::Time * eventTime, const Entity * host, const BF::List<Entity *> * participants);
+	int setEvent(const char * type, const BF::Time * eventTime, const char * eventUUID, const Entity * host, const BF::List<Entity *> * participants);
 
 	int setNewPlant(const char * plantName, const char * plantUUID, const char * userUUID);
 
