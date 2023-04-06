@@ -108,6 +108,12 @@ int Database::getUserForCredentials(const char * username, const char * hash, Us
 	return result;
 }
 
+void GetStringToDateString(const Time * eventTime, char * buf) {
+	sprintf(buf, "STR_TO_DATE('%02d/%02d/%02d %02d:%02d:%02d','%%d/%%m/%%Y %%H:%%i:%%s')",
+			eventTime->day(), eventTime->month(), eventTime->year(),
+			eventTime->hour(), eventTime->minute(), eventTime->second());
+}
+
 int Database::setNewPlant(const char * plantName, const char * plantUUID, const Time * birthDate, const char * userUUID) {
 	int result = 0;
 	size_t size = 2 << 8;
@@ -116,7 +122,10 @@ int Database::setNewPlant(const char * plantName, const char * plantUUID, const 
 	if (!plantName || !plantUUID || !userUUID) {
 		result = 11;
 	} else {
-		snprintf(q, size, "insert into plants (uuid, name, ");
+		char buf[2 << 6];
+		GetStringToDateString(birthDate, buf);
+
+		snprintf(q, size, "insert into plants (uuid, name, birth_date, start_date) values ('%s', '%s', %s, NOW())", plantUUID, plantName, buf);
 
 		BFDLog("Query: %s", q);
 		
@@ -136,12 +145,6 @@ int Database::setNewPlant(const char * plantName, const char * plantUUID, const 
 	}
 
 	return result;
-}
-
-void GetStringToDateString(const Time * eventTime, char * buf) {
-	sprintf(buf, "STR_TO_DATE('%02d/%02d/%02d %02d:%02d:%02d','%%d/%%m/%%Y %%H:%%i:%%s')",
-			eventTime->day(), eventTime->month(), eventTime->year(),
-			eventTime->hour(), eventTime->minute(), eventTime->second());
 }
 
 int Database::setEvent(const char * type, const Time * eventTime, const char * eventUUID, const Entity * host, const List<Entity *> * participants) {

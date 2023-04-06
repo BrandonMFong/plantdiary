@@ -30,11 +30,11 @@ SET @plant2 = UUID();
 SET @plant3 = UUID();
 SET @plant4 = UUID();
 SET @plant5 = UUID();
-INSERT INTO plants (uuid, name, birth_date) values
-(@plant1, "Alice", NOW()),
-(@plant2, "Buster", NOW()),
-(@plant3, "Clams", NOW()),
-(@plant4, "Dusty", NOW()),
-(@plant5, "Easter", NOW())
+INSERT INTO plants (uuid, name, birth_date, start_date) values
+(@plant1, "Alice", NOW(), NOW()),
+(@plant2, "Buster", NOW(), NOW()),
+(@plant3, "Clams", NOW(), NOW()),
+(@plant4, "Dusty", NOW(), NOW()),
+(@plant5, "Easter", NOW(), NOW())
 ;
 
