@@ -54,7 +54,8 @@ int InstructorSet::executePlant() {
 	int l = val->u.object.length;
 	if (val == NULL) {
 		result = 66;
-	} else if (l != 4) {
+	} else if (l != 5) {
+		BFDLog("There are %d objects, unexpected", l);
 		result = 65;
 	} else {
 		for (int i = 0; i < l; i++) {
