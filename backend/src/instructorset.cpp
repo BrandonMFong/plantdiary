@@ -42,7 +42,7 @@ int InstructorSet::executePlant() {
 	char sessionID[kBFStringUUIDStringLength];
 	char plantName[kPDCommonPlantNameStringLength];
 	char plantSpecies[kPDCommonPlantSpeciesStringLength];
-	bool isNew = false;
+	PDSetPlantFlags flags = kPDSetPlantFlagsNone;
 	Time * tm = NULL;
 
 	BFDLog("Set for plant");
@@ -65,15 +65,15 @@ int InstructorSet::executePlant() {
 				strcpy(sessionID, val->u.object.values[i].value->u.string.ptr);
 			} else if (!strcmp(val->u.object.values[i].name, kPDKeySetPlantSpecies)) {
 				strcpy(plantSpecies, val->u.object.values[i].value->u.string.ptr);
-			} else if (!strcmp(val->u.object.values[i].name, kPDKeySetPlantIsNew)) {
-				isNew = val->u.object.values[i].value->u.boolean;
+			} else if (!strcmp(val->u.object.values[i].name, kPDKeySetPlantFlags)) {
+				flags = (PDSetPlantFlags) val->u.object.values[i].value->u.integer;
 			} else if (!strcmp(val->u.object.values[i].name, kPDKeySetPlantBirthdate)) {
 				tm = new Time(val->u.object.values[i].value->u.integer);
 			}
 		}
 
 		BFDLog("Session ID: %s", sessionID);
-		BFDLog("is new: %d", isNew);
+		BFDLog("flags: %x", flags);
 		BFDLog("plant name: %s", plantName);
 		BFDLog("plant species: %s", plantSpecies);
 	}

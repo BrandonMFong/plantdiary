@@ -12,6 +12,7 @@
 #include "internal/keys.h"
 #include "internal/setevents.h"
 #include "internal/limits.h"
+#include "internal/setplantflags.h"
 
 // App data path
 #define kPDCommonAppDataPath "/tmp/plantdiary"

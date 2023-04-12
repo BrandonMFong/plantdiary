@@ -20,7 +20,7 @@
 #define kPDKeySetPlantBirthdate "birth"
 
 #define kPDKeySetPlantName "name"
-#define kPDKeySetPlantIsNew "new"
+#define kPDKeySetPlantFlags "flags"
 #define kPDKeySetPlantSpecies "species"
 
 #endif // KEYS_H

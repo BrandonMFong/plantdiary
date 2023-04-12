@@ -13,7 +13,7 @@
 #define kPDJsonSessionStatus kPDJsonSessionStart
 #define kPDJsonSessionStop "{\"%s\" : %d}"
 #define kPDJsonSetEvent "{\"%s\" : \"%s\", \"%s\" : \"%s\", \"%s\" : %d}"
-#define kPDJsonSetNewPlant "{\"%s\" : \"%s\", \"%s\" : \"%s\", \"%s\" : true, \"%s\" : %d, \"%s\" : \"%s\"}"
+#define kPDJsonSetNewPlant "{\"%s\" : \"%s\", \"%s\" : \"%s\", \"%s\" : %d, \"%s\" : %d, \"%s\" : \"%s\"}"
 
 #endif // INTERNAL_JSON_H
 
