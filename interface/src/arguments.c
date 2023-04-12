@@ -141,6 +141,8 @@ int ArgumentsParseArgumentsForSet(
 			}
 		} else if (!strcmp(argv[i], kArgumentSetPlantNew)) {
 			args->type.set.plant.option = kPDSetPlantOptionNew;
+		} else if (!strcmp(argv[i], kArgumentSetPlantModify)) {
+			args->type.set.plant.option = kPDSetPlantOptionModify;
 		} else if (!strcmp(argv[i], kArgumentSetPlantName)) {
 			if ((i + 1) < argc) {
 				i++;

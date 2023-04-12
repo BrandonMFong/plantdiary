@@ -30,6 +30,7 @@
 #define kArgumentSetEventTypeRepot "repot"
 #define kArgumentSetPlant "plant"
 #define kArgumentSetPlantNew "--new"
+#define kArgumentSetPlantModify "--modify"
 #define kArgumentSetPlantName "-name"
 #define kArgumentSetPlantSpecies "-species"
 #define kArgumentSetPlantUUID "-uuid"

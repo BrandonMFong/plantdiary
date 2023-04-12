@@ -76,6 +76,7 @@ int InstructorSet::executePlant() {
 		}
 
 		BFDLog("Session ID: %s", sessionID);
+		BFDLog("Plant uuid: %s", plantUUID);
 		BFDLog("option: %x", option);
 		BFDLog("plant name: %s", plantName);
 		BFDLog("plant species: %s", plantSpecies);
@@ -88,7 +89,7 @@ int InstructorSet::executePlant() {
 			result = Nursery::shared()->createNewPlant(sessionID, plantName, plantSpecies, tm);
 			break;
 		case kPDSetPlantOptionModify:
-			result = Nursery::shared()->modifyNewPlant(sessionID, plantName, plantSpecies);
+			result = Nursery::shared()->modifyNewPlant(plantUUID, plantName, plantSpecies);
 			break;
 		case kPDSetPlantOptionNone:
 			break;

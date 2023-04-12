@@ -155,6 +155,8 @@ int SetModifyPlant(Arguments * args, PDInstruction * instr, char * sessionID) {
 			instr->data,
 			kPDInstructionDataMaxLength,
 			kPDJsonSetModifyPlant,
+			kPDKeySetPlantOption,
+			kPDSetPlantOptionModify,
 			kPDKeySessionID,
 			sessionID,
 			kPDKeySetPlantUUID,
