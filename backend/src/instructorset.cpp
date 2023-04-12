@@ -80,7 +80,19 @@ int InstructorSet::executePlant() {
 
 	// Create new plant under the user
 	if (result == 0) {
-		result = Nursery::shared()->createNewPlant(sessionID, plantName, plantSpecies, tm);
+		switch (flags) {
+		case kPDSetPlantFlagsNew:
+			result = Nursery::shared()->createNewPlant(sessionID, plantName, plantSpecies, tm);
+			break;
+		case kPDSetPlantFlagsModify:
+			break;
+		case kPDSetPlantFlagsNone:
+			break;
+		default:
+			BFDLog("Unknown option: %d", flags);
+			result = 68;
+			break;
+		}
 	}
 
 	// Send information about the new plant
