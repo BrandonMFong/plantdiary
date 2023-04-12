@@ -24,6 +24,7 @@ void SetHelp() {
 	printf("      - '%s' <string> : specifies the type of event (%s, %s)\n", kArgumentSetEventType, kArgumentSetEventTypeWater, kArgumentSetEventTypeRepot);
 	printf("    - '%s' : creates/modifies plant\n", kArgumentSetPlant);
 	printf("      - '%s' <string> : Plant name\n", kArgumentSetPlantName);
+	printf("      - '%s' <string> : Plant species.  Can be any string.  Treated as a label\n", kArgumentSetPlantSpecies);
 	printf("      - '%s' : Creates new plant\n", kArgumentSetPlantNew);
 
 }
@@ -121,7 +122,9 @@ int SetNewPlant(Arguments * args, PDInstruction * instr, char * sessionID) {
 			args->type.set.plant.name,
 			kPDKeySetPlantIsNew,
 			kPDKeySetPlantBirthdate,
-			BFTimeGetCurrentTime()
+			BFTimeGetCurrentTime(),
+			kPDKeySetPlantSpecies,
+			args->type.set.plant.species
 		);
 
 		BFDLog("data: %s", instr->data);

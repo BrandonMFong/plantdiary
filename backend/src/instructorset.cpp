@@ -74,6 +74,7 @@ int InstructorSet::executePlant() {
 		BFDLog("Session ID: %s", sessionID);
 		BFDLog("is new: %d", isNew);
 		BFDLog("plant name: %s", plantName);
+		BFDLog("plant species: %s", plantSpecies);
 	}
 
 	// Create new plant under the user

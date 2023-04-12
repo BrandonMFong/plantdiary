@@ -30,6 +30,7 @@
 #define kArgumentSetPlant "plant"
 #define kArgumentSetPlantNew "--new"
 #define kArgumentSetPlantName "-name"
+#define kArgumentSetPlantSpecies "-species"
 
 // Session
 #define kArgumentSessionStart "start"

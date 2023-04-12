@@ -48,7 +48,7 @@ int Nursery::createNewPlant(const char * userSessionID, const char * name, const
 
 	if (result == 0) {
 		BFStringGetRandomUUIDString(uuidStr);
-		result = Database::shared()->setNewPlant(name, uuidStr, birthDate, user->uuid());
+		result = Database::shared()->setNewPlant(name, uuidStr, speciesName, birthDate, user->uuid());
 	}
 
 	return result;

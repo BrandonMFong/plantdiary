@@ -146,6 +146,11 @@ int ArgumentsParseArgumentsForSet(
 				i++;
 				strncpy(args->type.set.plant.name, argv[i], kPDCommonPlantNameStringLength);
 			}
+		} else if (!strcmp(argv[i], kArgumentSetPlantSpecies)) {
+			if ((i + 1) < argc) {
+				i++;
+				strncpy(args->type.set.plant.species, argv[i], kPDCommonPlantSpeciesStringLength);
+			}
 		}
 	}
 

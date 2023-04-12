@@ -114,7 +114,7 @@ void GetStringToDateString(const Time * eventTime, char * buf) {
 			eventTime->hour(), eventTime->minute(), eventTime->second());
 }
 
-int Database::setNewPlant(const char * plantName, const char * plantUUID, const Time * birthDate, const char * userUUID) {
+int Database::setNewPlant(const char * plantName, const char * plantUUID, const char * species, const Time * birthDate, const char * userUUID) {
 	int result = 0;
 	size_t size = 2 << 8;
 	char q[size];
@@ -125,7 +125,7 @@ int Database::setNewPlant(const char * plantName, const char * plantUUID, const 
 		char buf[2 << 6];
 		GetStringToDateString(birthDate, buf);
 
-		snprintf(q, size, "insert into plants (uuid, name, birth_date, start_date) values ('%s', '%s', %s, NOW())", plantUUID, plantName, buf);
+		snprintf(q, size, "insert into plants (uuid, name, species, birth_date, start_date) values ('%s', '%s', '%s', %s, NOW())", plantUUID, plantName, species, buf);
 
 		BFDLog("Query: %s", q);
 		

@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS plants(
 	id INT AUTO_INCREMENT PRIMARY KEY,
 	uuid VARCHAR(255) NOT NULL,
 	name VARCHAR(255) NOT NULL,
-	plant_species VARCHAR(255),
+	species VARCHAR(255),
 	birth_date DATETIME,
 	death_date DATETIME,
 	start_date DATETIME,

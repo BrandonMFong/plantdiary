@@ -44,7 +44,7 @@ PUBLIC:
 	 */
 	int setEvent(const char * type, const BF::Time * eventTime, const char * eventUUID, const Entity * host, const BF::List<Entity *> * participants);
 
-	int setNewPlant(const char * plantName, const char * plantUUID, const BF::Time * birthDate, const char * userUUID);
+	int setNewPlant(const char * plantName, const char * plantUUID, const char * species, const BF::Time * birthDate, const char * userUUID);
 
 PRIVATE:
 	Database();
