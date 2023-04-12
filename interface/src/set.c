@@ -25,6 +25,7 @@ void SetHelp() {
 	printf("    - '%s' : creates/modifies plant\n", kArgumentSetPlant);
 	printf("      - '%s' <string> : Plant name\n", kArgumentSetPlantName);
 	printf("      - '%s' <string> : Plant species.  Can be any string.  Treated as a label\n", kArgumentSetPlantSpecies);
+	printf("      - '%s' <string> : Plant uuid\n", kArgumentSetPlantUUID);
 	printf("      - '%s' : Creates new plant\n", kArgumentSetPlantNew);
 
 }
@@ -102,8 +103,6 @@ int SetEvent(Arguments * args, PDInstruction * instr) {
 int SetNewPlant(Arguments * args, PDInstruction * instr, char * sessionID) {
 	int result = 0;
 	PDResponse resp = {0};
-	
-	PDInstructionSetSubCommand(instr, kPDSubCommandSetPlant);
 
 	if (!strlen(args->type.set.plant.name)) {
 		result = 61;
@@ -124,6 +123,44 @@ int SetNewPlant(Arguments * args, PDInstruction * instr, char * sessionID) {
 			kPDSetPlantOptionNew,
 			kPDKeySetPlantBirthdate,
 			BFTimeGetCurrentTime(),
+			kPDKeySetPlantSpecies,
+			args->type.set.plant.species
+		);
+
+		BFDLog("data: %s", instr->data);
+		result = FifoWrite(instr);
+	}
+
+	if (result == 0) {
+		result = FifoRead(&resp);
+		BFDLog("%s", resp.data);
+	}
+
+	return result;
+}
+
+
+int SetModifyPlant(Arguments * args, PDInstruction * instr, char * sessionID) {
+	int result = 0;
+	PDResponse resp = {0};
+	
+	if (!strlen(args->type.set.plant.name)) {
+		result = 71;
+		BFErrorPrint("Please provide a name for plant");
+	}
+
+	// Send data
+	if (result == 0) {
+		instr->length = snprintf(
+			instr->data,
+			kPDInstructionDataMaxLength,
+			kPDJsonSetModifyPlant,
+			kPDKeySessionID,
+			sessionID,
+			kPDKeySetPlantUUID,
+			args->type.set.plant.name,
+			kPDKeySetPlantName,
+			args->type.set.plant.name,
 			kPDKeySetPlantSpecies,
 			args->type.set.plant.species
 		);
@@ -165,8 +202,16 @@ int SetPlant(Arguments * args, PDInstruction * instr) {
 	}
 
 	if (result == 0) {
-		if (args->type.set.plant.newPlant) {
+		switch (args->type.set.plant.option) {
+		case kPDSetPlantOptionNew:
 			result = SetNewPlant(args, instr, sessionID);
+			break;
+		case kPDSetPlantOptionModify:
+			result = SetModifyPlant(args, instr, sessionID);
+			break;
+		default:
+			BFErrorPrint("Unkown option: %d", args->type.set.plant.option);
+			break;
 		}
 	}
 

@@ -8,6 +8,7 @@
 
 #include "typearguments.h"
 #include <internal/setevents.h>
+#include <bflibc/stringutils.h>
 
 /// commands
 #define kArgumentHelp "help"
@@ -31,6 +32,7 @@
 #define kArgumentSetPlantNew "--new"
 #define kArgumentSetPlantName "-name"
 #define kArgumentSetPlantSpecies "-species"
+#define kArgumentSetPlantUUID "-uuid"
 
 // Session
 #define kArgumentSessionStart "start"

@@ -7,6 +7,8 @@
 #define TYPEARGUMENTS_H
 
 #include <internal/instructions.h>
+#include <internal/setplantflags.h>
+#include <bflibc/stringutils.h>
 #include <uuid/uuid.h>
 #include <stdbool.h>
 #include <common.h>
@@ -41,9 +43,10 @@ typedef struct {
 			} event;
 
 			struct {
-				bool newPlant;
+				PDSetPlantOption option;
 				char name[kPDCommonPlantNameStringLength];
 				char species[kPDCommonPlantSpeciesStringLength];
+				char uuid[kBFStringUUIDStringLength];
 			} plant;
 		} set;
 	} type;

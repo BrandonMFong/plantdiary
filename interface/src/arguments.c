@@ -28,7 +28,7 @@ int ArgumentsParseArguments(
 		args->type.session.print = false;
 		args->type.help.helpPDCommandArg[0] = '\0';
 		args->appName[0] = '\0';
-		args->type.set.plant.newPlant = false;
+		args->type.set.plant.option = kPDSetPlantOptionNone;
 	
 		// Default command to help
 		args->command = kPDCommandHelp;
@@ -140,7 +140,7 @@ int ArgumentsParseArgumentsForSet(
 				}
 			}
 		} else if (!strcmp(argv[i], kArgumentSetPlantNew)) {
-			args->type.set.plant.newPlant = true;
+			args->type.set.plant.option = kPDSetPlantOptionNew;
 		} else if (!strcmp(argv[i], kArgumentSetPlantName)) {
 			if ((i + 1) < argc) {
 				i++;
@@ -150,6 +150,11 @@ int ArgumentsParseArgumentsForSet(
 			if ((i + 1) < argc) {
 				i++;
 				strncpy(args->type.set.plant.species, argv[i], kPDCommonPlantSpeciesStringLength);
+			}
+		} else if (!strcmp(argv[i], kArgumentSetPlantUUID)) {
+			if ((i + 1) < argc) {
+				i++;
+				strncpy(args->type.set.plant.uuid, argv[i], kBFStringUUIDStringLength);
 			}
 		}
 	}

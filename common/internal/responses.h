@@ -8,9 +8,10 @@
 
 #include <linux/limits.h>
 
-#define kPDResponseDataMaxLength PIPE_BUF - sizeof(short)
+#define kPDResponseDataMaxLength PIPE_BUF - sizeof(short) - sizeof(char)
 
 typedef struct {
+	unsigned char returnCode;
 	short length;
 	char data[kPDResponseDataMaxLength];
 } PDResponse;

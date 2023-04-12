@@ -14,6 +14,7 @@
 #define kPDJsonSessionStop "{\"%s\" : %d}"
 #define kPDJsonSetEvent "{\"%s\" : \"%s\", \"%s\" : \"%s\", \"%s\" : %d}"
 #define kPDJsonSetNewPlant "{\"%s\" : \"%s\", \"%s\" : \"%s\", \"%s\" : %d, \"%s\" : %d, \"%s\" : \"%s\"}"
+#define kPDJsonSetModifyPlant "{\"%s\" : \"%s\", \"%s\" : \"%s\", \"%s\" : \"%s\", \"%s\" : \"%s\"}"
 
 #endif // INTERNAL_JSON_H
 

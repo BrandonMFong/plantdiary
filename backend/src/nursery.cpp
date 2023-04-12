@@ -54,3 +54,10 @@ int Nursery::createNewPlant(const char * userSessionID, const char * name, const
 	return result;
 }
 
+int Nursery::modifyNewPlant(const char * plantUUID, const char * name, const char * species) {
+	int result = 0;
+
+	BFDLog("modify");
+	return result;
+}
+

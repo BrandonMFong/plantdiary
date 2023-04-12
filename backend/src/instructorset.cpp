@@ -40,6 +40,7 @@ int InstructorSet::executePlant() {
 	char data[kPDInstructionDataMaxLength];
 	short length = 0;
 	char sessionID[kBFStringUUIDStringLength];
+	char plantUUID[kBFStringUUIDStringLength];
 	char plantName[kPDCommonPlantNameStringLength];
 	char plantSpecies[kPDCommonPlantSpeciesStringLength];
 	PDSetPlantOption option = kPDSetPlantOptionNone;
@@ -65,6 +66,8 @@ int InstructorSet::executePlant() {
 				strcpy(sessionID, val->u.object.values[i].value->u.string.ptr);
 			} else if (!strcmp(val->u.object.values[i].name, kPDKeySetPlantSpecies)) {
 				strcpy(plantSpecies, val->u.object.values[i].value->u.string.ptr);
+			} else if (!strcmp(val->u.object.values[i].name, kPDKeySetPlantUUID)) {
+				strcpy(plantUUID, val->u.object.values[i].value->u.string.ptr);
 			} else if (!strcmp(val->u.object.values[i].name, kPDKeySetPlantOption)) {
 				option = (PDSetPlantOption) val->u.object.values[i].value->u.integer;
 			} else if (!strcmp(val->u.object.values[i].name, kPDKeySetPlantBirthdate)) {
@@ -85,6 +88,7 @@ int InstructorSet::executePlant() {
 			result = Nursery::shared()->createNewPlant(sessionID, plantName, plantSpecies, tm);
 			break;
 		case kPDSetPlantOptionModify:
+			result = Nursery::shared()->modifyNewPlant(sessionID, plantName, plantSpecies);
 			break;
 		case kPDSetPlantOptionNone:
 			break;
