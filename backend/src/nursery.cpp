@@ -36,7 +36,7 @@ Nursery::~Nursery() {
 
 }
 
-int Nursery::createNewPlant(const char * userSessionID, const char * name, const Time * birthDate) {
+int Nursery::createNewPlant(const char * userSessionID, const char * name, const char * speciesName, const Time * birthDate) {
 	int result = 0;
 	char uuidStr[kBFStringUUIDStringLength];
 

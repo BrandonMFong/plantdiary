@@ -21,6 +21,7 @@
 
 #define kPDKeySetPlantName "name"
 #define kPDKeySetPlantIsNew "new"
+#define kPDKeySetPlantSpecies "species"
 
 #endif // KEYS_H
 

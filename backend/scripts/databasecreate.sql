@@ -23,22 +23,12 @@ CREATE TABLE IF NOT EXISTS users_passwords(
 	end_date DATETIME
 );
 
--- all available plants
-CREATE TABLE IF NOT EXISTS plant_species(
-	id INT AUTO_INCREMENT PRIMARY KEY,
-	user_uuid VARCHAR(255) NOT NULL,
-	name VARCHAR(255) NOT NULL,
-	description VARCHAR(255),
-	start_date DATETIME,
-	end_date DATETIME
-);
-
 -- all actual plants users own
 CREATE TABLE IF NOT EXISTS plants(
 	id INT AUTO_INCREMENT PRIMARY KEY,
 	uuid VARCHAR(255) NOT NULL,
 	name VARCHAR(255) NOT NULL,
-	plant_species_uuid INT,
+	plant_species VARCHAR(255),
 	birth_date DATETIME,
 	death_date DATETIME,
 	start_date DATETIME,

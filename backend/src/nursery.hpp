@@ -23,7 +23,7 @@ PUBLIC:
 	 *
 	 * userSessionID: The id for the user that is creating plant
 	 */
-	int createNewPlant(const char * userSessionID, const char * name, const BF::Time * birthDate);
+	int createNewPlant(const char * userSessionID, const char * name, const char * speciesName, const BF::Time * birthDate);
 
 PRIVATE:
 	Nursery();

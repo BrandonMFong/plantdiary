@@ -9,9 +9,8 @@
 
 #include <bflibcpp/accessorspecifiers.hpp>
 #include <uuid/uuid.h>
+#include <internal/limits.h>
 #include "entity.hpp"
-
-#define kPlantNameLength 2 << 7
 
 class Nursery;
 
@@ -31,10 +30,10 @@ PUBLIC:
 PRIVATE:
 	Plant();
 
-	char _name[kPlantNameLength];
+	char _name[kPDCommonPlantNameStringLength];
 
 	/// Holds species type
-	char _species[kPDSpeciesStringLength];
+	char _species[kPDCommonPlantSpeciesStringLength];
 };
 
 #endif // PLANT_HPP

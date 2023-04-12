@@ -41,6 +41,7 @@ int InstructorSet::executePlant() {
 	short length = 0;
 	char sessionID[kBFStringUUIDStringLength];
 	char plantName[kPDCommonPlantNameStringLength];
+	char plantSpecies[kPDCommonPlantSpeciesStringLength];
 	bool isNew = false;
 	Time * tm = NULL;
 
@@ -61,6 +62,8 @@ int InstructorSet::executePlant() {
 				strcpy(plantName, val->u.object.values[i].value->u.string.ptr);
 			} else if (!strcmp(val->u.object.values[i].name, kPDKeySessionID)) {
 				strcpy(sessionID, val->u.object.values[i].value->u.string.ptr);
+			} else if (!strcmp(val->u.object.values[i].name, kPDKeySetPlantSpecies)) {
+				strcpy(plantSpecies, val->u.object.values[i].value->u.string.ptr);
 			} else if (!strcmp(val->u.object.values[i].name, kPDKeySetPlantIsNew)) {
 				isNew = val->u.object.values[i].value->u.boolean;
 			} else if (!strcmp(val->u.object.values[i].name, kPDKeySetPlantBirthdate)) {
@@ -75,7 +78,7 @@ int InstructorSet::executePlant() {
 
 	// Create new plant under the user
 	if (result == 0) {
-		result = Nursery::shared()->createNewPlant(sessionID, plantName, tm);
+		result = Nursery::shared()->createNewPlant(sessionID, plantName, plantSpecies, tm);
 	}
 
 	// Send information about the new plant
