@@ -43,6 +43,7 @@ typedef struct {
 			struct {
 				bool newPlant;
 				char name[kPDCommonPlantNameStringLength];
+
 			} plant;
 		} set;
 	} type;

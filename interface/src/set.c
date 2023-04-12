@@ -134,7 +134,6 @@ int SetNewPlant(Arguments * args, PDInstruction * instr, char * sessionID) {
 	}
 
 	return result;
-
 }
 
 int SetPlant(Arguments * args, PDInstruction * instr) {

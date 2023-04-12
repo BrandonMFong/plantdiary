@@ -144,6 +144,27 @@ int Database::setNewPlant(const char * plantName, const char * plantUUID, const 
 		}
 	}
 
+	if (result == 0) {
+		snprintf(q, size, "insert into users_plants_bridge (user_uuid, plant_uuid, start_date) values ('%s', '%s', NOW())", userUUID, plantUUID);
+
+		BFDLog("Query: %s", q);
+		
+		try {
+			sql::ResultSet * res = 0;
+			sql::PreparedStatement * pstmt = NULL;
+
+			pstmt = this->_connection->prepareStatement(q);
+			res = pstmt->executeQuery(); 
+
+			Delete(res);
+			Delete(pstmt);
+		} catch (sql::SQLException &e) {
+			result = 1;
+			this->logException(e, __FUNCTION__);
+		}
+
+	}
+
 	return result;
 }
 
