@@ -20,8 +20,11 @@ int SetPlant(Arguments * args, PDInstruction * instr);
 void SetHelp() {
 	printf("Argument : %s <sub commands>\n", kArgumentSet);
 	printf("  sub commands\n");
-	printf("    - '%s' : creates an event for specific plant\n", kArgumentSetEvent);
-	printf("      - '%s' : specifies the type of event (%s, %s)\n", kArgumentSetEventType, kArgumentSetEventTypeWater, kArgumentSetEventTypeRepot);
+	printf("    - '%s' : creates an event for user\n", kArgumentSetEvent);
+	printf("      - '%s' <string> : specifies the type of event (%s, %s)\n", kArgumentSetEventType, kArgumentSetEventTypeWater, kArgumentSetEventTypeRepot);
+	printf("    - '%s' : creates/modifies plant\n", kArgumentSetPlant);
+	printf("      - '%s' <string> : Plant name\n", kArgumentSetPlantName);
+	printf("      - '%s' : Creates new plant\n", kArgumentSetPlantNew);
 
 }
 
