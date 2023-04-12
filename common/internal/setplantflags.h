@@ -7,10 +7,10 @@
 #define SETPLANTFLAGS_H
 
 typedef enum {
-	kPDSetPlantFlagsNone = -1,
-	kPDSetPlantFlagsNew = 0,
-	kPDSetPlantFlagsModify = 1,
-} PDSetPlantFlags;
+	kPDSetPlantOptionNone = -1,
+	kPDSetPlantOptionNew = 0,
+	kPDSetPlantOptionModify = 1,
+} PDSetPlantOption;
 
 #endif // SETPLANTFLAGS_H
 

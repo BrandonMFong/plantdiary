@@ -42,7 +42,7 @@ int InstructorSet::executePlant() {
 	char sessionID[kBFStringUUIDStringLength];
 	char plantName[kPDCommonPlantNameStringLength];
 	char plantSpecies[kPDCommonPlantSpeciesStringLength];
-	PDSetPlantFlags flags = kPDSetPlantFlagsNone;
+	PDSetPlantOption flags = kPDSetPlantOptionNone;
 	Time * tm = NULL;
 
 	BFDLog("Set for plant");
@@ -66,7 +66,7 @@ int InstructorSet::executePlant() {
 			} else if (!strcmp(val->u.object.values[i].name, kPDKeySetPlantSpecies)) {
 				strcpy(plantSpecies, val->u.object.values[i].value->u.string.ptr);
 			} else if (!strcmp(val->u.object.values[i].name, kPDKeySetPlantFlags)) {
-				flags = (PDSetPlantFlags) val->u.object.values[i].value->u.integer;
+				flags = (PDSetPlantOption) val->u.object.values[i].value->u.integer;
 			} else if (!strcmp(val->u.object.values[i].name, kPDKeySetPlantBirthdate)) {
 				tm = new Time(val->u.object.values[i].value->u.integer);
 			}
@@ -81,12 +81,12 @@ int InstructorSet::executePlant() {
 	// Create new plant under the user
 	if (result == 0) {
 		switch (flags) {
-		case kPDSetPlantFlagsNew:
+		case kPDSetPlantOptionNew:
 			result = Nursery::shared()->createNewPlant(sessionID, plantName, plantSpecies, tm);
 			break;
-		case kPDSetPlantFlagsModify:
+		case kPDSetPlantOptionModify:
 			break;
-		case kPDSetPlantFlagsNone:
+		case kPDSetPlantOptionNone:
 			break;
 		default:
 			BFDLog("Unknown option: %d", flags);
