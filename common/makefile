@@ -6,7 +6,7 @@ include external/libs/makefiles/libpaths.mk
 
 ### Global
 BUILD_PATH = build
-FILES = species
+FILES =
 CLINKS =
 
 COMMON_R_CFLAGS = -I. -I./external/libs/$(BF_LIB_RPATH_RELEASE) 

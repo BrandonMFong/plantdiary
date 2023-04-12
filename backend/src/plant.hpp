@@ -23,10 +23,18 @@ PUBLIC:
 	/// Returns the entity type Plant
 	Entity::Type type() const;
 
+	/**
+	 * Returns the uuid type for species
+	 */
+	const char * species() const;
+
 PRIVATE:
 	Plant();
 
 	char _name[kPlantNameLength];
+
+	/// Holds species type
+	char _species[kPDSpeciesStringLength];
 };
 
 #endif // PLANT_HPP

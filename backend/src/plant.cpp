@@ -5,14 +5,9 @@
  */
 
 #include "plant.hpp"
-#include <internal/species.h>
-#include <string.h>
 
 Plant::Plant() : Entity(0) {
 	this->_name[0] = '\0';
-
-	char tmp[512];
-	strcpy(tmp, kPDSpeciesUnknown);
 }
 
 Plant::~Plant() {
