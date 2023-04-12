@@ -16,7 +16,7 @@ R_CXXFLAGS += -Isrc/ -I../common/bin/bflib/release/ -I/usr/local/include/cppconn
 R_BIN_NAME = plantdiaryd
 R_BUILD_PATH = $(BUILD_PATH)/release
 R_MAIN_FILE = src/main.cpp
-R_LIBRARIES = ../common/bin/bflib/release/bflibcpp/libbfcpp.a ../common/bin/json.a
+R_LIBRARIES = ../common/bin/bflib/release/bflibcpp/libbfcpp.a ../common/bin/json.a ../common/bin/common.a
 R_OBJECTS = $(patsubst %, $(R_BUILD_PATH)/%.o, $(FILES))
 
 ### Debug settings
@@ -24,7 +24,7 @@ D_CXXFLAGS = -DDEBUG -g -Isrc/ -I../common/bin/bflib/debug/ -I/usr/local/include
 D_BIN_NAME = $(R_BIN_NAME)-debug
 D_BUILD_PATH = $(BUILD_PATH)/debug
 D_MAIN_FILE = $(R_MAIN_FILE)
-D_LIBRARIES = ../common/bin/bflib/debug/bflibcpp/libbfcpp-debug.a ../common/bin/json.a
+D_LIBRARIES = ../common/bin/bflib/debug/bflibcpp/libbfcpp-debug.a ../common/bin/json.a ../common/bin/common-debug.a
 D_OBJECTS = $(patsubst %, $(D_BUILD_PATH)/%.o, $(FILES))
 
 ### Test settings

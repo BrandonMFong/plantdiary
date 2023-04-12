@@ -6,7 +6,7 @@ include external/libs/makefiles/libpaths.mk
 
 ### Global
 BUILD_PATH = build
-FILES = common
+FILES = species
 CLINKS =
 
 COMMON_R_CFLAGS = -I. -I./external/libs/$(BF_LIB_RPATH_RELEASE) 
@@ -51,9 +51,9 @@ common: $(COMMON_R_OBJECTS) $(COMMON_D_OBJECTS)
 	ar -rsc bin/$@.a $(COMMON_R_OBJECTS)
 	ar -rsc bin/$@-debug.a $(COMMON_D_OBJECTS)
 
-$(COMMON_R_BUILD_PATH)/%.o: ./%.c ./%.h
+$(COMMON_R_BUILD_PATH)/%.o: ./internal/%.c ./internal/%.h
 	gcc -c $< -o $@ $(COMMON_R_CFLAGS)
 
-$(COMMON_D_BUILD_PATH)/%.o: ./%.c ./%.h
+$(COMMON_D_BUILD_PATH)/%.o: ./internal/%.c ./internal/%.h
 	gcc -c $< -o $@ $(COMMON_D_CFLAGS)
 

@@ -11,6 +11,7 @@
 #include "internal/json.h"
 #include "internal/keys.h"
 #include "internal/setevents.h"
+#include "internal/species.h"
 
 // App data path
 #define kPDCommonAppDataPath "/tmp/plantdiary"
