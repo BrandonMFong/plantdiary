@@ -27,6 +27,7 @@ void SetHelp() {
 	printf("      - '%s' <string> : Plant species.  Can be any string.  Treated as a label\n", kArgumentSetPlantSpecies);
 	printf("      - '%s' <string> : Plant uuid\n", kArgumentSetPlantUUID);
 	printf("      - '%s' : Creates new plant\n", kArgumentSetPlantNew);
+	printf("      - '%s' : Modifies plant\n", kArgumentSetPlantModify);
 
 }
 
@@ -160,7 +161,7 @@ int SetModifyPlant(Arguments * args, PDInstruction * instr, char * sessionID) {
 			kPDKeySessionID,
 			sessionID,
 			kPDKeySetPlantUUID,
-			args->type.set.plant.name,
+			args->type.set.plant.uuid,
 			kPDKeySetPlantName,
 			args->type.set.plant.name,
 			kPDKeySetPlantSpecies,

@@ -114,12 +114,43 @@ void GetStringToDateString(const Time * eventTime, char * buf) {
 			eventTime->hour(), eventTime->minute(), eventTime->second());
 }
 
+int Database::modifyPlant(const char * plantUUID, const char * name, const char * species) {
+	int result = 0;
+	size_t size = 2 << 8;
+	char q[size];
+
+	if (!name || !plantUUID || !species) {
+		result = 15;
+	} else {
+		snprintf(q, size, "update plants set name = '%s', species = '%s' where uuid = '%s'", name, species, plantUUID);
+
+		BFDLog("Query: %s", q);
+		
+		try {
+			sql::ResultSet * res = 0;
+			sql::PreparedStatement * pstmt = NULL;
+
+			pstmt = this->_connection->prepareStatement(q);
+			res = pstmt->executeQuery(); 
+
+			Delete(res);
+			Delete(pstmt);
+		} catch (sql::SQLException &e) {
+			result = 1;
+			this->logException(e, __FUNCTION__);
+		}
+	}
+
+
+	return result;
+}
+
 int Database::setNewPlant(const char * plantName, const char * plantUUID, const char * species, const Time * birthDate, const char * userUUID) {
 	int result = 0;
 	size_t size = 2 << 8;
 	char q[size];
 
-	if (!plantName || !plantUUID || !userUUID) {
+	if (!plantName || !plantUUID || !userUUID || !species || !birthDate) {
 		result = 11;
 	} else {
 		char buf[2 << 6];

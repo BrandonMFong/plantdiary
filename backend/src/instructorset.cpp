@@ -89,7 +89,7 @@ int InstructorSet::executePlant() {
 			result = Nursery::shared()->createNewPlant(sessionID, plantName, plantSpecies, tm);
 			break;
 		case kPDSetPlantOptionModify:
-			result = Nursery::shared()->modifyNewPlant(plantUUID, plantName, plantSpecies);
+			result = Nursery::shared()->modifyPlant(plantUUID, plantName, plantSpecies);
 			break;
 		case kPDSetPlantOptionNone:
 			break;
