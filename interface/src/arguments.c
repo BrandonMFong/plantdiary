@@ -22,12 +22,10 @@ int ArgumentsParseArguments(
 		result = 1;
 	} else {
 		// Initialize the struct
+		memset(args, 0, sizeof(Arguments));
 		args->command = kPDCommandUnknown;
 		args->subCommand = kPDSubCommandUnkown;
 		args->sessionID[0] = '\0';
-		args->type.session.print = false;
-		args->type.help.helpPDCommandArg[0] = '\0';
-		args->appName[0] = '\0';
 		args->type.set.plant.option = kPDSetPlantOptionNone;
 	
 		// Default command to help

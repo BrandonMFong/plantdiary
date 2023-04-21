@@ -145,32 +145,25 @@ int SetModifyPlant(Arguments * args, PDInstruction * instr, char * sessionID) {
 	int result = 0;
 	PDResponse resp = {0};
 	
-	if (!strlen(args->type.set.plant.name)) {
-		result = 71;
-		BFErrorPrint("Please provide a name for plant");
-	}
-
 	// Send data
-	if (result == 0) {
-		instr->length = snprintf(
-			instr->data,
-			kPDInstructionDataMaxLength,
-			kPDJsonSetModifyPlant,
-			kPDKeySetPlantOption,
-			kPDSetPlantOptionModify,
-			kPDKeySessionID,
-			sessionID,
-			kPDKeySetPlantUUID,
-			args->type.set.plant.uuid,
-			kPDKeySetPlantName,
-			args->type.set.plant.name,
-			kPDKeySetPlantSpecies,
-			args->type.set.plant.species
-		);
+	instr->length = snprintf(
+		instr->data,
+		kPDInstructionDataMaxLength,
+		kPDJsonSetModifyPlant,
+		kPDKeySetPlantOption,
+		kPDSetPlantOptionModify,
+		kPDKeySessionID,
+		sessionID,
+		kPDKeySetPlantUUID,
+		args->type.set.plant.uuid,
+		kPDKeySetPlantName,
+		strlen(args->type.set.plant.name) ? args->type.set.plant.name : kPDValueSetPlantNameUseCurrent,
+		kPDKeySetPlantSpecies,
+		args->type.set.plant.species
+	);
 
-		BFDLog("data: %s", instr->data);
-		result = FifoWrite(instr);
-	}
+	BFDLog("data: %s", instr->data);
+	result = FifoWrite(instr);
 
 	if (result == 0) {
 		result = FifoRead(&resp);

@@ -72,7 +72,9 @@ int InstructorSet::executePlant() {
 			} else if (!strcmp(val->u.object.values[i].name, kPDKeySetPlantSpecies)) {
 				strcpy(plantSpecies, val->u.object.values[i].value->u.string.ptr);
 			} else if (!strcmp(val->u.object.values[i].name, kPDKeySetPlantUUID)) {
+				BFDLog("UUID: %s", val->u.object.values[i].value->u.string.ptr);
 				strcpy(plantUUID, val->u.object.values[i].value->u.string.ptr);
+				BFDLog("UUID: %s", plantUUID);
 			} else if (!strcmp(val->u.object.values[i].name, kPDKeySetPlantOption)) {
 				option = (PDSetPlantOption) val->u.object.values[i].value->u.integer;
 			} else if (!strcmp(val->u.object.values[i].name, kPDKeySetPlantBirthdate)) {
