@@ -118,11 +118,48 @@ int Database::modifyPlant(const char * plantUUID, const char * name, const char 
 	int result = 0;
 	size_t size = 2 << 8;
 	char q[size];
+	char plantName[kPDCommonPlantNameStringLength];
+	char plantSpecies[kPDCommonPlantSpeciesStringLength];
 
-	if (!name || !plantUUID || !species) {
+	if (!plantUUID) {
 		result = 15;
 	} else {
-		snprintf(q, size, "update plants set name = '%s', species = '%s' where uuid = '%s'", name, species, plantUUID);
+		snprintf(q, size, "select * from plants where uuid = '%s'", plantUUID);
+
+		BFDLog("Query: %s", q);
+		try {
+			sql::Statement * stmt = 0;
+			sql::ResultSet * res = 0;
+
+			stmt = this->_connection->createStatement();
+			res = stmt->executeQuery(q); 
+			if (!res->next()) {
+				result = 18;
+				BFDLog("null result");
+			} else {
+				if (name) {
+					strcpy(plantName, name);
+				} else {
+					strcpy(plantName, res->getString("name").c_str());
+				}
+
+				if (species) {
+					strcpy(plantSpecies, species);
+				} else {
+					strcpy(plantSpecies, res->getString("species").c_str());
+				}
+			}
+
+			Delete(res);
+			Delete(stmt);
+		} catch (sql::SQLException &e) {
+			result = 19;
+			this->logException(e, __FUNCTION__);
+		}
+	}
+
+	if (result == 0) {
+		snprintf(q, size, "update plants set name = '%s', species = '%s' where uuid = '%s'", plantName, plantSpecies, plantUUID);
 
 		BFDLog("Query: %s", q);
 		

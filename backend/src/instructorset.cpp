@@ -46,6 +46,11 @@ int InstructorSet::executePlant() {
 	PDSetPlantOption option = kPDSetPlantOptionNone;
 	Time * tm = NULL;
 
+	sessionID[0] = '\0';
+	plantUUID[0] = '\0';
+	plantName[0] = '\0';
+	plantSpecies[0] = '\0';
+
 	BFDLog("Set for plant");
 	this->getData(data, &length);
 	BFDLog("Data received: %s", data);
@@ -89,7 +94,10 @@ int InstructorSet::executePlant() {
 			result = Nursery::shared()->createNewPlant(sessionID, plantName, plantSpecies, tm);
 			break;
 		case kPDSetPlantOptionModify:
-			result = Nursery::shared()->modifyPlant(plantUUID, plantName, plantSpecies);
+			result = Nursery::shared()->modifyPlant(
+					plantUUID, 
+					strlen(plantName) ? plantName : NULL, 
+					strlen(plantSpecies) ? plantSpecies : NULL);
 			break;
 		case kPDSetPlantOptionNone:
 			break;
