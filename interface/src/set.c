@@ -157,7 +157,7 @@ int SetModifyPlant(Arguments * args, PDInstruction * instr, char * sessionID) {
 		kPDKeySetPlantUUID,
 		args->type.set.plant.uuid,
 		kPDKeySetPlantName,
-		strlen(args->type.set.plant.name) ? args->type.set.plant.name : kPDValueSetPlantNameUseCurrent,
+		args->type.set.plant.name,
 		kPDKeySetPlantSpecies,
 		args->type.set.plant.species
 	);
