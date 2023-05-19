@@ -23,11 +23,10 @@ void SetHelp() {
 	printf("    - '%s' : creates an event for user\n", kArgumentSetEvent);
 	printf("      - '%s' <string> : specifies the type of event (%s, %s)\n", kArgumentSetEventType, kArgumentSetEventTypeWater, kArgumentSetEventTypeRepot);
 	printf("    - '%s' : creates/modifies plant\n", kArgumentSetPlant);
-	printf("      - '%s' <string> : Plant name\n", kArgumentSetPlantName);
-	printf("      - '%s' <string> : Plant species.  Can be any string.  Treated as a label\n", kArgumentSetPlantSpecies);
+	printf("      - [ %s <string> ] : Plant name\n", kArgumentSetPlantName);
+	printf("      - [ %s <string> ] : Plant species.  Can be any string.  Treated as a label\n", kArgumentSetPlantSpecies);
 	printf("      - '%s' <string> : Plant uuid\n", kArgumentSetPlantUUID);
-	printf("      - '%s' : Creates new plant\n", kArgumentSetPlantNew);
-	printf("      - '%s' : Modifies plant\n", kArgumentSetPlantModify);
+	printf("      - %s | %s : Creates new or modifies plant\n", kArgumentSetPlantNew, kArgumentSetPlantModify);
 
 }
 
