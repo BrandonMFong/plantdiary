@@ -18,7 +18,7 @@ void GetHelp() {
 	printf("Argument : %s\n", kArgumentGet);
 	printf("  sub commands\n");
 	printf("    - %s : returns the number of plants for user\n", kArgumentGetPlantCount);
-	printf("    - %s : returns a list of plants for user\n", kArgumentGetPlantCount);
+	printf("    - %s : returns a list of plants for user\n", kArgumentGetPlantList);
 }
 
 int GetExec(Arguments * args) {
