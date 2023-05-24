@@ -22,6 +22,7 @@
 
 // Get
 #define kArgumentGetPlantCount "plantcount"
+#define kArgumentGetPlantList "plantlist"
 
 // Set
 #define kArgumentSetEvent "event"

@@ -35,6 +35,7 @@ typedef enum {
 
 /// Sub Commands for Get
 #define kPDSubCommandGetPlantCount 0
+#define kPDSubCommandGetPlantList 0
 
 /// Sub Commands for Set
 #define kPDSubCommandSetEvent 0

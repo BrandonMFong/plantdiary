@@ -9,6 +9,7 @@
 #include <internal/instructions.h>
 #include <stdio.h>
 #include <string.h>
+#include <bflibc/log.h>
 
 /// Sub commands functions
 int GetPlantCount();
@@ -29,6 +30,9 @@ int GetExec(Arguments * args) {
 	} else {
 		if (args->subCommand == kPDSubCommandGetPlantCount) {
 			PDInstructionSetSubCommand(&i, kPDSubCommandGetPlantCount);
+		} else if (args->subCommand == kPDSubCommandGetPlantList) {
+			BFDLog("Listing plants");
+			PDInstructionSetSubCommand(&i, kPDSubCommandGetPlantList);
 		} else {
 			printf("unknown command\n");
 		}

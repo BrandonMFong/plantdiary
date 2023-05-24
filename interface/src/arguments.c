@@ -60,6 +60,14 @@ int ArgumentsParseArguments(
 				// Get
 				} else if (!strcmp(argv[i], kArgumentGet)) {
 					args->command = kPDCommandGet;
+					if ((i + 1) < argc) {
+						i++;
+						if (!strcmp(argv[i], kArgumentGetPlantCount)) {
+							args->subCommand = kPDSubCommandGetPlantCount;
+						} else if (!strcmp(argv[i], kArgumentGetPlantList)) {
+							args->subCommand = kPDSubCommandGetPlantList;
+						}
+					}
 				
 				// Set
 				} else if (!strcmp(argv[i], kArgumentSet)) {
