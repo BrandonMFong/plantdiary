@@ -130,6 +130,7 @@ int InstructorSet::executePlant() {
 int InstructorSet::executeEvent() {
 	char eventType[kPDCommonEventTypeStringLength];
 	char sessionID[kBFStringUUIDStringLength];
+	char participantUUID[kBFStringUUIDStringLength]; // name of participant this event affects
 	char data[kPDInstructionDataMaxLength];
 	short length = 0;
 	Time * tm = NULL;
@@ -151,16 +152,19 @@ int InstructorSet::executeEvent() {
 		result = 55;
 	} else {
 		for (int i = 0; i < l; i++) {
-			if (!strcmp(val->u.object.values[i].name, kPDKeySetEventType)) {
+			if (!strcmp(val->u.object.values[i].name, kPDKeySetEventType)) { // event type
 				strcpy(eventType, val->u.object.values[i].value->u.string.ptr);
-			} else if (!strcmp(val->u.object.values[i].name, kPDKeySessionID)) {
+			} else if (!strcmp(val->u.object.values[i].name, kPDKeySessionID)) { // session id
 				strcpy(sessionID, val->u.object.values[i].value->u.string.ptr);
-			} else if (!strcmp(val->u.object.values[i].name, kPDKeySetEventCurrentTime)) {
+			} else if (!strcmp(val->u.object.values[i].name, kPDKeySetEventParticipantUUID)) { // participant
+				strcpy(participantUUID, val->u.object.values[i].value->u.string.ptr);
+			} else if (!strcmp(val->u.object.values[i].name, kPDKeySetEventCurrentTime)) { // event time
 				tm = new Time(val->u.object.values[i].value->u.integer);
 			}
 		}
 
 		BFDLog("Session ID: %s", sessionID);
+		BFDLog("UUID for participant: %s", participantUUID);
 		BFDLog("event type: %s", eventType);
 		BFDLog("epoch value: %ld", tm->epoch());
 	}

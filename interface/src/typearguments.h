@@ -40,6 +40,7 @@ typedef struct {
 		struct {
 			struct {
 				char type[kPDCommonEventTypeStringLength];
+				char participantUUID[kBFStringUUIDStringLength];
 			} event;
 
 			struct {

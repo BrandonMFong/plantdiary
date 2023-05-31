@@ -85,7 +85,9 @@ int SetEvent(Arguments * args, PDInstruction * instr) {
 			kPDKeySetEventType,
 			args->type.set.event.type,
 			kPDKeySetEventCurrentTime,
-			BFTimeGetCurrentTime()
+			BFTimeGetCurrentTime(),
+			kPDKeySetEventParticipantUUID,
+			args->type.set.event.participantUUID
 		);
 
 		BFDLog("data: %s", instr->data);
