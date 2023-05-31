@@ -22,11 +22,12 @@ void SetHelp() {
 	printf("  sub commands\n");
 	printf("    - '%s' : creates an event for user\n", kArgumentSetEvent);
 	printf("      - '%s' <string> : specifies the type of event (%s, %s)\n", kArgumentSetEventType, kArgumentSetEventTypeWater, kArgumentSetEventTypeRepot);
+	printf("      - '%s' <string> : uuid of the participant affected by event\n", kArgumentSetEventParticipantUUID);
 	printf("    - '%s' : creates/modifies plant\n", kArgumentSetPlant);
-	printf("      - [ %s <string> ] : Plant name\n", kArgumentSetPlantName);
-	printf("      - [ %s <string> ] : Plant species.  Can be any string.  Treated as a label\n", kArgumentSetPlantSpecies);
+	printf("      - [ '%s' <string> ] : Plant name\n", kArgumentSetPlantName);
+	printf("      - [ '%s' <string> ] : Plant species.  Can be any string.  Treated as a label\n", kArgumentSetPlantSpecies);
 	printf("      - '%s' <string> : Plant uuid\n", kArgumentSetPlantUUID);
-	printf("      - %s | %s : Creates new or modifies plant\n", kArgumentSetPlantNew, kArgumentSetPlantModify);
+	printf("      - '%s' | '%s' : Creates new or modifies plant\n", kArgumentSetPlantNew, kArgumentSetPlantModify);
 
 }
 
@@ -64,6 +65,9 @@ int SetEvent(Arguments * args, PDInstruction * instr) {
 			BFErrorPrint("Please provide session ID");
 			result = 52;
 		}
+	} else if (strlen(args->type.set.event.participantUUID) == 0) {
+		result = 57;
+		BFErrorPrint("Please provide participant uuid");
 	} else {
 		strcpy(sessionID, args->sessionID);
 	}

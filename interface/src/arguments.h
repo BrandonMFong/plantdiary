@@ -29,12 +29,13 @@
 #define kArgumentSetEventType "-type"
 #define kArgumentSetEventTypeWater "water"
 #define kArgumentSetEventTypeRepot "repot"
+#define kArgumentSetEventParticipantUUID "-uuid"
 #define kArgumentSetPlant "plant"
 #define kArgumentSetPlantNew "--new"
 #define kArgumentSetPlantModify "--modify"
 #define kArgumentSetPlantName "-name"
 #define kArgumentSetPlantSpecies "-species"
-#define kArgumentSetPlantUUID "-uuid"
+#define kArgumentSetPlantUUID kArgumentSetEventParticipantUUID
 
 // Session
 #define kArgumentSessionStart "start"
