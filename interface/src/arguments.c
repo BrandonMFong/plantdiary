@@ -145,6 +145,11 @@ int ArgumentsParseArgumentsForSet(
 					strcpy(args->type.set.event.type, kPDSetEventTypePlantWater);
 				}
 			}
+		} else if (!strcmp(argv[i], kArgumentSetEventParticipantUUID)) {
+			if ((i + 1) < argc) {
+				i++;
+				strcpy(args->type.set.event.participantUUID, argv[i]);
+			}
 		} else if (!strcmp(argv[i], kArgumentSetPlantNew)) {
 			args->type.set.plant.option = kPDSetPlantOptionNew;
 		} else if (!strcmp(argv[i], kArgumentSetPlantModify)) {
@@ -162,7 +167,7 @@ int ArgumentsParseArgumentsForSet(
 		} else if (!strcmp(argv[i], kArgumentSetPlantUUID)) {
 			if ((i + 1) < argc) {
 				i++;
-				strncpy(args->type.set.plant.uuid, argv[i], kBFStringUUIDStringLength);
+				strcpy(args->type.set.plant.uuid, argv[i]);
 			}
 		}
 	}

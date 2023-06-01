@@ -148,8 +148,9 @@ int InstructorSet::executeEvent() {
 	int result = 0;
 	if (val == NULL) {
 		result = 54;
-	} else if (l != 3) {
+	} else if (l != 4) { // expected count
 		result = 55;
+		BFDLog("Unexpected count");
 	} else {
 		for (int i = 0; i < l; i++) {
 			if (!strcmp(val->u.object.values[i].name, kPDKeySetEventType)) { // event type
