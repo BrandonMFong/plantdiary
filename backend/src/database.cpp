@@ -236,7 +236,13 @@ int Database::setNewPlant(const char * plantName, const char * plantUUID, const 
 	return result;
 }
 
-int Database::setEvent(const char * type, const Time * eventTime, const char * eventUUID, const Entity * host, const List<Entity *> * participants) {
+int Database::setEvent(
+	const char * type,
+	const Time * eventTime,
+	const char * eventUUID,
+	const Entity * host,
+	const List<Entity *> * participants
+) {
 	int result = 0;
 	size_t size = 2 << 8;
 	char q[size];

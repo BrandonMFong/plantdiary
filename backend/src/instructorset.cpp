@@ -178,6 +178,11 @@ int InstructorSet::executeEvent() {
 		}
 	}
 
+	// Load participants (in this initial case, it's going to be a plant)
+	if (result == 0) {
+
+	}
+
 	char eventUUID[kBFStringUUIDStringLength];
 	if (result == 0) {
 		//participants.add((Entity *) user);
