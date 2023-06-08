@@ -157,8 +157,12 @@ int InstructorSet::executeEvent() {
 				strcpy(eventType, val->u.object.values[i].value->u.string.ptr);
 			} else if (!strcmp(val->u.object.values[i].name, kPDKeySessionID)) { // session id
 				strcpy(sessionID, val->u.object.values[i].value->u.string.ptr);
-			} else if (!strcmp(val->u.object.values[i].name, kPDKeySetEventParticipantUUID)) { // participant
-				strcpy(participantUUID, val->u.object.values[i].value->u.string.ptr);
+			} else if (!strcmp(val->u.object.values[i].name, kPDKeySetEventParticipantUUID)) { // participants
+				//strcpy(participantUUID, val->u.object.values[i].value->u.string.ptr);
+				json_value * val2 = val->u.object.values[i].value;
+				for (int j = 0; j < val2->u.array.length; j++) {
+					strcpy(participantUUID, val2->u.array.values[j]->u.string.ptr);
+				}
 			} else if (!strcmp(val->u.object.values[i].name, kPDKeySetEventCurrentTime)) { // event time
 				tm = new Time(val->u.object.values[i].value->u.integer);
 			}
