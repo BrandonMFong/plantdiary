@@ -127,6 +127,8 @@ int InstructorSet::executePlant() {
 	return result;
 }
 
+void InstructorSetFreeString(char * s) { free(s); }
+
 int InstructorSet::executeEvent() {
 	char eventType[kPDCommonEventTypeStringLength];
 	char sessionID[kBFStringUUIDStringLength];
@@ -135,7 +137,10 @@ int InstructorSet::executeEvent() {
 	short length = 0;
 	Time * tm = NULL;
 	List<Entity *> participants;
+	List<char *> participantUUIDS;
 	User * user = NULL;
+
+	participantUUIDS.setDeallocateCallback(InstructorSetFreeString);
 
 	BFDLog("An event will be logged");
 
@@ -152,16 +157,19 @@ int InstructorSet::executeEvent() {
 		result = 55;
 		BFDLog("Unexpected count");
 	} else {
-		for (int i = 0; i < l; i++) {
+		for (int i = 0; (i < l) && (result == 0); i++) {
 			if (!strcmp(val->u.object.values[i].name, kPDKeySetEventType)) { // event type
 				strcpy(eventType, val->u.object.values[i].value->u.string.ptr);
 			} else if (!strcmp(val->u.object.values[i].name, kPDKeySessionID)) { // session id
 				strcpy(sessionID, val->u.object.values[i].value->u.string.ptr);
 			} else if (!strcmp(val->u.object.values[i].name, kPDKeySetEventParticipantUUID)) { // participants
-				//strcpy(participantUUID, val->u.object.values[i].value->u.string.ptr);
 				json_value * val2 = val->u.object.values[i].value;
 				for (int j = 0; j < val2->u.array.length; j++) {
 					strcpy(participantUUID, val2->u.array.values[j]->u.string.ptr);
+					char * tmp = BFStringCopyString(val2->u.array.values[j]->u.string.ptr, &result);
+					if (result == 0) {
+						result = participantUUIDS.add(tmp);
+					}
 				}
 			} else if (!strcmp(val->u.object.values[i].name, kPDKeySetEventCurrentTime)) { // event time
 				tm = new Time(val->u.object.values[i].value->u.integer);
@@ -184,7 +192,10 @@ int InstructorSet::executeEvent() {
 
 	// Load participants (in this initial case, it's going to be a plant)
 	if (result == 0) {
+		// If type is water, then we are working with plant participants
+		if (!strcmp(eventType, kPDSetEventTypePlantWater)) {
 
+		}
 	}
 
 	char eventUUID[kBFStringUUIDStringLength];
@@ -203,6 +214,7 @@ int InstructorSet::executeEvent() {
 	}
 
 	Delete(tm);
+	json_value_free(val);
 
 	return 0;
 }
