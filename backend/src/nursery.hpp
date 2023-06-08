@@ -25,7 +25,12 @@ PUBLIC:
 	 */
 	int createNewPlant(const char * userSessionID, const char * name, const char * speciesName, const BF::Time * birthDate);
 
+	/**
+	 * modifies plant with uuid
+	 */
 	int modifyPlant(const char * plantUUID, const char * name, const char * species);
+
+	Plant * plantForUUID(const char * plantUUID, int * err);
 
 PRIVATE:
 	Nursery();

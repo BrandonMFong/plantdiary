@@ -132,7 +132,6 @@ void InstructorSetFreeString(char * s) { free(s); }
 int InstructorSet::executeEvent() {
 	char eventType[kPDCommonEventTypeStringLength];
 	char sessionID[kBFStringUUIDStringLength];
-	char participantUUID[kBFStringUUIDStringLength]; // name of participant this event affects
 	char data[kPDInstructionDataMaxLength];
 	short length = 0;
 	Time * tm = NULL;
@@ -165,7 +164,6 @@ int InstructorSet::executeEvent() {
 			} else if (!strcmp(val->u.object.values[i].name, kPDKeySetEventParticipantUUID)) { // participants
 				json_value * val2 = val->u.object.values[i].value;
 				for (int j = 0; j < val2->u.array.length; j++) {
-					strcpy(participantUUID, val2->u.array.values[j]->u.string.ptr);
 					char * tmp = BFStringCopyString(val2->u.array.values[j]->u.string.ptr, &result);
 					if (result == 0) {
 						result = participantUUIDS.add(tmp);
@@ -177,7 +175,6 @@ int InstructorSet::executeEvent() {
 		}
 
 		BFDLog("Session ID: %s", sessionID);
-		BFDLog("UUID for participant: %s", participantUUID);
 		BFDLog("event type: %s", eventType);
 		BFDLog("epoch value: %ld", tm->epoch());
 	}
@@ -191,10 +188,19 @@ int InstructorSet::executeEvent() {
 	}
 
 	// Load participants (in this initial case, it's going to be a plant)
+	Plant * plant = NULL;
 	if (result == 0) {
 		// If type is water, then we are working with plant participants
 		if (!strcmp(eventType, kPDSetEventTypePlantWater)) {
+			List<char *>::Node * n = participantUUIDS.first();
+			for (; n; n = n->next()) {
+				// Get plant for uuid
+				plant = Nursery::shared()->plantForUUID(n->object(), &result);
 
+				if (result == 0) {
+					result = participants.add((Entity *) plant);
+				}
+			}
 		}
 	}
 
