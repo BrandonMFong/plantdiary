@@ -8,6 +8,7 @@
 #define PLANT_HPP
 
 #include <bflibcpp/accessorspecifiers.hpp>
+#include <bflibcpp/time.hpp>
 #include <uuid/uuid.h>
 #include <internal/limits.h>
 #include "entity.hpp"
@@ -18,7 +19,7 @@ class Plant : public Entity {
 	friend class Nursery;
 PUBLIC:
 	~Plant();
-	Plant * createPlant();
+	Plant * createPlant(const char * name, const char * species, BFTime birthTime, BFTime deathTime, BFTime ownershipTime);
 
 	/// Returns the entity type Plant
 	Entity::Type type() const;

@@ -66,9 +66,23 @@ Database::~Database() {
 int Database::getPlantForUUID(const char * uuid, Plant ** plant) {
 	int result = 0;
 	char q[512];
-	sprintf(q, "select p.name as plant_name, p.species as plant_species, p.birth_date as plant_birth, p.death_date as plant_death, upb.start_date as start_date_ownership from plants as p join users_plants_bridge as upb on '%s' = upb.plant_uuid", uuid);
+	const char * queryKeyPlantName = "plant_name";
+	const char * queryKeyPlantSpecies = "plant_species";
+	const char * queryKeyPlantBirthDate = "plant_birth_date";
+	const char * queryKeyPlantDeathDate = "plant_death_date";
+	const char * queryKeyPlantOwnershipStartDate = "start_date_ownership";
+	sprintf(
+		q, 
+		"select p.name as '%s', p.species as '%s', unix_timestamp(p.birth_date) as '%s', unix_timestamp(p.death_date) as '%s', unix_timestamp(upb.start_date) as '%s' from plants as p join users_plants_bridge as upb on '%s' = upb.plant_uuid",
+		queryKeyPlantName,
+		queryKeyPlantSpecies,
+		queryKeyPlantBirthDate,
+		queryKeyPlantDeathDate,
+		queryKeyPlantOwnershipStartDate,
+		uuid
+	);
 
-	if (!user) {
+	if (!plant) {
 		result = 2;
 	} else {
 		try {
