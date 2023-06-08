@@ -23,6 +23,7 @@
 #endif
 
 class User;
+class Plant;
 
 /**
  *
@@ -46,6 +47,8 @@ PUBLIC:
 
 	int setNewPlant(const char * plantName, const char * plantUUID, const char * species, const BF::Time * birthDate, const char * userUUID);
 	int modifyPlant(const char * plantUUID, const char * name, const char * species);
+
+	int getPlantForUUID(const char * uuid, Plant ** plant);
 
 PRIVATE:
 	Database();

@@ -18,6 +18,7 @@ class Plant : public Entity {
 	friend class Nursery;
 PUBLIC:
 	~Plant();
+	Plant * createPlant();
 
 	/// Returns the entity type Plant
 	Entity::Type type() const;

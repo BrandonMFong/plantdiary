@@ -63,6 +63,51 @@ Database::~Database() {
 	Delete(this->_connection);
 }
 
+int Database::getPlantForUUID(const char * uuid, Plant ** plant) {
+	int result = 0;
+	char q[512];
+	sprintf(q, "select p.name as plant_name, p.species as plant_species, p.birth_date as plant_birth, p.death_date as plant_death, upb.start_date as start_date_ownership from plants as p join users_plants_bridge as upb on '%s' = upb.plant_uuid", uuid);
+
+	if (!user) {
+		result = 2;
+	} else {
+		try {
+			sql::Statement * stmt = 0;
+			sql::ResultSet * res = 0;
+
+			stmt = this->_connection->createStatement();
+			res = stmt->executeQuery(q); 
+			if (!res->next()) {
+				result = 3;
+				BFDLog("null result");
+			} else {
+				int error = 0;
+				User * u = User::createUser(
+					res->getString("uuid").c_str(),
+					res->getString("username").c_str(),
+					res->getString("first_name").c_str(),
+					res->getString("last_name").c_str(),
+					&error
+				);
+
+				if (error) {
+					BFDLog("Error with creating user, %d", error);
+				} else {
+					*user = u;
+				}
+			}
+
+			Delete(res);
+			Delete(stmt);
+		} catch (sql::SQLException &e) {
+			result = 1;
+			this->logException(e, __FUNCTION__);
+		}
+	}
+
+	return result;
+}
+
 int Database::getUserForCredentials(const char * username, const char * hash, User ** user) {
 	int result = 0;
 	char q[512];
