@@ -231,10 +231,10 @@ int InstructorSet::executeEvent() {
 
 	// Send information about the event
 	if (result == 0) {
-		PDResponse response;
-		strcpy(response.data, "{}");
-		response.length = strlen(strcpy(response.data, "{}"));
-		result = Pipe::shared()->writeResponse(&response);
+		PDResponse resp;
+		resp.length = snprintf(resp.data, kPDResponseDataMaxLength, kPDJsonStdReturnMessage, result, "");
+		result = Pipe::shared()->writeResponse(&resp);
+		BFDLog("Sent response");
 	}
 
 	Delete(tm);
