@@ -5,13 +5,15 @@
  */
 
 #include "plant.hpp"
+#include <string.h>
 
 void Plant::release(Plant * p) {
 	delete p;
 }
 
-Plant::Plant() : Entity(0) {
+Plant::Plant(const char * uuid) : Entity(uuid) {
 	this->_name[0] = '\0';
+	this->_species[0] = '\0';
 }
 
 Plant::~Plant() {
@@ -26,9 +28,27 @@ const char * Plant::name() const {
 	return this->_name;
 }
 
-Plant * Plant::createPlant(const char * name, const char * species, BFTime birthTime, BFTime deathTime, BFTime ownershipTime, int * err) {
-	Plant * result = NULL;
+Plant * Plant::createPlant(
+	const char * uuid,
+	const char * name,
+	const char * species,
+	BFTime birthTime,
+	BFTime deathTime, 
+	BFTime ownershipTime,
+	const char * ownerUUID,
+	int * err
+) {
 	int error = 0;
+	Plant * result = new Plant(uuid);
+
+	if (!result) {
+		error = 3;
+	} else {
+		strcpy(result->_name, name);
+		strcpy(result->_species, species);
+
+		result->_user
+	}
 
 	if (err) { *err = error; }
 

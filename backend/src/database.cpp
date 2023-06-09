@@ -67,6 +67,7 @@ Database::~Database() {
 int Database::copyPlantListForUserUUID(const char * userUUID, List<Plant *> * plants) {
 	int result = 0;
 	char q[512];
+	const char * queryKeyPlantUUID = "plant_uuid";
 	const char * queryKeyPlantName = "plant_name";
 	const char * queryKeyPlantSpecies = "plant_species";
 	const char * queryKeyPlantBirthDate = "plant_birth_date";
@@ -74,7 +75,8 @@ int Database::copyPlantListForUserUUID(const char * userUUID, List<Plant *> * pl
 	const char * queryKeyPlantOwnershipStartDate = "start_date_ownership";
 	sprintf(
 		q, 
-		"select p.name as '%s', p.species as '%s', unix_timestamp(p.birth_date) as '%s', unix_timestamp(p.death_date) as '%s', unix_timestamp(upb.start_date) as '%s' from plants as p join users_plants_bridge as upb on p.uuid = upb.plant_uuid where upb.user_uuid = '%s'",
+		"select p.uuid as '%s', p.name as '%s', p.species as '%s', unix_timestamp(p.birth_date) as '%s', unix_timestamp(p.death_date) as '%s', unix_timestamp(upb.start_date) as '%s' from plants as p join users_plants_bridge as upb on p.uuid = upb.plant_uuid where upb.user_uuid = '%s'",
+		queryKeyPlantUUID,
 		queryKeyPlantName,
 		queryKeyPlantSpecies,
 		queryKeyPlantBirthDate,
@@ -96,6 +98,7 @@ int Database::copyPlantListForUserUUID(const char * userUUID, List<Plant *> * pl
 			while (res->next()) {
 				int error = 0;
 				Plant * p = Plant::createPlant(
+					res->getString(queryKeyPlantUUID).c_str(),
 					res->getString(queryKeyPlantName).c_str(),
 					res->getString(queryKeyPlantSpecies).c_str(),
 					(BFTime) res->getUInt(queryKeyPlantBirthDate),
