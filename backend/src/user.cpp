@@ -19,6 +19,7 @@ User * User::createUser(
 	const char * lastName, 
 	int * err
 ) {
+	int error = 0;
 	if (!uuid || !firstName) {
 		if (err) *err = 1;
 		return NULL;
@@ -31,6 +32,10 @@ User * User::createUser(
 
 		// Create uuid for user session
 		BFStringGetRandomUUIDString(res->_sessionID);
+
+		error = res->loadPlants();
+
+		if (err) *err = error;
 
 		return res;
 	}
@@ -48,7 +53,14 @@ User::~User() {
 }
 
 int User::loadPlants() {
+	int result = 0;
 	return 0;
+}
+
+Plant * User::plantForUUID(const char * plantUUID, int * err) {
+	Plant * result = 0;
+
+	return result;
 }
 
 int User::plantCount() {

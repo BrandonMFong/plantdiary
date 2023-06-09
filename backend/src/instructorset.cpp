@@ -11,6 +11,7 @@
 #include "pipe.hpp"
 #include "pool.hpp"
 #include "nursery.hpp"
+#include "user.hpp"
 #include <uuid/uuid.h>
 
 using namespace BF;
@@ -195,7 +196,7 @@ int InstructorSet::executeEvent() {
 			List<char *>::Node * n = participantUUIDS.first();
 			for (; n; n = n->next()) {
 				// Get plant for uuid
-				plant = Nursery::shared()->plantForUUID(n->object(), &result);
+				plant = user->plantForUUID(n->object(), &result);
 
 				if (result == 0) {
 					result = participants.add((Entity *) plant);

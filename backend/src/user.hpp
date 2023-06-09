@@ -28,12 +28,8 @@ PUBLIC:
 		int * err
 	);
 
-	/**
-	 * Initially finds all of user's plants
-	 */
-	int loadPlants();
-
 	int plantCount();
+	Plant * plantForUUID(const char * plantUUID, int * err);
 
 	const char * username();
 	const char * firstname();
@@ -45,6 +41,11 @@ PUBLIC:
 PRIVATE:
 
 	User(const char * uuid);	
+
+	/**
+	 * Initially finds all of user's plants
+	 */
+	int loadPlants();
 
 	/**
 	 * Plants we own
