@@ -64,9 +64,10 @@ Database::~Database() {
 	Delete(this->_connection);
 }
 
-int Database::getPlantForUUID(const char * uuid, Plant ** plant) {
+int Database::copyPlantListForUserUUID(const char * userUUID, List<Plant *> * plants) {
 	int result = 0;
 	char q[512];
+	const char * queryKeyPlantUUID = "plant_uuid";
 	const char * queryKeyPlantName = "plant_name";
 	const char * queryKeyPlantSpecies = "plant_species";
 	const char * queryKeyPlantBirthDate = "plant_birth_date";
@@ -74,30 +75,30 @@ int Database::getPlantForUUID(const char * uuid, Plant ** plant) {
 	const char * queryKeyPlantOwnershipStartDate = "start_date_ownership";
 	sprintf(
 		q, 
-		"select p.name as '%s', p.species as '%s', unix_timestamp(p.birth_date) as '%s', unix_timestamp(p.death_date) as '%s', unix_timestamp(upb.start_date) as '%s' from plants as p join users_plants_bridge as upb on '%s' = upb.plant_uuid",
+		"select p.uuid as '%s', p.name as '%s', p.species as '%s', unix_timestamp(p.birth_date) as '%s', unix_timestamp(p.death_date) as '%s', unix_timestamp(upb.start_date) as '%s' from plants as p join users_plants_bridge as upb on p.uuid = upb.plant_uuid where upb.user_uuid = '%s'",
+		queryKeyPlantUUID,
 		queryKeyPlantName,
 		queryKeyPlantSpecies,
 		queryKeyPlantBirthDate,
 		queryKeyPlantDeathDate,
 		queryKeyPlantOwnershipStartDate,
-		uuid
+		userUUID
 	);
 
-	if (!plant) {
+	if (!plants) {
 		result = 2;
 	} else {
 		try {
 			sql::Statement * stmt = 0;
 			sql::ResultSet * res = 0;
 
+			BFDLog("Query: %s", q);
 			stmt = this->_connection->createStatement();
 			res = stmt->executeQuery(q); 
-			if (!res->next()) {
-				result = 3;
-				BFDLog("null result");
-			} else {
+			while (res->next()) {
 				int error = 0;
 				Plant * p = Plant::createPlant(
+					res->getString(queryKeyPlantUUID).c_str(),
 					res->getString(queryKeyPlantName).c_str(),
 					res->getString(queryKeyPlantSpecies).c_str(),
 					(BFTime) res->getUInt(queryKeyPlantBirthDate),
@@ -109,7 +110,8 @@ int Database::getPlantForUUID(const char * uuid, Plant ** plant) {
 				if (error) {
 					BFDLog("Error with creating user, %d", error);
 				} else {
-					*plant = p;
+					BFDLog("User (%s) loaded plant: %s", userUUID, p->name());
+					result = plants->add(p);
 				}
 			}
 
@@ -243,6 +245,7 @@ int Database::modifyPlant(const char * plantUUID, const char * name, const char 
 	return result;
 }
 
+// TODO: pass back a Plant
 int Database::setNewPlant(const char * plantName, const char * plantUUID, const char * species, const Time * birthDate, const char * userUUID) {
 	int result = 0;
 	size_t size = 2 << 8;
@@ -302,7 +305,7 @@ int Database::setEvent(
 	const Time * eventTime,
 	const char * eventUUID,
 	const Entity * host,
-	const List<Entity *> * participants
+	const List<const Entity *> * participants
 ) {
 	int result = 0;
 	size_t size = 2 << 8;
@@ -365,9 +368,9 @@ int Database::setEvent(
 	// insert the participants
 	if (result == 0) {
 		char participantType[2 << 4];
-		const List<Entity *>::Node * n = participants->first();
+		const List<const Entity *>::Node * n = participants->first();
 		for (; n != NULL; n = n->next()) {
-			Entity * e = n->object();
+			const Entity * e = n->object();
 
 			if (!e) {
 				result = 2;

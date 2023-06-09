@@ -8,6 +8,7 @@
 
 #include <bflibcpp/accessorspecifiers.hpp>
 #include <bflibcpp/time.hpp>
+#include <bflibcpp/list.hpp>
 
 class Plant;
 
@@ -30,7 +31,8 @@ PUBLIC:
 	 */
 	int modifyPlant(const char * plantUUID, const char * name, const char * species);
 
-	Plant * plantForUUID(const char * plantUUID, int * err);
+	//Plant * plantForUUID(const char * plantUUID, int * err);
+	int copyPlantListForUserUUID(const char * userUUID, BF::List<Plant *> * plants);
 
 PRIVATE:
 	Nursery();
