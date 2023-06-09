@@ -21,10 +21,8 @@ PUBLIC:
 
 	/**
 	 * Inserts a new plant into the database
-	 *
-	 * userSessionID: The id for the user that is creating plant
 	 */
-	int createNewPlant(const char * userSessionID, const char * name, const char * speciesName, const BF::Time * birthDate);
+	int createNewPlantForUser(const char * userUUID, const char * name, const char * speciesName, const BF::Time * birthDate);
 
 	/**
 	 * modifies plant with uuid

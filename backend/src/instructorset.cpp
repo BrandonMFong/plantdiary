@@ -90,11 +90,20 @@ int InstructorSet::executePlant() {
 		BFDLog("plant species: %s", plantSpecies);
 	}
 
+	User * user = NULL;
+	if (result == 0) {
+		user = Pool::shared()->getUserForSessionID(sessionID);
+		if (user == NULL) {
+			result = 66;
+			BFDLog("Could not find user for session id: %s", sessionID);
+		}
+	}
+
 	// Create new plant under the user
 	if (result == 0) {
 		switch (option) {
 		case kPDSetPlantOptionNew:
-			result = Nursery::shared()->createNewPlant(sessionID, plantName, plantSpecies, tm);
+			result = Nursery::shared()->createNewPlantForUser(sessionID, plantName, plantSpecies, tm);
 			break;
 		case kPDSetPlantOptionModify:
 			result = Nursery::shared()->modifyPlant(
