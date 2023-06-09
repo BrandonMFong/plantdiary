@@ -61,7 +61,6 @@ int User::loadPlants() {
 }
 
 const Plant * User::plantForUUID(const char * plantUUID, int * err) {
-	Plant * result = 0;
 	List<Plant *>::Node * n = this->_plants.first();
 	for(; n; n = n->next()) {
 		if (!strcmp(n->object()->uuid(), plantUUID)) {
@@ -69,7 +68,8 @@ const Plant * User::plantForUUID(const char * plantUUID, int * err) {
 		}
 	}
 
-	return result;
+	if (err) *err = 2;
+	return NULL;
 }
 
 int User::plantCount() {
