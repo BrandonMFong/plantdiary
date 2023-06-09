@@ -245,6 +245,7 @@ int Database::modifyPlant(const char * plantUUID, const char * name, const char 
 	return result;
 }
 
+// TODO: pass back a Plant
 int Database::setNewPlant(const char * plantName, const char * plantUUID, const char * species, const Time * birthDate, const char * userUUID) {
 	int result = 0;
 	size_t size = 2 << 8;

@@ -54,3 +54,4 @@ Plant * Plant::createPlant(
 
 	return result;
 }
+
