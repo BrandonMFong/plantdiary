@@ -39,6 +39,10 @@ User * User::createUser(
 
 		error = res->loadPlants();
 
+		if (error == 0) {
+			BFDLog("User has %d plants", res->plantCount());
+		}
+
 		if (err) *err = error;
 
 		return res;
