@@ -6,8 +6,9 @@
 #ifndef KEYS_H
 #define KEYS_H
 
-#define kPDKeyStdReturnMessageError "error"
-#define kPDKeyStdReturnMessageDescription "description"
+#define kPDKeyStdReturnMessageError "stderr"
+#define kPDKeyStdReturnMessageErrorCode "code"
+#define kPDKeyStdReturnMessageErrorDescription "description"
 
 #define kPDKeyUsername "username"
 #define kPDKeyPassword "password"

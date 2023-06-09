@@ -10,7 +10,7 @@
 
 #include "keys.h"
 
-#define kPDJsonStdReturnMessage "{\"" kPDKeyStdReturnMessageError "\" : %d, \"" kPDKeyStdReturnMessageDescription "\" : \"%s\" }"
+#define kPDJsonStdReturnMessage "{\"" kPDKeyStdReturnMessageError "\" : {\"" kPDKeyStdReturnMessageErrorCode "\" : %d, \"" kPDKeyStdReturnMessageErrorDescription "\" : \"%s\" }}"
 
 #define kPDJsonSessionStart "{\"%s\" : \"%s\", \"%s\" : \"%x\"}"
 #define kPDJsonSessionID "{\"%s\" : \"%s\"}"
