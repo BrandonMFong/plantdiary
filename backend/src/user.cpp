@@ -8,6 +8,7 @@
 #include <bflibcpp/bflibcpp.hpp>
 #include <string.h>
 #include "plant.hpp"
+#include "nursery.hpp"
 
 using namespace BF;
 
@@ -57,7 +58,7 @@ User::~User() {
 
 int User::loadPlants() {
 	int result = 0;
-	return 0;
+	return Nursery::shared()->copyPlantListForUserUUID(this->uuid(), &this->_plants);
 }
 
 const Plant * User::plantForUUID(const char * plantUUID, int * err) {

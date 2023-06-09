@@ -48,7 +48,7 @@ PUBLIC:
 	int setNewPlant(const char * plantName, const char * plantUUID, const char * species, const BF::Time * birthDate, const char * userUUID);
 	int modifyPlant(const char * plantUUID, const char * name, const char * species);
 
-	int getPlantForUUID(const char * uuid, Plant ** plant);
+	int copyPlantListForUserUUID(const char * userUUID, BF::List<Plant *> * plants);
 
 PRIVATE:
 	Database();

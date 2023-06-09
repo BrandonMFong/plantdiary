@@ -64,7 +64,7 @@ Database::~Database() {
 	Delete(this->_connection);
 }
 
-int Database::getPlantForUUID(const char * uuid, Plant ** plant) {
+int Database::copyPlantListForUserUUID(const char * userUUID, List<Plant *> * plants) {
 	int result = 0;
 	char q[512];
 	const char * queryKeyPlantName = "plant_name";
@@ -74,16 +74,16 @@ int Database::getPlantForUUID(const char * uuid, Plant ** plant) {
 	const char * queryKeyPlantOwnershipStartDate = "start_date_ownership";
 	sprintf(
 		q, 
-		"select p.name as '%s', p.species as '%s', unix_timestamp(p.birth_date) as '%s', unix_timestamp(p.death_date) as '%s', unix_timestamp(upb.start_date) as '%s' from plants as p join users_plants_bridge as upb on '%s' = upb.plant_uuid",
+		"select p.name as '%s', p.species as '%s', unix_timestamp(p.birth_date) as '%s', unix_timestamp(p.death_date) as '%s', unix_timestamp(upb.start_date) as '%s' from plants as p join users_plants_bridge as upb on p.uuid = upb.plant_uuid where upb.user_uuid = '%s'",
 		queryKeyPlantName,
 		queryKeyPlantSpecies,
 		queryKeyPlantBirthDate,
 		queryKeyPlantDeathDate,
 		queryKeyPlantOwnershipStartDate,
-		uuid
+		userUUID
 	);
 
-	if (!plant) {
+	if (!plants) {
 		result = 2;
 	} else {
 		try {
@@ -92,10 +92,7 @@ int Database::getPlantForUUID(const char * uuid, Plant ** plant) {
 
 			stmt = this->_connection->createStatement();
 			res = stmt->executeQuery(q); 
-			if (!res->next()) {
-				result = 3;
-				BFDLog("null result");
-			} else {
+			while (res->next()) {
 				int error = 0;
 				Plant * p = Plant::createPlant(
 					res->getString(queryKeyPlantName).c_str(),
@@ -109,7 +106,7 @@ int Database::getPlantForUUID(const char * uuid, Plant ** plant) {
 				if (error) {
 					BFDLog("Error with creating user, %d", error);
 				} else {
-					*plant = p;
+					result = plants->add(p);
 				}
 			}
 
