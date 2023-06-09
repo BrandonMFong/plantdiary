@@ -21,6 +21,7 @@ void help(Arguments * args) {
 	printf("  %s : Initializes the user's environment for use\n", kArgumentInit);
 	printf("  %s : Returns version for cli and gackground tool\n", kArgumentVersion);
 	printf("  %s : Returns data based on subcommand\n", kArgumentGet);
+	printf("  %s : Creates/Modifies data\n", kArgumentSet);
 	printf("  %s : Assists session status\n", kArgumentSession);
 	printf("  %s : Provides more details on commands\n", kArgumentHelp);
 

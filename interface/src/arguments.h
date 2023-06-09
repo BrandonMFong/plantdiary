@@ -8,6 +8,7 @@
 
 #include "typearguments.h"
 #include <internal/setevents.h>
+#include <bflibc/stringutils.h>
 
 /// commands
 #define kArgumentHelp "help"
@@ -21,12 +22,20 @@
 
 // Get
 #define kArgumentGetPlantCount "plantcount"
+#define kArgumentGetPlantList "plantlist"
 
 // Set
 #define kArgumentSetEvent "event"
 #define kArgumentSetEventType "-type"
-#define kArgumentSetEventTypeWater kPDSetEventTypeWater
-#define kArgumentSetEventTypeRepot kPDSetEventTypeRepot
+#define kArgumentSetEventTypeWater "water"
+#define kArgumentSetEventTypeRepot "repot"
+#define kArgumentSetEventParticipantUUID "-uuid"
+#define kArgumentSetPlant "plant"
+#define kArgumentSetPlantNew "--new"
+#define kArgumentSetPlantModify "--modify"
+#define kArgumentSetPlantName "-name"
+#define kArgumentSetPlantSpecies "-species"
+#define kArgumentSetPlantUUID kArgumentSetEventParticipantUUID
 
 // Session
 #define kArgumentSessionStart "start"

@@ -8,11 +8,17 @@
 #ifndef INTERNAL_JSON_H
 #define INTERNAL_JSON_H
 
+#include "keys.h"
+
+#define kPDJsonStdReturnMessage "{\"" kPDKeyStdReturnMessageError "\" : {\"" kPDKeyStdReturnMessageErrorCode "\" : %d, \"" kPDKeyStdReturnMessageErrorDescription "\" : \"%s\" }}"
+
 #define kPDJsonSessionStart "{\"%s\" : \"%s\", \"%s\" : \"%x\"}"
 #define kPDJsonSessionID "{\"%s\" : \"%s\"}"
 #define kPDJsonSessionStatus kPDJsonSessionStart
 #define kPDJsonSessionStop "{\"%s\" : %d}"
-#define kPDJsonSetEvent "{\"%s\" : \"%s\", \"%s\" : %d}"
+#define kPDJsonSetEvent "{\"%s\" : \"%s\", \"%s\" : \"%s\", \"%s\" : %d, \"%s\" : [ \"%s\" ]}"
+#define kPDJsonSetNewPlant "{\"%s\" : \"%s\", \"%s\" : \"%s\", \"%s\" : %d, \"%s\" : %d, \"%s\" : \"%s\"}"
+#define kPDJsonSetModifyPlant "{\"%s\" : %d, \"%s\" : \"%s\", \"%s\" : \"%s\", \"%s\" : \"%s\", \"%s\" : \"%s\"}"
 
 #endif // INTERNAL_JSON_H
 

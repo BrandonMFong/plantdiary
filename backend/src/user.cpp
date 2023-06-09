@@ -5,7 +5,16 @@
  */
 
 #include "user.hpp"
+#include <bflibcpp/bflibcpp.hpp>
 #include <string.h>
+#include "plant.hpp"
+#include "nursery.hpp"
+
+using namespace BF;
+
+void User::release(User * u) {
+	delete u;
+}
 
 User * User::createUser(
 	const char * uuid, 
@@ -14,6 +23,7 @@ User * User::createUser(
 	const char * lastName, 
 	int * err
 ) {
+	int error = 0;
 	if (!uuid || !firstName) {
 		if (err) *err = 1;
 		return NULL;
@@ -24,10 +34,16 @@ User * User::createUser(
 
 		if (lastName) strcpy(res->_lastName, lastName);
 
-		// Create uuid for user
-		uuid_t bin;
-		uuid_generate_random(bin);
-		uuid_unparse_lower(bin, res->_sessionID);
+		// Create uuid for user session
+		BFStringGetRandomUUIDString(res->_sessionID);
+
+		error = res->loadPlants();
+
+		if (error == 0) {
+			BFDLog("User has %d plants", res->plantCount());
+		}
+
+		if (err) *err = error;
 
 		return res;
 	}
@@ -45,26 +61,47 @@ User::~User() {
 }
 
 int User::loadPlants() {
-	return 0;
+	return Nursery::shared()->copyPlantListForUserUUID(this->uuid(), &this->_plants);
+}
+
+int User::reloadPlants() {
+	this->_plants.deleteAll();
+	return this->loadPlants();
+}
+
+const Plant * User::plantForUUID(const char * plantUUID, int * err) {
+	List<Plant *>::Node * n = this->_plants.first();
+	for(; n; n = n->next()) {
+		if (!strcmp(n->object()->uuid(), plantUUID)) {
+			return n->object();
+		}
+	}
+
+	if (err) *err = 2;
+	return NULL;
 }
 
 int User::plantCount() {
 	return this->_plants.count();
 }
 
-const char * User::username() {
+const char * User::username() const {
 	return this->_userName;
 }
 
-const char * User::firstname() {
+const char * User::firstname() const {
 	return this->_firstName;
 }
 
-const char * User::lastname() {
+const char * User::lastname() const {
 	return this->_lastName;
 }
 
-const char * User::sessionID() {
+const char * User::sessionID() const {
 	return this->_sessionID;
+}
+
+Entity::Type User::type() const {
+	return Entity::Type::kEntityTypeUser;
 }
 

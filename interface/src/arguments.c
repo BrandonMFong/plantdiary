@@ -22,12 +22,11 @@ int ArgumentsParseArguments(
 		result = 1;
 	} else {
 		// Initialize the struct
+		memset(args, 0, sizeof(Arguments));
 		args->command = kPDCommandUnknown;
 		args->subCommand = kPDSubCommandUnkown;
 		args->sessionID[0] = '\0';
-		args->type.session.print = false;
-		args->type.help.helpPDCommandArg[0] = '\0';
-		args->appName[0] = '\0';
+		args->type.set.plant.option = kPDSetPlantOptionNone;
 	
 		// Default command to help
 		args->command = kPDCommandHelp;
@@ -61,6 +60,14 @@ int ArgumentsParseArguments(
 				// Get
 				} else if (!strcmp(argv[i], kArgumentGet)) {
 					args->command = kPDCommandGet;
+					if ((i + 1) < argc) {
+						i++;
+						if (!strcmp(argv[i], kArgumentGetPlantCount)) {
+							args->subCommand = kPDSubCommandGetPlantCount;
+						} else if (!strcmp(argv[i], kArgumentGetPlantList)) {
+							args->subCommand = kPDSubCommandGetPlantList;
+						}
+					}
 				
 				// Set
 				} else if (!strcmp(argv[i], kArgumentSet)) {
@@ -69,6 +76,8 @@ int ArgumentsParseArguments(
 						i++;
 						if (!strcmp(argv[i], kArgumentSetEvent)) {
 							args->subCommand = kPDSubCommandSetEvent;
+						} else if (!strcmp(argv[i], kArgumentSetPlant)) {
+							args->subCommand = kPDSubCommandSetPlant;
 						}
 
 						result = ArgumentsParseArgumentsForSet(i, argc, argv, args);
@@ -132,7 +141,33 @@ int ArgumentsParseArgumentsForSet(
 		if (!strcmp(argv[i], kArgumentSetEventType)) {
 			if ((i + 1) < argc) {
 				i++;
-				strcpy(args->type.set.eventType, argv[i]);
+				if (!strcmp(argv[i], kArgumentSetEventTypeWater)) {
+					strcpy(args->type.set.event.type, kPDSetEventTypePlantWater);
+				}
+			}
+		} else if (!strcmp(argv[i], kArgumentSetEventParticipantUUID)) {
+			if ((i + 1) < argc) {
+				i++;
+				strcpy(args->type.set.event.participantUUID, argv[i]);
+			}
+		} else if (!strcmp(argv[i], kArgumentSetPlantNew)) {
+			args->type.set.plant.option = kPDSetPlantOptionNew;
+		} else if (!strcmp(argv[i], kArgumentSetPlantModify)) {
+			args->type.set.plant.option = kPDSetPlantOptionModify;
+		} else if (!strcmp(argv[i], kArgumentSetPlantName)) {
+			if ((i + 1) < argc) {
+				i++;
+				strncpy(args->type.set.plant.name, argv[i], kPDCommonPlantNameStringLength);
+			}
+		} else if (!strcmp(argv[i], kArgumentSetPlantSpecies)) {
+			if ((i + 1) < argc) {
+				i++;
+				strncpy(args->type.set.plant.species, argv[i], kPDCommonPlantSpeciesStringLength);
+			}
+		} else if (!strcmp(argv[i], kArgumentSetPlantUUID)) {
+			if ((i + 1) < argc) {
+				i++;
+				strcpy(args->type.set.plant.uuid, argv[i]);
 			}
 		}
 	}

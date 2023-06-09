@@ -6,30 +6,32 @@ include ../common/external/libs/makefiles/libpaths.mk
 
 ### Global
 BUILD_PATH = build
-FILES = plant database user pool pipe driver logger instructor instructorversion instructorget instructorsession instructorset entity
+FILES = plant database user pool pipe driver logger \
+instructor instructorversion instructorget instructorsession \
+instructorset entity nursery
 CXXLINKS = -lmysqlcppconn -lpthread -luuid
 
 ### Release settings
-R_CXXFLAGS += -I. -I../common/bin/bflib/release/ -I/usr/local/include/cppconn -I../common
+R_CXXFLAGS += -Isrc/ -I../common/bin/bflib/release/ -I/usr/local/include/cppconn -I../common
 R_BIN_NAME = plantdiaryd
 R_BUILD_PATH = $(BUILD_PATH)/release
 R_MAIN_FILE = src/main.cpp
-R_LIBRARIES = ../common/bin/bflib/release/bflibcpp/libbfcpp.a ../common/bin/json.a
+R_LIBRARIES = ../common/bin/bflib/release/bflibcpp/libbfcpp.a ../common/bin/json.a ../common/bin/common.a
 R_OBJECTS = $(patsubst %, $(R_BUILD_PATH)/%.o, $(FILES))
 
 ### Debug settings
-D_CXXFLAGS = -DDEBUG -g -I. -I../common/bin/bflib/debug/ -I/usr/local/include/cppconn -I../common
+D_CXXFLAGS = -DDEBUG -g -Isrc/ -I../common/bin/bflib/debug/ -I/usr/local/include/cppconn -I../common
 D_BIN_NAME = $(R_BIN_NAME)-debug
 D_BUILD_PATH = $(BUILD_PATH)/debug
 D_MAIN_FILE = $(R_MAIN_FILE)
-D_LIBRARIES = ../common/bin/bflib/debug/bflibcpp/libbfcpp-debug.a ../common/bin/json.a
+D_LIBRARIES = ../common/bin/bflib/debug/bflibcpp/libbfcpp-debug.a ../common/bin/json.a ../common/bin/common-debug.a
 D_OBJECTS = $(patsubst %, $(D_BUILD_PATH)/%.o, $(FILES))
 
 ### Test settings
-T_CXXFLAGS = $(D_CXXFLAGS) -DTESTING -I../common/external/libs/cpplib/testbench/
+T_CXXFLAGS = $(D_CXXFLAGS) -DTESTING -I../common/external/libs/bflibcpp/testbench/
 T_BIN_NAME = $(R_BIN_NAME)-test
 T_BUILD_PATH = $(BUILD_PATH)/test
-T_MAIN_FILE = src/testbench/tests.cpp
+T_MAIN_FILE = testbench/tests.cpp
 T_LIBRARIES = $(D_LIBRARIES)
 T_OBJECTS = $(patsubst %, $(T_BUILD_PATH)/%.o, $(FILES))
 

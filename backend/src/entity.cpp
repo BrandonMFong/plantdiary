@@ -6,6 +6,10 @@
 #include "entity.hpp"
 #include <cstring>
 
+void Entity::release(Entity * e) {
+	delete e;
+}
+
 Entity::Entity(const char * uuid) {
 	this->_uuid[0] = '\0';
 
@@ -18,7 +22,7 @@ Entity::~Entity() {
 
 }
 
-const char * Entity::uuid() {
+const char * Entity::uuid() const {
 	return this->_uuid;
 }
 

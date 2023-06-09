@@ -23,6 +23,11 @@ PRIVATE:
 	 * This writes into database
 	 */
 	int executeEvent();
+
+	/**
+	 * Modifies or adds plants
+	 */
+	int executePlant();
 };
 
 #endif // INSTRUCTORSET_HPP

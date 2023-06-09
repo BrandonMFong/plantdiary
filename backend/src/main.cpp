@@ -7,9 +7,17 @@
 
 #include "driver.hpp"
 
-int main(void) {
-	Driver::initialize();
+extern "C" {
+#include <bflibc/coreutils.h>
+}
 
-	return Driver::run();
+int main(void) {
+	int error = Driver::initialize();
+
+	if (error) {
+		BFErrorPrint("%d", error);
+	} else {
+		return Driver::run();
+	}
 }
 

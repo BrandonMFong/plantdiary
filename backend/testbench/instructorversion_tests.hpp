@@ -10,7 +10,7 @@
 
 #include "cpplib_tests.hpp"
 #include <instructorversion.hpp>
-#include <delete.hpp>
+#include <bflibcpp/delete.hpp>
 #include <string.h>
 
 int test_IVInit() {

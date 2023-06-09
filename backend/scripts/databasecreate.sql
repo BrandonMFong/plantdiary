@@ -23,23 +23,16 @@ CREATE TABLE IF NOT EXISTS users_passwords(
 	end_date DATETIME
 );
 
--- all available plants
-CREATE TABLE IF NOT EXISTS plant_types(
-	id INT AUTO_INCREMENT PRIMARY KEY,
-	user_uuid VARCHAR(255) NOT NULL,
-	name VARCHAR(255) NOT NULL,
-	start_date DATETIME,
-	end_date DATETIME
-);
-
 -- all actual plants users own
 CREATE TABLE IF NOT EXISTS plants(
 	id INT AUTO_INCREMENT PRIMARY KEY,
 	uuid VARCHAR(255) NOT NULL,
 	name VARCHAR(255) NOT NULL,
-	plant_type_id INT,
+	species VARCHAR(255),
 	birth_date DATETIME,
-	death_date DATETIME
+	death_date DATETIME,
+	start_date DATETIME,
+	end_date DATETIME
 );
 
 -- ownership table
@@ -54,10 +47,13 @@ CREATE TABLE IF NOT EXISTS users_plants_bridge(
 -- events
 CREATE TABLE IF NOT EXISTS events(
 	id INT AUTO_INCREMENT PRIMARY KEY,
-	event_type_id INT,
+	event_type_id INT NOT NULL,
+	event_uuid VARCHAR(255) NOT NULL,
 	name VARCHAR(255),
 	description VARCHAR(255),
-	event_date DATETIME
+	event_date DATETIME NOT NULL,
+	start_date DATETIME NOT NULL,
+	end_date DATETIME
 );
 
 -- event types
@@ -72,7 +68,7 @@ CREATE TABLE IF NOT EXISTS event_types(
 CREATE TABLE IF NOT EXISTS event_participants(
 	id INT AUTO_INCREMENT PRIMARY KEY,
 	event_id INT,
-	event_participant_type INT,
+	event_participant_type_id INT,
 	entity_uuid VARCHAR(255) /* Can be both user and plant */
 );
 
@@ -83,4 +79,16 @@ CREATE TABLE IF NOT EXISTS event_participant_types(
 	start_date DATETIME,
 	end_date DATETIME
 );
+
+INSERT INTO event_participant_types (name, start_date) values 
+("host", NOW()),
+("members", NOW()),
+("plants", NOW())
+;
+
+INSERT INTO event_types (name, start_date) values 
+("userlogin", NOW()),
+("plantwater", NOW()),
+("plantrepot", NOW())
+;
 

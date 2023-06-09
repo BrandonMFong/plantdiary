@@ -6,15 +6,19 @@ include external/libs/makefiles/libpaths.mk
 
 ### Global
 BUILD_PATH = build
-FILES = common
+FILES =
 CLINKS =
 
+COMMON_T_BIN_NAME = bin/common-tests
 COMMON_R_CFLAGS = -I. -I./external/libs/$(BF_LIB_RPATH_RELEASE) 
 COMMON_D_CFLAGS = $(COMMON_R_CFLAGS) -DDEBUG -g
+COMMON_T_CFLAGS = $(COMMON_D_CFLAGS) -DTESTING -I./external/libs/bflibcpp/testbench
 COMMON_R_BUILD_PATH = $(BUILD_PATH)/release
 COMMON_D_BUILD_PATH = $(BUILD_PATH)/debug
+COMMON_T_BUILD_PATH = $(COMMON_D_BUILD_PATH)
 COMMON_R_OBJECTS = $(patsubst %, $(COMMON_R_BUILD_PATH)/%.o, $(FILES))
 COMMON_D_OBJECTS = $(patsubst %, $(COMMON_D_BUILD_PATH)/%.o, $(FILES))
+COMMON_T_OBJECTS = $(COMMON_D_OBJECTS)
 
 all: mysql-connector-cpp libs json-parser common
 
@@ -51,9 +55,13 @@ common: $(COMMON_R_OBJECTS) $(COMMON_D_OBJECTS)
 	ar -rsc bin/$@.a $(COMMON_R_OBJECTS)
 	ar -rsc bin/$@-debug.a $(COMMON_D_OBJECTS)
 
-$(COMMON_R_BUILD_PATH)/%.o: ./%.c ./%.h
+$(COMMON_R_BUILD_PATH)/%.o: ./internal/%.c ./internal/%.h
 	gcc -c $< -o $@ $(COMMON_R_CFLAGS)
 
-$(COMMON_D_BUILD_PATH)/%.o: ./%.c ./%.h
+$(COMMON_D_BUILD_PATH)/%.o: ./internal/%.c ./internal/%.h
 	gcc -c $< -o $@ $(COMMON_D_CFLAGS)
+
+test: all
+	g++ testbench/tests.cpp -o $(COMMON_T_BIN_NAME) $(COMMON_T_CFLAGS)
+	./$(COMMON_T_BIN_NAME)
 

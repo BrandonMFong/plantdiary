@@ -7,6 +7,8 @@
 #define TYPEARGUMENTS_H
 
 #include <internal/instructions.h>
+#include <internal/setplantflags.h>
+#include <bflibc/stringutils.h>
 #include <uuid/uuid.h>
 #include <stdbool.h>
 #include <common.h>
@@ -23,17 +25,30 @@ typedef struct {
 	char sessionID[UUID_STR_LEN + 1];
 
 	union Type {
+		// Session
 		struct {
 			bool print;
 		} session;
 
+		// Help
 		struct {
 			/// The command that the user wants to get help with
 			char helpPDCommandArg[2 << 5];
 		} help;
 
+		// Set
 		struct {
-			char eventType[kPDCommonEventTypeStringLength];
+			struct {
+				char type[kPDCommonEventTypeStringLength];
+				char participantUUID[kBFStringUUIDStringLength];
+			} event;
+
+			struct {
+				PDSetPlantOption option;
+				char name[kPDCommonPlantNameStringLength];
+				char species[kPDCommonPlantSpeciesStringLength];
+				char uuid[kBFStringUUIDStringLength];
+			} plant;
 		} set;
 	} type;
 } Arguments;

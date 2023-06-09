@@ -10,7 +10,7 @@
 
 #include "cpplib_tests.hpp"
 #include <pool.hpp>
-#include <delete.hpp>
+#include <bflibcpp/delete.hpp>
 
 int test_PoolInit() {
 	int error = 0;

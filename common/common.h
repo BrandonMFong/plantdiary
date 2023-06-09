@@ -11,16 +11,14 @@
 #include "internal/json.h"
 #include "internal/keys.h"
 #include "internal/setevents.h"
+#include "internal/limits.h"
+#include "internal/setplantflags.h"
+#include "internal/values.h"
 
 // App data path
 #define kPDCommonAppDataPath "/tmp/plantdiary"
 
 #define kPDCommonFifoFilePathInbound kPDCommonAppDataPath"/plantdiaryfifoinbound"
 #define kPDCommonFifoFilePathOutbound kPDCommonAppDataPath"/plantdiaryfifooutbound"
-
-#define kPDCommonUsernameMaxLength 2 << 7
-#define kPDCommonPasswordMaxLength 2 << 7
-
-#define kPDCommonEventTypeStringLength 2 << 5
 
 #endif // PLANTDIARY_COMMON_H

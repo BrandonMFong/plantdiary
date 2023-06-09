@@ -6,6 +6,10 @@
 #ifndef KEYS_H
 #define KEYS_H
 
+#define kPDKeyStdReturnMessageError "stderr"
+#define kPDKeyStdReturnMessageErrorCode "code"
+#define kPDKeyStdReturnMessageErrorDescription "description"
+
 #define kPDKeyUsername "username"
 #define kPDKeyPassword "password"
 #define kPDKeySessionID "sessionid"
@@ -17,6 +21,13 @@
 
 // Seconds since January 1, 1970
 #define kPDKeySetEventCurrentTime "currtime"
+#define kPDKeySetPlantBirthdate "birth"
+#define kPDKeySetEventParticipantUUID "participantuuid"
+
+#define kPDKeySetPlantName "name"
+#define kPDKeySetPlantOption "option"
+#define kPDKeySetPlantSpecies "species"
+#define kPDKeySetPlantUUID "plantuuid"
 
 #endif // KEYS_H
 

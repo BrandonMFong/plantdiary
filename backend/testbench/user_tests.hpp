@@ -8,9 +8,9 @@
 
 #define ASSERT_PUBLIC_MEMBER_ACCESS
 
-#include "cpplib_tests.hpp"
+#include <cpplib_tests.hpp>
 #include <user.hpp>
-#include <delete.hpp>
+#include <bflibcpp/delete.hpp>
 
 int test_userinit() {
 	int error = 0;
