@@ -18,7 +18,11 @@ Entity::Type Plant::type() const {
 	return kEntityTypePlant;
 }
 
-Plant * Plant::createPlant(const char * name, const char * species, BFTime birthTime, BFTime deathTime, BFTime ownershipTime) {
+Plant * Plant::createPlant(const char * name, const char * species, BFTime birthTime, BFTime deathTime, BFTime ownershipTime, int * err) {
 	Plant * result = NULL;
+	int error = 0;
+
+	if (err) { *err = error; }
+
 	return result;
 }

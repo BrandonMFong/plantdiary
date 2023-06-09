@@ -65,9 +65,7 @@ int Nursery::modifyPlant(const char * plantUUID, const char * name, const char *
 
 Plant * Nursery::plantForUUID(const char * plantUUID, int * err) {
 	Plant * result = NULL;
-	int error = 0;
-
-	
+	int error = Database::shared()->getPlantForUUID(plantUUID, &result);
 
 	if (err) { *err = error; }
 

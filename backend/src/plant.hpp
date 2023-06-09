@@ -19,7 +19,7 @@ class Plant : public Entity {
 	friend class Nursery;
 PUBLIC:
 	~Plant();
-	Plant * createPlant(const char * name, const char * species, BFTime birthTime, BFTime deathTime, BFTime ownershipTime);
+	static Plant * createPlant(const char * name, const char * species, BFTime birthTime, BFTime deathTime, BFTime ownershipTime, int * err);
 
 	/// Returns the entity type Plant
 	Entity::Type type() const;

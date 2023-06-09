@@ -19,6 +19,7 @@
 #include <cppconn/prepared_statement.h>
 #include "user.hpp"
 #include "logger.hpp"
+#include "plant.hpp"
 
 using namespace std;
 using namespace BF;
@@ -96,18 +97,19 @@ int Database::getPlantForUUID(const char * uuid, Plant ** plant) {
 				BFDLog("null result");
 			} else {
 				int error = 0;
-				User * u = User::createUser(
-					res->getString("uuid").c_str(),
-					res->getString("username").c_str(),
-					res->getString("first_name").c_str(),
-					res->getString("last_name").c_str(),
+				Plant * p = Plant::createPlant(
+					res->getString(queryKeyPlantName).c_str(),
+					res->getString(queryKeyPlantSpecies).c_str(),
+					(BFTime) res->getUInt(queryKeyPlantBirthDate),
+					(BFTime) res->getUInt(queryKeyPlantDeathDate),
+					(BFTime) res->getUInt(queryKeyPlantOwnershipStartDate),
 					&error
 				);
 
 				if (error) {
 					BFDLog("Error with creating user, %d", error);
 				} else {
-					*user = u;
+					*plant = p;
 				}
 			}
 
