@@ -8,6 +8,10 @@
 #ifndef INTERNAL_JSON_H
 #define INTERNAL_JSON_H
 
+#include "keys.h"
+
+#define kPDJsonStdReturnMessage "{\"" kPDKeyStdReturnMessageError "\" : %d, \"" kPDKeyStdReturnMessageDescription "\" : \"%s\" }"
+
 #define kPDJsonSessionStart "{\"%s\" : \"%s\", \"%s\" : \"%x\"}"
 #define kPDJsonSessionID "{\"%s\" : \"%s\"}"
 #define kPDJsonSessionStatus kPDJsonSessionStart

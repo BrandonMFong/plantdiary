@@ -131,10 +131,9 @@ int InstructorSet::executePlant() {
 	// Send information about the new plant
 	if (result == 0) {
 		BFDLog("Sending response");
-		PDResponse response;
-		strcpy(response.data, "{}");
-		response.length = strlen(strcpy(response.data, "{}"));
-		result = Pipe::shared()->writeResponse(&response);
+		PDResponse resp;
+		resp.length = snprintf(resp.data, kPDResponseDataMaxLength, kPDJsonStdReturnMessage, result, "");
+		result = Pipe::shared()->writeResponse(&resp);
 		BFDLog("Sent response");
 	}
 
