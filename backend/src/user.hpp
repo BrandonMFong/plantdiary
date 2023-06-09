@@ -34,21 +34,28 @@ PUBLIC:
 	int plantCount();
 	const Plant * plantForUUID(const char * plantUUID, int * err);
 
-	const char * username();
-	const char * firstname();
-	const char * lastname();
-	const char * sessionID();
-
+	const char * username() const;
+	const char * firstname() const;
+	const char * lastname() const;
+	const char * sessionID() const;
+	
 	Entity::Type type() const;
-
-PRIVATE:
-
-	User(const char * uuid);	
 
 	/**
 	 * Initially finds all of user's plants
 	 */
 	int loadPlants();
+
+	/**
+	 * Clears plant array and calls loadPlants to get a clear slate
+	 *
+	 * Will this affect performance if we have a lot of plants
+	 */
+	int reloadPlants();
+
+PRIVATE:
+
+	User(const char * uuid);	
 
 	/**
 	 * Plants we own

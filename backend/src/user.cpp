@@ -64,6 +64,11 @@ int User::loadPlants() {
 	return Nursery::shared()->copyPlantListForUserUUID(this->uuid(), &this->_plants);
 }
 
+int User::reloadPlants() {
+	this->_plants.deleteAll();
+	return this->loadPlants();
+}
+
 const Plant * User::plantForUUID(const char * plantUUID, int * err) {
 	List<Plant *>::Node * n = this->_plants.first();
 	for(; n; n = n->next()) {
@@ -80,19 +85,19 @@ int User::plantCount() {
 	return this->_plants.count();
 }
 
-const char * User::username() {
+const char * User::username() const {
 	return this->_userName;
 }
 
-const char * User::firstname() {
+const char * User::firstname() const {
 	return this->_firstName;
 }
 
-const char * User::lastname() {
+const char * User::lastname() const {
 	return this->_lastName;
 }
 
-const char * User::sessionID() {
+const char * User::sessionID() const {
 	return this->_sessionID;
 }
 

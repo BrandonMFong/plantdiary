@@ -103,7 +103,7 @@ int InstructorSet::executePlant() {
 	if (result == 0) {
 		switch (option) {
 		case kPDSetPlantOptionNew:
-			result = Nursery::shared()->createNewPlantForUser(sessionID, plantName, plantSpecies, tm);
+			result = Nursery::shared()->createNewPlantForUser(user->uuid(), plantName, plantSpecies, tm);
 			break;
 		case kPDSetPlantOptionModify:
 			result = Nursery::shared()->modifyPlant(
@@ -118,6 +118,11 @@ int InstructorSet::executePlant() {
 			result = 68;
 			break;
 		}
+	}
+
+	// Tell user they need to update their plants
+	if (result == 0) {
+		result = user->reloadPlants();
 	}
 
 	// Send information about the new plant
