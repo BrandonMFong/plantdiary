@@ -302,7 +302,7 @@ int Database::setEvent(
 	const Time * eventTime,
 	const char * eventUUID,
 	const Entity * host,
-	const List<Entity *> * participants
+	const List<const Entity *> * participants
 ) {
 	int result = 0;
 	size_t size = 2 << 8;
@@ -365,9 +365,9 @@ int Database::setEvent(
 	// insert the participants
 	if (result == 0) {
 		char participantType[2 << 4];
-		const List<Entity *>::Node * n = participants->first();
+		const List<const Entity *>::Node * n = participants->first();
 		for (; n != NULL; n = n->next()) {
-			Entity * e = n->object();
+			const Entity * e = n->object();
 
 			if (!e) {
 				result = 2;

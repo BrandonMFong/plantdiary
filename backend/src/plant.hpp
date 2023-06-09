@@ -13,6 +13,10 @@
 #include <internal/limits.h>
 #include "entity.hpp"
 
+extern "C" {
+#include <bflibc/stringutils.h>
+}
+
 class Nursery;
 
 class Plant : public Entity {
@@ -30,6 +34,9 @@ PUBLIC:
 	 */
 	const char * species() const;
 
+	/// returns uuid
+	const char * uuid() const;
+
 PRIVATE:
 	Plant();
 
@@ -37,6 +44,9 @@ PRIVATE:
 
 	/// Holds species type
 	char _species[kPDCommonPlantSpeciesStringLength];
+
+	/// Plant uuid
+	char _uuid[kBFStringUUIDStringLength];
 };
 
 #endif // PLANT_HPP

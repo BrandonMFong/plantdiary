@@ -7,6 +7,9 @@
 #include "user.hpp"
 #include <bflibcpp/bflibcpp.hpp>
 #include <string.h>
+#include "plant.hpp"
+
+using namespace BF;
 
 void User::release(User * u) {
 	delete u;
@@ -57,8 +60,14 @@ int User::loadPlants() {
 	return 0;
 }
 
-Plant * User::plantForUUID(const char * plantUUID, int * err) {
+const Plant * User::plantForUUID(const char * plantUUID, int * err) {
 	Plant * result = 0;
+	List<Plant *>::Node * n = this->_plants.first();
+	for(; n; n = n->next()) {
+		if (!strcmp(n->object()->uuid(), plantUUID)) {
+			return n->object();
+		}
+	}
 
 	return result;
 }

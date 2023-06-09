@@ -8,10 +8,13 @@
 #define USERS_HPP
 
 #include <bflibcpp/accessorspecifiers.hpp>
-#include <uuid/uuid.h>
 #include <bflibcpp/list.hpp>
 #include <common.h>
 #include "entity.hpp"
+
+extern "C" {
+#include <bflibc/stringutils.h>
+}
 
 class Plant;
 
@@ -29,7 +32,7 @@ PUBLIC:
 	);
 
 	int plantCount();
-	Plant * plantForUUID(const char * plantUUID, int * err);
+	const Plant * plantForUUID(const char * plantUUID, int * err);
 
 	const char * username();
 	const char * firstname();
@@ -55,7 +58,7 @@ PRIVATE:
 	char _firstName[kPDCommonUsernameMaxLength];
 	char _lastName[kPDCommonUsernameMaxLength];
 	char _userName[kPDCommonUsernameMaxLength];
-	char _sessionID[UUID_STR_LEN];
+	char _sessionID[kBFStringUUIDStringLength];
 };
 
 #endif // USERS_HPP

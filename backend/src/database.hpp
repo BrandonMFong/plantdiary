@@ -43,7 +43,7 @@ PUBLIC:
 	/**
 	 * Inserts an entry to the events table
 	 */
-	int setEvent(const char * type, const BF::Time * eventTime, const char * eventUUID, const Entity * host, const BF::List<Entity *> * participants);
+	int setEvent(const char * type, const BF::Time * eventTime, const char * eventUUID, const Entity * host, const BF::List<const Entity *> * participants);
 
 	int setNewPlant(const char * plantName, const char * plantUUID, const char * species, const BF::Time * birthDate, const char * userUUID);
 	int modifyPlant(const char * plantUUID, const char * name, const char * species);

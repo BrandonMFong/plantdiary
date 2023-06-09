@@ -18,6 +18,10 @@ Plant::~Plant() {
 
 }
 
+const char * Plant::uuid() const {
+	return this->_uuid;
+}
+
 Entity::Type Plant::type() const {
 	return kEntityTypePlant;
 }

@@ -188,8 +188,8 @@ int InstructorSet::executeEvent() {
 	}
 
 	// Load participants (in this initial case, it's going to be a plant)
-	Plant * plant = NULL;
-	List<Entity *> participants;
+	const Plant * plant = NULL;
+	List<const Entity *> participants;
 	if (result == 0) {
 		// If type is water, then we are working with plant participants
 		if (!strcmp(eventType, kPDSetEventTypePlantWater)) {
@@ -199,7 +199,7 @@ int InstructorSet::executeEvent() {
 				plant = user->plantForUUID(n->object(), &result);
 
 				if (result == 0) {
-					result = participants.add((Entity *) plant);
+					result = participants.add((const Entity *) plant);
 				}
 			}
 		}
