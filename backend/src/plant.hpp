@@ -59,6 +59,10 @@ PRIVATE:
 
 	/// Holds species type
 	char _species[kPDCommonPlantSpeciesStringLength];
+
+	BF::Time _birth;
+	BF::Time _death;
+	BF::Time _ownership;
 };
 
 #endif // PLANT_HPP

@@ -35,7 +35,6 @@ Plant * Plant::createPlant(
 	BFTime birthTime,
 	BFTime deathTime, 
 	BFTime ownershipTime,
-	const char * ownerUUID,
 	int * err
 ) {
 	int error = 0;
@@ -46,8 +45,9 @@ Plant * Plant::createPlant(
 	} else {
 		strcpy(result->_name, name);
 		strcpy(result->_species, species);
-
-		result->_user
+		result->_birth = birthTime;
+		result->_death = deathTime;
+		result->_ownership = ownershipTime;
 	}
 
 	if (err) { *err = error; }
