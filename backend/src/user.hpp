@@ -8,16 +8,19 @@
 #define USERS_HPP
 
 #include <bflibcpp/accessorspecifiers.hpp>
-#include <uuid/uuid.h>
 #include <bflibcpp/list.hpp>
 #include <common.h>
 #include "entity.hpp"
+
+extern "C" {
+#include <bflibc/stringutils.h>
+}
 
 class Plant;
 
 class User : public Entity {
 PUBLIC:
-
+	static void release(User * u);
 	~User();
 
 	static User * createUser(
@@ -28,12 +31,8 @@ PUBLIC:
 		int * err
 	);
 
-	/**
-	 * Initially finds all of user's plants
-	 */
-	int loadPlants();
-
 	int plantCount();
+	const Plant * plantForUUID(const char * plantUUID, int * err);
 
 	const char * username();
 	const char * firstname();
@@ -47,6 +46,11 @@ PRIVATE:
 	User(const char * uuid);	
 
 	/**
+	 * Initially finds all of user's plants
+	 */
+	int loadPlants();
+
+	/**
 	 * Plants we own
 	 */
 	BF::List<Plant *> _plants;
@@ -54,7 +58,7 @@ PRIVATE:
 	char _firstName[kPDCommonUsernameMaxLength];
 	char _lastName[kPDCommonUsernameMaxLength];
 	char _userName[kPDCommonUsernameMaxLength];
-	char _sessionID[UUID_STR_LEN];
+	char _sessionID[kBFStringUUIDStringLength];
 };
 
 #endif // USERS_HPP

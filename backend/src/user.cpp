@@ -7,6 +7,14 @@
 #include "user.hpp"
 #include <bflibcpp/bflibcpp.hpp>
 #include <string.h>
+#include "plant.hpp"
+#include "nursery.hpp"
+
+using namespace BF;
+
+void User::release(User * u) {
+	delete u;
+}
 
 User * User::createUser(
 	const char * uuid, 
@@ -15,6 +23,7 @@ User * User::createUser(
 	const char * lastName, 
 	int * err
 ) {
+	int error = 0;
 	if (!uuid || !firstName) {
 		if (err) *err = 1;
 		return NULL;
@@ -27,6 +36,14 @@ User * User::createUser(
 
 		// Create uuid for user session
 		BFStringGetRandomUUIDString(res->_sessionID);
+
+		error = res->loadPlants();
+
+		if (error == 0) {
+			BFDLog("User has %d plants", res->plantCount());
+		}
+
+		if (err) *err = error;
 
 		return res;
 	}
@@ -44,7 +61,19 @@ User::~User() {
 }
 
 int User::loadPlants() {
-	return 0;
+	return Nursery::shared()->copyPlantListForUserUUID(this->uuid(), &this->_plants);
+}
+
+const Plant * User::plantForUUID(const char * plantUUID, int * err) {
+	List<Plant *>::Node * n = this->_plants.first();
+	for(; n; n = n->next()) {
+		if (!strcmp(n->object()->uuid(), plantUUID)) {
+			return n->object();
+		}
+	}
+
+	if (err) *err = 2;
+	return NULL;
 }
 
 int User::plantCount() {

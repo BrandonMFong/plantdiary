@@ -11,6 +11,7 @@
 #include "pipe.hpp"
 #include "pool.hpp"
 #include "nursery.hpp"
+#include "user.hpp"
 #include <uuid/uuid.h>
 
 using namespace BF;
@@ -127,15 +128,18 @@ int InstructorSet::executePlant() {
 	return result;
 }
 
+void InstructorSetFreeString(char * s) { free(s); }
+
 int InstructorSet::executeEvent() {
 	char eventType[kPDCommonEventTypeStringLength];
 	char sessionID[kBFStringUUIDStringLength];
-	char participantUUID[kBFStringUUIDStringLength]; // name of participant this event affects
 	char data[kPDInstructionDataMaxLength];
 	short length = 0;
 	Time * tm = NULL;
-	List<Entity *> participants;
+	List<char *> participantUUIDS;
 	User * user = NULL;
+
+	participantUUIDS.setDeallocateCallback(InstructorSetFreeString);
 
 	BFDLog("An event will be logged");
 
@@ -152,20 +156,25 @@ int InstructorSet::executeEvent() {
 		result = 55;
 		BFDLog("Unexpected count");
 	} else {
-		for (int i = 0; i < l; i++) {
+		for (int i = 0; (i < l) && (result == 0); i++) {
 			if (!strcmp(val->u.object.values[i].name, kPDKeySetEventType)) { // event type
 				strcpy(eventType, val->u.object.values[i].value->u.string.ptr);
 			} else if (!strcmp(val->u.object.values[i].name, kPDKeySessionID)) { // session id
 				strcpy(sessionID, val->u.object.values[i].value->u.string.ptr);
-			} else if (!strcmp(val->u.object.values[i].name, kPDKeySetEventParticipantUUID)) { // participant
-				strcpy(participantUUID, val->u.object.values[i].value->u.string.ptr);
+			} else if (!strcmp(val->u.object.values[i].name, kPDKeySetEventParticipantUUID)) { // participants
+				json_value * val2 = val->u.object.values[i].value;
+				for (int j = 0; j < val2->u.array.length; j++) {
+					char * tmp = BFStringCopyString(val2->u.array.values[j]->u.string.ptr, &result);
+					if (result == 0) {
+						result = participantUUIDS.add(tmp);
+					}
+				}
 			} else if (!strcmp(val->u.object.values[i].name, kPDKeySetEventCurrentTime)) { // event time
 				tm = new Time(val->u.object.values[i].value->u.integer);
 			}
 		}
 
 		BFDLog("Session ID: %s", sessionID);
-		BFDLog("UUID for participant: %s", participantUUID);
 		BFDLog("event type: %s", eventType);
 		BFDLog("epoch value: %ld", tm->epoch());
 	}
@@ -179,13 +188,27 @@ int InstructorSet::executeEvent() {
 	}
 
 	// Load participants (in this initial case, it's going to be a plant)
-	if (result == 0) {
+	const Plant * plant = NULL;
 
+	// Particicpants should not own entity
+	List<const Entity *> participants;
+	if (result == 0) {
+		// If type is water, then we are working with plant participants
+		if (!strcmp(eventType, kPDSetEventTypePlantWater)) {
+			List<char *>::Node * n = participantUUIDS.first();
+			for (; n; n = n->next()) {
+				// Get plant for uuid
+				plant = user->plantForUUID(n->object(), &result);
+
+				if (result == 0) {
+					result = participants.add((const Entity *) plant);
+				}
+			}
+		}
 	}
 
 	char eventUUID[kBFStringUUIDStringLength];
 	if (result == 0) {
-		//participants.add((Entity *) user);
 		BFStringGetRandomUUIDString(eventUUID);
 		result = Database::shared()->setEvent(eventType, tm, eventUUID, (const Entity *) user, &participants);
 	}
@@ -199,6 +222,7 @@ int InstructorSet::executeEvent() {
 	}
 
 	Delete(tm);
+	json_value_free(val);
 
 	return 0;
 }

@@ -63,3 +63,7 @@ int Nursery::modifyPlant(const char * plantUUID, const char * name, const char *
 	return result;
 }
 
+int Nursery::copyPlantListForUserUUID(const char * userUUID, List<Plant *> * plants) {
+	return Database::shared()->copyPlantListForUserUUID(userUUID, plants);
+}
+
