@@ -57,7 +57,6 @@ User::~User() {
 }
 
 int User::loadPlants() {
-	int result = 0;
 	return Nursery::shared()->copyPlantListForUserUUID(this->uuid(), &this->_plants);
 }
 

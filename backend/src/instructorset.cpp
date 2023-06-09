@@ -189,6 +189,8 @@ int InstructorSet::executeEvent() {
 
 	// Load participants (in this initial case, it's going to be a plant)
 	const Plant * plant = NULL;
+
+	// Particicpants should not own entity
 	List<const Entity *> participants;
 	if (result == 0) {
 		// If type is water, then we are working with plant participants
@@ -207,7 +209,6 @@ int InstructorSet::executeEvent() {
 
 	char eventUUID[kBFStringUUIDStringLength];
 	if (result == 0) {
-		//participants.add((Entity *) user);
 		BFStringGetRandomUUIDString(eventUUID);
 		result = Database::shared()->setEvent(eventType, tm, eventUUID, (const Entity *) user, &participants);
 	}

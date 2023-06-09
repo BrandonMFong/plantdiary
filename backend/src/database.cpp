@@ -90,6 +90,7 @@ int Database::copyPlantListForUserUUID(const char * userUUID, List<Plant *> * pl
 			sql::Statement * stmt = 0;
 			sql::ResultSet * res = 0;
 
+			BFDLog("Query: %s", q);
 			stmt = this->_connection->createStatement();
 			res = stmt->executeQuery(q); 
 			while (res->next()) {
