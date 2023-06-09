@@ -18,6 +18,7 @@ class Nursery;
 class Plant : public Entity {
 	friend class Nursery;
 PUBLIC:
+	static void release(Plant * p);
 	~Plant();
 	static Plant * createPlant(const char * name, const char * species, BFTime birthTime, BFTime deathTime, BFTime ownershipTime, int * err);
 

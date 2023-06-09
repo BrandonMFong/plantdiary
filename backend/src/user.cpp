@@ -8,6 +8,10 @@
 #include <bflibcpp/bflibcpp.hpp>
 #include <string.h>
 
+void User::release(User * u) {
+	delete u;
+}
+
 User * User::createUser(
 	const char * uuid, 
 	const char * username, 

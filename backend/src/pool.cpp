@@ -14,7 +14,9 @@ using namespace BF;
 
 Pool * gPool = 0;
 
-Pool::Pool() {}
+Pool::Pool() {
+	this->_users.setDeallocateCallback(User::release);
+}
 
 Pool::~Pool() {}
 

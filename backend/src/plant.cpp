@@ -6,6 +6,10 @@
 
 #include "plant.hpp"
 
+void Plant::release(Plant * p) {
+	delete p;
+}
+
 Plant::Plant() : Entity(0) {
 	this->_name[0] = '\0';
 }

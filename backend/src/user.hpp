@@ -17,7 +17,7 @@ class Plant;
 
 class User : public Entity {
 PUBLIC:
-
+	static void release(User * u);
 	~User();
 
 	static User * createUser(

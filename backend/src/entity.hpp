@@ -18,7 +18,7 @@
  */
 class Entity {
 PUBLIC:
-
+	static void release(Entity * e);
 	typedef enum {
 		kEntityTypeUser = 0,
 		kEntityTypePlant = 1

@@ -135,7 +135,6 @@ int InstructorSet::executeEvent() {
 	char data[kPDInstructionDataMaxLength];
 	short length = 0;
 	Time * tm = NULL;
-	List<Entity *> participants;
 	List<char *> participantUUIDS;
 	User * user = NULL;
 
@@ -189,6 +188,7 @@ int InstructorSet::executeEvent() {
 
 	// Load participants (in this initial case, it's going to be a plant)
 	Plant * plant = NULL;
+	List<Entity *> participants;
 	if (result == 0) {
 		// If type is water, then we are working with plant participants
 		if (!strcmp(eventType, kPDSetEventTypePlantWater)) {
