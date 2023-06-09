@@ -107,6 +107,7 @@ int Database::copyPlantListForUserUUID(const char * userUUID, List<Plant *> * pl
 				if (error) {
 					BFDLog("Error with creating user, %d", error);
 				} else {
+					BFDLog("User (%s) loaded plant: %s", userUUID, p->name());
 					result = plants->add(p);
 				}
 			}

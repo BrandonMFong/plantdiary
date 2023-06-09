@@ -22,6 +22,10 @@ Entity::Type Plant::type() const {
 	return kEntityTypePlant;
 }
 
+const char * Plant::name() const {
+	return this->_name;
+}
+
 Plant * Plant::createPlant(const char * name, const char * species, BFTime birthTime, BFTime deathTime, BFTime ownershipTime, int * err) {
 	Plant * result = NULL;
 	int error = 0;

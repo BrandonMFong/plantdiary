@@ -34,6 +34,8 @@ PUBLIC:
 	 */
 	const char * species() const;
 
+	const char * name() const;
+
 PRIVATE:
 	Plant();
 
